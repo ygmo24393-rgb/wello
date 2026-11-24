@@ -228,7 +228,6 @@
       <div class="zoom-lv" id="zoomLv">100%</div>
     </div>
 
-    <div class="hint">드래그로 이동 · 휠로 확대 · 더블클릭으로 원위치</div>
     <div class="xbar">
       <span>발전량<b id="xGen">2.7</b> kw</span>
       <span>소비량<b id="xUse">2.7</b> kw</span>
@@ -406,7 +405,6 @@
   $('#btnIn').onclick = () => zoomTo(z * 1.4, 0, 0);
   $('#btnOut').onclick = () => zoomTo(z / 1.4, 0, 0);
   const embedded = window.self !== window.top;
-  if (embedded) { const h = document.querySelector('.hint'); if (h) h.textContent = '드래그로 이동 · Ctrl+휠 또는 +/− 버튼으로 확대 · 더블클릭으로 원위치'; }
   vp.addEventListener('wheel', e => {
     if (embedded && !e.ctrlKey && !stage.classList.contains('expanded')) return;
     e.preventDefault();
