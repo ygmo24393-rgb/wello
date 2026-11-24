@@ -148,7 +148,10 @@
   .alert .more{display:none;color:var(--muted);font-size:12px;margin-top:6px}
   .alert.open .more{display:block}
 
-  .energy{margin-top:12px;height:184px;border-radius:14px;background:var(--card);padding:18px 16px 14px;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:margin .45s var(--ease)}
+  .energy{margin-top:12px;height:184px;border-radius:16px;background:#141517;border:1px solid rgba(41,42,51,.2);padding:13px 19px 14px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3);transition:margin .45s var(--ease)}
+  .energy .card-h h3{font-size:18px;font-weight:500;letter-spacing:-.4px}
+  .energy .live{font-size:12.5px;color:#787F8A;gap:9px}
+  .energy .live .dot{width:6px;height:6px}
   .alert.open + .energy{margin-top:12px}
   .card-h{display:flex;justify-content:space-between;align-items:center}
   .card-h h3{font-size:16px;font-weight:500;letter-spacing:-.3px}
@@ -246,10 +249,6 @@
 
     <div class="energy">
       <div class="card-h"><h3>우리 집 에너지</h3><span class="live"><span class="dot"></span>실시간</span></div>
-      <div class="tiles">
-        <button class="tile" data-k="gen"><span class="lb">발전량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vGen">2.7</span><small>kw</small></span><canvas></canvas></button>
-        <button class="tile" data-k="use"><span class="lb">소비량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vUse">2.7</span><small>kw</small></span><canvas></canvas></button>
-      </div>
     </div>
 
     <div class="forecast">
@@ -465,6 +464,7 @@
 
   /* ---------- 숫자 애니메이션 ---------- */
   function animateNum(el, to, dec = 1, dur = 600){
+    if (!el) return;
     const from = parseFloat(el.textContent) || 0, t0 = performance.now();
     (function step(t){
       const p = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - (1 - p) ** 3;
@@ -479,7 +479,7 @@
   setInterval(() => {
     const g = Math.max(0, genBase + (Math.random()-.5) * .3);
     const u = Math.max(0, useBase + (Math.random()-.5) * .25);
-    animateNum($('#vGen'), g); animateNum($('#vUse'), u);
+    
     animateNum($('#xGen'), g); animateNum($('#xUse'), u);
     hist.gen.push(g); hist.gen.shift(); hist.use.push(u); hist.use.shift();
     document.querySelectorAll('.tile.chart').forEach(drawChart);
