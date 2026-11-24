@@ -191,15 +191,13 @@
   .toast.show{transform:translate(-50%,0)}
 
   /* 자동 시연 커서 */
-  .finger{position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;z-index:60;pointer-events:none;
-          background:rgba(255,255,255,.88);box-shadow:0 4px 14px rgba(0,0,0,.45),0 0 0 6px rgba(255,255,255,.14);
-          opacity:0;transition:transform .9s cubic-bezier(.45,.05,.2,1),opacity .4s}
+  .finger{position:absolute;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;z-index:60;pointer-events:none;
+          background:rgba(255,255,255,.7);box-shadow:0 2px 10px rgba(0,0,0,.35),0 0 0 5px rgba(255,255,255,.1);
+          opacity:0;transition:transform 1.6s cubic-bezier(.65,0,.35,1),opacity .8s}
   .finger.show{opacity:1}
-  .finger.tap{animation:tap .32s ease}
   .finger::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(255,255,255,.7);opacity:0}
-  .finger.tap::after{animation:ripple .6s ease-out}
-  @keyframes tap{50%{scale:.78}}
-  @keyframes ripple{0%{opacity:.9;scale:1}100%{opacity:0;scale:2.4}}
+  .finger.tap::after{animation:ripple 1s ease-out}
+  @keyframes ripple{0%{opacity:.6;scale:1}100%{opacity:0;scale:2}}
   @media (prefers-reduced-motion:reduce){.finger{transition:opacity .3s}}
 </style>
 </head>
@@ -583,7 +581,7 @@
     const x = (r.left + r.width/2 - sr.left) / k, y = (r.top + r.height/2 - sr.top) / k;
     finger.classList.add('show');
     finger.style.transform = `translate(${x}px,${y}px)`;
-    await wait(1000, g);
+    await wait(1700, g);
     { const sr2 = stage.getBoundingClientRect(), k2 = sr2.width / 1280, r2 = el.getBoundingClientRect();
       finger.style.transform = `translate(${(r2.left + r2.width/2 - sr2.left) / k2}px,${(r2.top + r2.height/2 - sr2.top) / k2}px)`; }
     finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap');
@@ -600,34 +598,27 @@
     z = 1; px = py = 0; apply();
   }
   const tagOf = id => dev(id).el.querySelector('.tag');
+  const zoomReset = () => { z = 1; px = py = 0; apply(); };
   async function demo(g){
-    await wait(1200, g);
+    await wait(2000, g);
     while (true){
-      // 1) 가전을 눌러 상세 정보 보기 → 내일로 예약
-      await tap(tagOf('washer'), g, 1800);
-      await tap(dev('washer').el.querySelector('.act-sched'), g, 2200);
-      await tap(dev('washer').el.querySelector('.act-close'), g, 600);
-      await tap($('#btnOut'), g, 300); await tap($('#btnOut'), g, 900);
-      // 2) 2층으로 이동해 가전 확인
-      await tap(floor.querySelector('button[data-f="2"]'), g, 1400);
-      await tap(tagOf('robot'), g, 2200);
-      await tap(dev('robot').el.querySelector('.act-close'), g, 500);
-      z = 1; px = py = 0; apply(); await wait(700, g);
-      // 3) 확대 / 축소
-      await tap($('#btnIn'), g, 500); await tap($('#btnIn'), g, 1200);
-      await tap($('#btnOut'), g, 300); await tap($('#btnOut'), g, 800);
-      await tap(floor.querySelector('button[data-f="1"]'), g, 1200);
-      // 4) 발전량 그래프
+      // 1) 가전을 눌러 상태 확인
+      await tap(tagOf('washer'), g, 4000);
+      await tap(dev('washer').el.querySelector('.act-close'), g, 800);
+      zoomReset(); await wait(1800, g);
+      // 2) 2층으로 이동
+      await tap(floor.querySelector('button[data-f="2"]'), g, 2800);
+      await tap(tagOf('robot'), g, 4000);
+      await tap(dev('robot').el.querySelector('.act-close'), g, 800);
+      zoomReset(); await wait(1800, g);
+      await tap(floor.querySelector('button[data-f="1"]'), g, 2500);
+      // 3) 발전량 그래프
       const tile = document.querySelector('.tile[data-k="gen"]');
-      await tap(tile, g, 2400); await tap(tile, g, 900);
-      // 5) 경고 알림 펼치기
-      await tap($('#alert'), g, 2600); await tap($('#alert'), g, 900);
-      // 6) 지도 전체 화면
-      await tap($('#btnExpand'), g, 2600); await tap($('#btnExpand'), g, 1200);
+      await tap(tile, g, 4000); await tap(tile, g, 1500);
       finger.classList.remove('show');
-      await wait(2500, g);
+      await wait(4000, g);
       resetState();
-      await wait(1500, g);
+      await wait(2500, g);
     }
   }
   function startDemo(){
