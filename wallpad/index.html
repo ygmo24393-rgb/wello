@@ -193,7 +193,7 @@
   /* 자동 시연 커서 */
   .finger{position:absolute;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;z-index:60;pointer-events:none;
           background:rgba(255,255,255,.7);box-shadow:0 2px 10px rgba(0,0,0,.35),0 0 0 5px rgba(255,255,255,.1);
-          opacity:0;transition:transform 1.6s cubic-bezier(.65,0,.35,1),opacity .8s}
+          opacity:0;transition:transform 1.1s cubic-bezier(.65,0,.35,1),opacity .6s}
   .finger.show{opacity:1}
   .finger::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(255,255,255,.7);opacity:0}
   .finger.tap::after{animation:ripple 1s ease-out}
@@ -581,7 +581,7 @@
     const x = (r.left + r.width/2 - sr.left) / k, y = (r.top + r.height/2 - sr.top) / k;
     finger.classList.add('show');
     finger.style.transform = `translate(${x}px,${y}px)`;
-    await wait(1700, g);
+    await wait(1200, g);
     { const sr2 = stage.getBoundingClientRect(), k2 = sr2.width / 1280, r2 = el.getBoundingClientRect();
       finger.style.transform = `translate(${(r2.left + r2.width/2 - sr2.left) / k2}px,${(r2.top + r2.height/2 - sr2.top) / k2}px)`; }
     finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap');
@@ -600,25 +600,25 @@
   const tagOf = id => dev(id).el.querySelector('.tag');
   const zoomReset = () => { z = 1; px = py = 0; apply(); };
   async function demo(g){
-    await wait(2000, g);
+    await wait(1500, g);
     while (true){
       // 1) 가전을 눌러 상태 확인
-      await tap(tagOf('washer'), g, 4000);
-      await tap(dev('washer').el.querySelector('.act-close'), g, 800);
-      zoomReset(); await wait(1800, g);
+      await tap(tagOf('washer'), g, 2800);
+      await tap(dev('washer').el.querySelector('.act-close'), g, 500);
+      zoomReset(); await wait(1200, g);
       // 2) 2층으로 이동
-      await tap(floor.querySelector('button[data-f="2"]'), g, 2800);
-      await tap(tagOf('robot'), g, 4000);
-      await tap(dev('robot').el.querySelector('.act-close'), g, 800);
-      zoomReset(); await wait(1800, g);
-      await tap(floor.querySelector('button[data-f="1"]'), g, 2500);
+      await tap(floor.querySelector('button[data-f="2"]'), g, 1800);
+      await tap(tagOf('robot'), g, 2800);
+      await tap(dev('robot').el.querySelector('.act-close'), g, 500);
+      zoomReset(); await wait(1200, g);
+      await tap(floor.querySelector('button[data-f="1"]'), g, 1600);
       // 3) 발전량 그래프
       const tile = document.querySelector('.tile[data-k="gen"]');
-      await tap(tile, g, 4000); await tap(tile, g, 1500);
+      await tap(tile, g, 2800); await tap(tile, g, 1000);
       finger.classList.remove('show');
-      await wait(4000, g);
-      resetState();
       await wait(2500, g);
+      resetState();
+      await wait(1500, g);
     }
   }
   function startDemo(){
