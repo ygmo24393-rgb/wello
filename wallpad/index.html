@@ -405,7 +405,10 @@
   }
   $('#btnIn').onclick = () => zoomTo(z * 1.4, 0, 0);
   $('#btnOut').onclick = () => zoomTo(z / 1.4, 0, 0);
+  const embedded = window.self !== window.top;
+  if (embedded) { const h = document.querySelector('.hint'); if (h) h.textContent = '드래그로 이동 · Ctrl+휠 또는 +/− 버튼으로 확대 · 더블클릭으로 원위치'; }
   vp.addEventListener('wheel', e => {
+    if (embedded && !e.ctrlKey && !stage.classList.contains('expanded')) return;
     e.preventDefault();
     const r = vp.getBoundingClientRect(), s = mapScale();
     const cx = (e.clientX - r.left - r.width/2) / s, cy = (e.clientY - r.top - r.height/2) / s;
@@ -466,7 +469,7 @@
   function animateNum(el, to, dec = 1, dur = 600){
     const from = parseFloat(el.textContent) || 0, t0 = performance.now();
     (function step(t){
-      const p = Math.min(1, (t - t0) / dur), e = 1 - (1 - p) ** 3;
+      const p = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - (1 - p) ** 3;
       el.textContent = (from + (to - from) * e).toFixed(dec);
       if (p < 1) requestAnimationFrame(step);
     })(t0);
@@ -524,7 +527,7 @@
   function playGauge(){
     const t0 = performance.now();
     (function step(t){
-      const p = Math.min(1, (t - t0) / 1600);
+      const p = Math.max(0, Math.min(1, (t - t0) / 1600));
       const e = p < 1 ? 1 - Math.pow(2, -10 * p) * Math.cos(p * 7) : 1; // 살짝 출렁이는 이징
       setGauge(Math.max(0, VAL * Math.min(e, 1.08)));
       if (p < 1) requestAnimationFrame(step); else setGauge(VAL);
