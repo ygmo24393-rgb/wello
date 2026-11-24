@@ -161,7 +161,7 @@
   @keyframes blink{50%{opacity:.25}}
   .energy{position:relative}
   .tiles{position:absolute;left:16px;right:14px;top:56px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .tile{display:block;height:112px;border-radius:16px;background:#191B1F;padding:16px 19px;text-align:left;position:relative;overflow:hidden;transition:transform .25s var(--ease),background .25s}
+  .tile{display:block;cursor:default;height:112px;border-radius:16px;background:#191B1F;padding:16px 19px;text-align:left;position:relative;overflow:hidden;transition:transform .25s var(--ease),background .25s}
   .tile .lb{position:absolute;left:19px;top:16px;font-size:16px;font-weight:400;letter-spacing:-.3px;line-height:1.3}
   .tile .val{position:absolute;right:20px;bottom:17px;font-size:24px;line-height:1;letter-spacing:-.5px;font-variant-numeric:tabular-nums;transition:opacity .3s}
   .tile .val small{font-size:13px;color:#787F8B;margin-left:5px;letter-spacing:0}
@@ -501,7 +501,6 @@
     document.querySelectorAll('.tile.chart').forEach(drawChart);
   }, 2000);
 
-  document.querySelectorAll('.tile').forEach(t => t.onclick = () => { t.classList.toggle('chart'); drawChart(t); });
   function drawChart(tile){
     const c = tile.querySelector('canvas'), dpr = 2, w = c.clientWidth, h = c.clientHeight;
     c.width = w*dpr; c.height = h*dpr;
@@ -612,9 +611,6 @@
       await tap(dev('robot').el.querySelector('.act-close'), g, 500);
       zoomReset(); await wait(1200, g);
       await tap(floor.querySelector('button[data-f="1"]'), g, 1600);
-      // 3) 발전량 그래프
-      const tile = document.querySelector('.tile[data-k="gen"]');
-      await tap(tile, g, 2800); await tap(tile, g, 1000);
       finger.classList.remove('show');
       await wait(2500, g);
       resetState();
