@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 집 에너지 — 월패드 인터랙티브</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0D0D0D; --panel:#141517; --card:#191B1F; --chip:#282D35;
+    --line:rgba(41,42,51,.6); --blue:#0069FF; --red:#FF0842;
+    --muted:#787F8B; --white:#fff;
+    --ease:cubic-bezier(.22,.8,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#050505;overflow:hidden}
+  body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;color:var(--white);-webkit-font-smoothing:antialiased;display:grid;place-items:center}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+  /* 1280×720 무대를 화면에 맞게 스케일 */
+  .stage{position:relative;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center;flex:none}
+  .stage::before{content:"";position:absolute;inset:0 0 auto 0;height:391px;background:linear-gradient(180deg,rgba(0,102,255,.1),rgba(13,13,13,0));pointer-events:none}
+
+  .fade-ui{transition:opacity .45s var(--ease),transform .55s var(--ease)}
+  .stage.expanded .fade-ui{opacity:0;pointer-events:none}
+  .stage.expanded .header.fade-ui{transform:translateY(-24px)}
+  .stage.expanded .side.fade-ui{transform:translateX(40px)}
+  .stage.expanded .nav.fade-ui{transform:translateX(60px)}
+
+  /* header */
+  .header{position:absolute;left:44px;top:50px;right:136px;display:flex;justify-content:space-between}
+  .date{font-size:13px;letter-spacing:-.2px;color:#e8e8e8}
+  .time{display:flex;align-items:baseline;gap:8px;margin-top:2px}
+  .time b{font-weight:400;font-size:50px;letter-spacing:-3px;line-height:1}
+  .time span{font-size:12px;color:#ddd}
+  .weather{text-align:right;font-size:13px;margin-top:22px;color:#eee}
+  .weather .gen{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px}
+  .dot{width:4px;height:4px;border-radius:50%;background:var(--blue);display:inline-block}
+
+  /* MAP PANEL */
+  .map{position:absolute;left:31px;top:146px;width:807px;height:538px;border-radius:20px;background:var(--panel);border:1px solid rgba(41,42,51,.2);
+       box-shadow:0 10px 30px rgba(0,0,0,.35);overflow:hidden;z-index:5;
+       transition:left .7s var(--ease),top .7s var(--ease),width .7s var(--ease),height .7s var(--ease),border-radius .7s var(--ease)}
+  /* 월패드 풀스크린: 지도 패널이 1280×720 화면 전체를 덮음 */
+  .stage.expanded .map{left:0;top:0;width:1280px;height:720px;border-radius:24px;border-color:transparent}
+  .viewport{position:absolute;inset:0;cursor:grab;touch-action:none}
+  .viewport.dragging{cursor:grabbing}
+  .world{position:absolute;left:50%;top:50%;aspect-ratio:1548/1016;height:calc(100% - 22px);max-width:calc(100% - 22px);
+         transform:translate(-50%,-48%) translate(var(--px,0px),var(--py,0px)) scale(var(--z,1));transform-origin:center;background:var(--panel);
+         transition:transform .55s var(--ease)}
+  .viewport.dragging .world,.world.no-anim{transition:none}
+  .house{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .6s,opacity .5s;user-select:none;-webkit-user-drag:none}
+  .house:not(.house2){mix-blend-mode:color-dodge}
+  .house2{opacity:0}
+  .world.floor2 .house:not(.house2){opacity:0}
+  .world.floor2 .house2{opacity:1}
+  .floor2-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:15px;opacity:0;pointer-events:none;transition:opacity .4s}
+  .world:not(.floor2) .spot.f2,.world.floor2 .spot:not(.f2){opacity:0;pointer-events:none}
+
+  /* 기기 조명 효과 */
+  .glow{position:absolute;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+        background:radial-gradient(closest-side,rgba(255,190,120,.30),rgba(255,160,80,.10) 45%,transparent 72%);opacity:0;transition:opacity .8s}
+  .spot.on .glow{opacity:1;animation:breathe 4s ease-in-out infinite}
+  @keyframes breathe{50%{opacity:.65}}
+
+  /* hotspots */
+  .spot{position:absolute;transition:opacity .4s}
+  .spot .pin{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--inv,1));width:22px;height:22px;display:grid;place-items:center}
+  .spot .pin i{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 3px rgba(0,105,255,.18);transition:background .3s,box-shadow .3s}
+  .spot .pin::after{content:"";position:absolute;inset:3px;border-radius:50%;border:1.5px solid var(--blue);animation:ping 2.2s var(--ease) infinite}
+  .spot:not(.on) .pin i{background:#4a4f59;box-shadow:none}
+  .spot:not(.on) .pin::after{display:none}
+  @keyframes ping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.1);opacity:0}}
+
+  .tag{position:absolute;left:0;bottom:22px;transform:translateX(-50%) scale(var(--inv,1));transform-origin:50% 100%;
+       background:rgba(25,27,31,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+       border:1px solid rgba(255,255,255,.12);border-radius:22px;white-space:nowrap;overflow:hidden;
+       width:var(--w,auto);transition:width .45s var(--ease),border-radius .45s var(--ease),border-color .3s,background .3s;cursor:pointer}
+  .tag-head{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;font-size:16px;letter-spacing:-.3px}
+  .tag-head b{font-weight:600}
+  .tag-head .kw{font-weight:500;font-variant-numeric:tabular-nums}
+  .tag-head .kw small{color:var(--muted);font-size:16px;font-weight:400;margin-left:2px}
+  .spot:not(.on) .tag-head .kw{color:var(--muted)}
+  .tag:hover{border-color:rgba(255,255,255,.25)}
+  .spot.open{z-index:10}
+  .spot.open .tag{border-radius:18px;background:rgba(20,21,23,.96);border-color:rgba(0,105,255,.45)}
+  .tag-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .spot.open .tag-body{grid-template-rows:1fr}
+  .tag-body>div{overflow:hidden}
+  .detail{padding:0 16px 16px;width:282px;opacity:0;transform:translateY(-6px);transition:opacity .3s .05s,transform .45s var(--ease)}
+  .spot.open .detail{opacity:1;transform:none}
+  .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#cfd3da;padding:6px 0}
+  .row span:first-child{color:var(--muted)}
+  .bars{display:flex;align-items:flex-end;gap:4px;height:46px;margin:8px 0 12px}
+  .bars i{flex:1;background:linear-gradient(var(--blue),rgba(0,105,255,.35));border-radius:3px 3px 1px 1px;height:0;transition:height .6s var(--ease)}
+  .spot:not(.on) .bars i{background:#353a44}
+  .switch{width:44px;height:26px;border-radius:13px;background:#3a3f49;position:relative;transition:background .3s}
+  .switch::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .3s var(--ease)}
+  .spot.on .switch{background:var(--blue)}
+  .spot.on .switch::after{transform:translateX(18px)}
+  .btn-row{display:flex;gap:8px;margin-top:10px}
+  .btn{flex:1;height:34px;border-radius:10px;background:var(--chip);font-size:13px;transition:background .2s}
+  .btn:hover{background:#343a45}
+  .btn.primary{background:var(--blue)}
+  .btn.primary:hover{background:#1a78ff}
+
+  /* map controls */
+  .floor{position:absolute;left:20px;top:20px;display:flex;background:var(--card);border-radius:17px;padding:2px;z-index:6}
+  .floor button{position:relative;z-index:1;width:65px;height:30px;font-size:13px;color:#cfd3da;transition:color .3s}
+  .floor button.active{color:#fff}
+  .floor .ind{position:absolute;left:2px;top:2px;width:65px;height:30px;border-radius:15px;background:var(--chip);transition:transform .45s var(--ease)}
+  .floor[data-f="2"] .ind{transform:translateX(65px)}
+  .ctrls{position:absolute;right:20px;top:20px;display:flex;flex-direction:column;gap:9px;z-index:6}
+  .cbtn{width:46px;height:46px;border-radius:50%;background:var(--card);display:grid;place-items:center;transition:background .2s,transform .2s}
+  .cbtn:hover{background:#242830}
+  .cbtn:active{transform:scale(.92)}
+  .cbtn svg{width:20px;height:20px;stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .cbtn .ic-collapse{display:none}
+  .stage.expanded .map .cbtn .ic-expand{display:none}
+  .stage.expanded .map .cbtn .ic-collapse{display:block}
+  .zoom-lv{font-size:11px;color:var(--muted);text-align:center;margin-top:-2px;font-variant-numeric:tabular-nums}
+  .status{position:absolute;right:22px;bottom:20px;display:flex;align-items:center;gap:10px;font-size:15px;color:#9aa0aa;z-index:6}
+  .hint{position:absolute;left:22px;bottom:20px;font-size:12px;color:#5b616c;z-index:6;transition:opacity .4s}
+
+  /* 확장 모드 하단 요약 바 */
+  .xbar{position:absolute;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;display:flex;gap:28px;align-items:center;padding:12px 22px;border-radius:16px;
+        background:rgba(25,27,31,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);z-index:6;transition:opacity .4s .2s,transform .6s .2s var(--ease);pointer-events:none;font-size:13px;color:#aeb3bc}
+  .xbar b{color:#fff;font-size:18px;font-weight:500;margin-left:6px;font-variant-numeric:tabular-nums}
+  .stage.expanded .map .xbar{opacity:1;transform:translate(-50%,0)}
+  .stage.expanded .map .hint{opacity:0}
+  .stage.expanded .map .floor{left:28px;top:28px}
+  .stage.expanded .map .ctrls{right:28px;top:28px}
+  .stage.expanded .map .status{right:30px;bottom:28px}
+
+  /* RIGHT SIDE */
+  .side{position:absolute;left:851px;top:146px;width:296px}
+  .alert{width:296px;height:40px;border-radius:10px;background:var(--card);display:flex;align-items:center;gap:10px;padding:0 14px;font-size:13px;text-align:left;
+         box-shadow:0 6px 18px rgba(0,0,0,.25);overflow:hidden;position:relative;z-index:3;transition:height .45s var(--ease),background .3s}
+  .alert .tri{flex:none;width:18px;height:18px;position:relative}
+  .alert .tri::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:rgba(255,8,66,.35);filter:blur(6px);animation:alarm 1.6s ease-in-out infinite}
+  @keyframes alarm{50%{opacity:.2}}
+  .alert .tri svg{position:relative;width:18px;height:18px}
+  .alert .txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#eee}
+  .alert .chev{transition:transform .35s var(--ease);flex:none}
+  .alert.open{height:118px;align-items:flex-start;padding-top:11px;background:#1d1f24}
+  .alert.open .txt{white-space:normal;line-height:1.55}
+  .alert.open .chev{transform:rotate(90deg)}
+  .alert .more{display:none;color:var(--muted);font-size:12px;margin-top:6px}
+  .alert.open .more{display:block}
+
+  .energy{margin-top:12px;height:184px;border-radius:16px;background:#141517;border:1px solid rgba(41,42,51,.2);padding:10px 19px 14px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3);transition:margin .45s var(--ease)}
+  .energy .card-h h3{font-size:18px;font-weight:400;letter-spacing:-.4px}
+  .energy .live{font-size:12.5px;color:#787F8A;gap:9px}
+  .energy .live .dot{width:6px;height:6px}
+  .alert.open + .energy{margin-top:12px}
+  .card-h{display:flex;justify-content:space-between;align-items:center}
+  .card-h h3{font-size:16px;font-weight:500;letter-spacing:-.3px}
+  .live{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}
+  .live .dot{animation:blink 1.4s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .energy{position:relative}
+  .tiles{position:absolute;left:16px;right:14px;top:56px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{display:block;height:112px;border-radius:16px;background:#191B1F;padding:16px 19px;text-align:left;position:relative;overflow:hidden;transition:transform .25s var(--ease),background .25s}
+  .tile .lb{position:absolute;left:19px;top:16px;font-size:16px;font-weight:400;letter-spacing:-.3px;line-height:1.3}
+  .tile .val{position:absolute;right:20px;bottom:17px;font-size:24px;line-height:1;letter-spacing:-.5px;font-variant-numeric:tabular-nums;transition:opacity .3s}
+  .tile .val small{font-size:13px;color:#787F8B;margin-left:5px;letter-spacing:0}
+  .tile canvas{position:absolute;left:0;right:0;bottom:0;width:100%;height:56px;opacity:0;transition:opacity .35s}
+  .tile.chart .val{opacity:.15}
+  .tile.chart canvas{opacity:1}
+  .tile .delta{position:absolute;left:18px;top:40px;font-size:11px;color:#5b616c;opacity:0;transition:opacity .25s}
+  .tile.chart .delta{opacity:0}
+
+  .forecast{margin-top:12px;height:288px;border-radius:14px;background:var(--card);padding:20px 16px;position:relative;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .forecast p{font-size:13px;line-height:1.6;color:#e6e6e6;margin-top:14px}
+  .gauge{position:absolute;left:0;top:0;width:296px;height:288px;pointer-events:none}
+  .gval{position:absolute;left:0;right:0;top:214px;text-align:center;font-size:30px;letter-spacing:-1.5px;font-variant-numeric:tabular-nums}
+  .gval small{font-size:16px;color:var(--muted);margin-left:6px;letter-spacing:0}
+  .gauge-hit{position:absolute;left:20px;right:20px;top:120px;height:150px;cursor:pointer}
+
+  /* NAV */
+  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#141517;box-shadow:0 6px 18px rgba(0,0,0,.3);border:1px solid rgba(41,42,51,.2)}
+  .nav .ind{position:absolute;left:6px;width:56px;height:56px;border-radius:50%;background:#1f2228;transition:top .45s var(--ease)}
+  .nav button{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
+  .nav svg{width:20px;height:20px;stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+  .nav button.active svg{stroke:#2b82ff}
+  .avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#1f2228;display:grid;place-items:center;font-size:13px}
+  .avatar.more{color:var(--muted);font-size:12px}
+
+  .toast{position:absolute;left:50%;top:24px;transform:translate(-50%,-80px);background:#1f2329;border:1px solid rgba(255,255,255,.1);padding:11px 18px;border-radius:12px;font-size:13px;z-index:50;transition:transform .5s var(--ease);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  .toast.show{transform:translate(-50%,0)}
+
+  /* 자동 시연 커서 */
+  .finger{position:absolute;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;z-index:60;pointer-events:none;
+          background:rgba(255,255,255,.7);box-shadow:0 2px 10px rgba(0,0,0,.35),0 0 0 5px rgba(255,255,255,.1);
+          opacity:0;transition:transform 1.6s cubic-bezier(.65,0,.35,1),opacity .8s}
+  .finger.show{opacity:1}
+  .finger::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(255,255,255,.7);opacity:0}
+  .finger.tap::after{animation:ripple 1s ease-out}
+  @keyframes ripple{0%{opacity:.6;scale:1}100%{opacity:0;scale:2}}
+  @media (prefers-reduced-motion:reduce){.finger{transition:opacity .3s}}
+</style>
+<style>*,*::before,*::after{transition:none!important;animation:none!important}.spot,.finger{display:none!important}.world .house2{filter:brightness(0.75)}</style></head>
+<body>
+<div class="stage" id="stage">
+
+  <header class="header fade-ui">
+    <div>
+      <div class="date" id="date">2026. 10. 16 (금)</div>
+      <div class="time"><b id="clock">11:08</b><span id="ampm">AM</span></div>
+    </div>
+    <div class="weather">
+      <div>소나기 25° / 19°</div>
+      <div class="gen"><span class="dot"></span>발전 중</div>
+    </div>
+  </header>
+
+  <!-- MAP -->
+  <section class="map" id="map">
+    <div class="viewport" id="viewport">
+      <div class="world" id="world">
+        <img class="house" src="house.webp" alt="1층 평면도" draggable="false">
+        <img class="house house2" src="house2.webp" alt="2층 평면도" draggable="false">
+        <div id="spots"></div>
+      </div>
+    </div>
+
+    <div class="floor" id="floor" data-f="1">
+      <span class="ind"></span>
+      <button class="active" data-f="1">1F</button>
+      <button data-f="2">2F</button>
+    </div>
+
+    <div class="ctrls">
+      <button class="cbtn" id="btnExpand" aria-label="확장">
+        <svg class="ic-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg>
+        <svg class="ic-collapse" viewBox="0 0 24 24"><path d="M20 4l-6 6M14 5v5h5M4 20l6-6M10 19v-5H5"/></svg>
+      </button>
+      <button class="cbtn" id="btnIn" aria-label="확대"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="cbtn" id="btnOut" aria-label="축소"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+      <div class="zoom-lv" id="zoomLv">100%</div>
+    </div>
+
+    <div class="xbar">
+      <span>발전량<b id="xGen">2.7</b> kw</span>
+      <span>소비량<b id="xUse">2.7</b> kw</span>
+      <span>오늘 예상 발전<b>12.5</b> kwh</span>
+    </div>
+    <div class="status"><span class="dot"></span><span id="runCount">3대 작동 중</span></div>
+  </section>
+
+  <!-- RIGHT -->
+  <aside class="side fade-ui">
+    <button class="alert" id="alert">
+      <span class="tri"><svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z" fill="#FF0842"/><path d="M12 10v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.2" fill="#fff"/></svg></span>
+      <span class="txt">태양광 설비 점검이 필요해요 설비에서 출력 저하가 감지됐어요. 패널 오염이나 인버터 이상일 수 있어요.<span class="more">마지막 점검 2026. 07. 02 · 탭해서 접기</span></span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+
+    <div class="energy">
+      <div class="card-h"><h3>우리 집 에너지</h3><span class="live"><span class="dot"></span>실시간</span></div>
+      <div class="tiles">
+        <button class="tile" data-k="gen"><span class="lb">발전량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vGen">2.7</span><small>kw</small></span><canvas></canvas></button>
+        <button class="tile" data-k="use"><span class="lb">소비량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vUse">2.7</span><small>kw</small></span><canvas></canvas></button>
+      </div>
+    </div>
+
+    <div class="forecast">
+      <h3 style="font-size:16px;font-weight:500;letter-spacing:-.3px">오늘 예상 발전량</h3>
+      <p>오늘은 태양광 발전량이 적어요!<br>급하지 않은 가전은 내일로 예약해 보세요.</p>
+      <svg class="gauge" id="gauge" viewBox="0 0 296 288"></svg>
+      <div class="gval"><span id="gNum">0.0</span><small>kwh</small></div>
+      <div class="gauge-hit" id="gaugeHit" title="탭하면 다시 재생"></div>
+    </div>
+  </aside>
+
+  <!-- NAV -->
+  <nav class="nav fade-ui" id="nav">
+    <span class="ind" id="navInd"></span>
+    <button style="top:14px" data-i="0"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20h-5v-5h-6v5H4z"/></svg></button>
+    <button style="top:78px" data-i="1" class="active"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button>
+    <button style="top:142px" data-i="2"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></button>
+    <button style="top:206px" data-i="3"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></button>
+    <span class="avatar" style="top:294px">지</span>
+    <span class="avatar more" style="top:322px;background:#191b1f">+3</span>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+  <div class="finger" id="finger" aria-hidden="true"></div>
+</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+
+  /* ---------- 화면 맞춤 ---------- */
+  function fit(){
+    const s = Math.min(innerWidth / 1280, innerHeight / 720);
+    stage.style.position = 'absolute'; stage.style.left = '50%'; stage.style.top = '50%';
+    stage.style.transform = `translate(-50%,-50%) scale(${s})`;
+  }
+  addEventListener('resize', fit); addEventListener('load', fit); fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
+
+  /* ---------- 시계 ---------- */
+  const days = ['일','월','화','수','목','금','토'];
+  function tick(){
+    const d = new Date();
+    let h = d.getHours(); const ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12;
+    $('#clock').textContent = `${h}:${String(d.getMinutes()).padStart(2,'0')}`;
+    $('#ampm').textContent = ap;
+    $('#date').textContent = `${d.getFullYear()}. ${String(d.getMonth()+1).padStart(2,'0')}. ${String(d.getDate()).padStart(2,'0')} (${days[d.getDay()]})`;
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- 기기 데이터 (좌표 = 집 이미지 기준 %) ---------- */
+  const devices = [
+    { id:'fridge', name:'냉장고', x:32.4, y:31.0, kw:1.4, on:true,  today:'8.6 kWh', mode:'일반 냉장 3°C', w:[5,6,5,7,6,6,7,6,5,6,7,6] },
+    { id:'styler', name:'스타일러', x:71.3, y:33.2, kw:0.7, on:true,  today:'1.2 kWh', mode:'리프레시 코스', w:[0,0,1,3,7,8,6,2,0,0,0,0] },
+    { id:'washer', name:'세탁기', x:88.9, y:45.6, kw:1.7, on:true,  today:'2.4 kWh', mode:'표준 세탁 · 32분 남음', w:[0,0,0,2,6,9,9,8,4,1,0,0] },
+    { id:'ac',     name:'에어컨', x:20.5, y:42.2, kw:1.9, on:false, today:'0 kWh',   mode:'꺼짐', w:[3,4,6,8,9,8,7,5,0,0,0,0] },
+    { id:'tv',     name:'TV',     x:18.8, y:49.7, kw:0.3, on:false, today:'0.6 kWh', mode:'꺼짐', w:[0,1,2,1,0,0,2,4,6,5,0,0] },
+    { id:'ac2',    name:'안방 에어컨', f:2, x:14.0, y:52.7, kw:1.2, on:false, today:'0 kWh', mode:'꺼짐', w:[2,3,5,7,8,7,6,4,0,0,0,0] },
+    { id:'robot',  name:'로봇청소기', f:2, x:39.0, y:49.3, kw:0.1, on:true, today:'0.3 kWh', mode:'거실·안방 청소 중', w:[0,0,0,3,6,4,0,0,0,0,0,0] },
+    { id:'pc',     name:'PC',     f:2, x:46.6, y:63.2, kw:0.4, on:true, today:'1.8 kWh', mode:'작업 중', w:[0,0,2,5,6,6,5,6,4,2,0,0] },
+  ];
+
+  const spotsEl = $('#spots');
+  devices.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'spot' + (d.on ? ' on' : '') + (d.f === 2 ? ' f2' : '');
+    el.style.left = d.x + '%'; el.style.top = d.y + '%';
+    el.innerHTML = `
+      <span class="glow"></span>
+      <span class="pin"><i></i></span>
+      <div class="tag">
+        <div class="tag-head"><b>${d.name}</b><span class="kw"><span class="n">${d.on ? d.kw : 0}</span><small>Kw</small></span></div>
+        <div class="tag-body"><div><div class="detail">
+          <div class="row"><span>상태</span><span class="mode">${d.mode}</span></div>
+          <div class="row"><span>오늘 사용</span><span>${d.today}</span></div>
+          <div class="bars">${d.w.map(()=>'<i></i>').join('')}</div>
+          <div class="row"><span>전원</span><button class="switch" aria-label="전원"></button></div>
+          <div class="btn-row"><button class="btn act-sched">내일로 예약</button><button class="btn primary act-close">닫기</button></div>
+        </div></div></div>
+      </div>`;
+    d.el = el; spotsEl.appendChild(el);
+    const tagEl = el.querySelector('.tag'), headEl = el.querySelector('.tag-head');
+    const setW = () => tagEl.style.setProperty('--w', (d.open ? 282 : headEl.scrollWidth + 2) + 'px');
+    requestAnimationFrame(setW); document.fonts && document.fonts.ready.then(setW);
+
+    const bars = [...el.querySelectorAll('.bars i')];
+    const paintBars = () => bars.forEach((b,i)=> b.style.height = (d.open ? (8 + d.w[i]*4) : 0) + 'px');
+
+    el.querySelector('.tag').addEventListener('click', e => {
+      if (e.target.closest('.switch,.btn')) return;
+      e.stopPropagation();
+      const willOpen = !d.open;
+      devices.forEach(o => { if (o !== d && o.open){ o.open=false; o.el.classList.remove('open'); o.paint(); }});
+      d.open = willOpen; el.classList.toggle('open', willOpen); setW();
+      setTimeout(paintBars, willOpen ? 120 : 0);
+      if (willOpen) focusOn(d);
+    });
+    el.querySelector('.pin').addEventListener('click', e => { e.stopPropagation(); el.querySelector('.tag').click(); });
+    el.querySelector('.switch').addEventListener('click', e => {
+      e.stopPropagation(); setPower(d, !d.on);
+    });
+    el.querySelector('.act-sched').addEventListener('click', e => {
+      e.stopPropagation(); setPower(d, false);
+      el.querySelector('.mode').textContent = '내일 오전 10:00 예약됨';
+      toast(`${d.name}을(를) 내일 오전 10시로 예약했어요`);
+    });
+    el.querySelector('.act-close').addEventListener('click', e => {
+      e.stopPropagation(); d.open=false; el.classList.remove('open'); d.paint();
+    });
+    d.paint = () => { paintBars(); setW(); };
+  });
+
+  function setPower(d, on){
+    d.on = on; d.el.classList.toggle('on', on);
+    d.el.querySelector('.mode').textContent = on ? (d.mode === '꺼짐' ? '작동 중' : d.mode) : '꺼짐';
+    animateNum(d.el.querySelector('.kw .n'), on ? d.kw : 0, 1);
+    setTimeout(()=>d.paint(), 650);
+    updateTotals();
+  }
+  function updateTotals(){
+    const n = devices.filter(d=>d.on).length;
+    $('#runCount').textContent = `${n}대 작동 중`;
+    useBase = devices.filter(d=>d.on).reduce((a,d)=>a+d.kw,0) * 0.71;
+  }
+
+  /* ---------- 팬 / 줌 ---------- */
+  const vp = $('#viewport'), world = $('#world');
+  let z = 1, px = 0, py = 0;
+  const ZMIN = 1, ZMAX = 3.2;
+  function apply(){
+    world.style.setProperty('--z', z);
+    world.style.setProperty('--px', px + 'px');
+    world.style.setProperty('--py', py + 'px');
+    world.style.setProperty('--inv', 1 / z);
+    $('#zoomLv').textContent = Math.round(z * 100) + '%';
+  }
+  function clampPan(){
+    const r = vp.getBoundingClientRect(), s = mapScale();
+    const W = world.offsetWidth * z, H = world.offsetHeight * z;
+    const mx = Math.max(0, (W - r.width / s) / 2 + 60), my = Math.max(0, (H - r.height / s) / 2 + 60);
+    px = Math.max(-mx, Math.min(mx, px)); py = Math.max(-my, Math.min(my, py));
+  }
+  const stageScale = () => stage.getBoundingClientRect().width / 1280;
+  const map = $('#map');
+  const mapScale = () => map.getBoundingClientRect().width / map.offsetWidth || 1;
+  function zoomTo(nz, cx, cy){ // cx,cy = viewport 중심 기준 오프셋(px, 무대 좌표)
+    nz = Math.max(ZMIN, Math.min(ZMAX, nz));
+    const k = nz / z;
+    px = cx - (cx - px) * k; py = cy - (cy - py) * k; z = nz;
+    if (z === 1){ px = 0; py = 0; }
+    clampPan(); apply();
+  }
+  $('#btnIn').onclick = () => zoomTo(z * 1.4, 0, 0);
+  $('#btnOut').onclick = () => zoomTo(z / 1.4, 0, 0);
+  const embedded = window.self !== window.top;
+  vp.addEventListener('wheel', e => {
+    if (embedded && !e.ctrlKey && !stage.classList.contains('expanded')) return;
+    e.preventDefault();
+    const r = vp.getBoundingClientRect(), s = mapScale();
+    const cx = (e.clientX - r.left - r.width/2) / s, cy = (e.clientY - r.top - r.height/2) / s;
+    world.classList.add('no-anim');
+    zoomTo(z * Math.exp(-e.deltaY * 0.0022), cx, cy);
+    clearTimeout(vp._t); vp._t = setTimeout(()=>world.classList.remove('no-anim'), 120);
+  }, { passive:false });
+  vp.addEventListener('dblclick', e => { if (!e.target.closest('.tag')) { z = 1; px = py = 0; apply(); } });
+
+  let drag = null;
+  vp.addEventListener('pointerdown', e => {
+    if (e.target.closest('.tag,.pin')) return;
+    drag = { x:e.clientX, y:e.clientY, px, py, moved:false };
+    vp.setPointerCapture(e.pointerId);
+  });
+  vp.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const s = mapScale(), dx = (e.clientX - drag.x)/s, dy = (e.clientY - drag.y)/s;
+    if (!drag.moved && Math.hypot(dx,dy) > 4){ drag.moved = true; vp.classList.add('dragging'); }
+    if (drag.moved){ px = drag.px + dx; py = drag.py + dy; clampPan(); apply(); }
+  });
+  const endDrag = () => {
+    if (drag && !drag.moved) devices.forEach(o => { if (o.open){ o.open=false; o.el.classList.remove('open'); o.paint(); }});
+    drag = null; vp.classList.remove('dragging');
+  };
+  vp.addEventListener('pointerup', endDrag); vp.addEventListener('pointercancel', endDrag);
+
+  function focusOn(d){
+    const nz = Math.max(z, 1.6);
+    const W = world.offsetWidth, H = world.offsetHeight;
+    const ox = (d.x/100 - .5) * W, oy = (d.y/100 - .5) * H;
+    z = nz; px = -ox * z; py = -oy * z + 60; clampPan(); apply();
+  }
+
+  /* ---------- 확장 (월패드 화면 전체) ---------- */
+  function toggleExpand(force){
+    const on = force ?? !stage.classList.contains('expanded');
+    stage.classList.toggle('expanded', on);
+    setTimeout(() => { clampPan(); apply(); }, 720);
+  }
+  $('#btnExpand').onclick = () => toggleExpand();
+  addEventListener('keydown', e => { if (e.key === 'Escape') toggleExpand(false); });
+
+  /* ---------- 층 전환 ---------- */
+  const floor = $('#floor');
+  floor.querySelectorAll('button').forEach(b => b.onclick = () => {
+    floor.dataset.f = b.dataset.f;
+    floor.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+    world.classList.toggle('floor2', b.dataset.f === '2');
+    devices.forEach(o => { if (o.open){ o.open=false; o.el.classList.remove('open'); o.paint(); }});
+    z = 1; px = py = 0; apply();
+  });
+
+  /* ---------- 경고 배너 ---------- */
+  $('#alert').onclick = () => $('#alert').classList.toggle('open');
+
+  /* ---------- 숫자 애니메이션 ---------- */
+  function animateNum(el, to, dec = 1, dur = 600){
+    if (!el) return;
+    const from = parseFloat(el.textContent) || 0, t0 = performance.now();
+    (function step(t){
+      const p = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - (1 - p) ** 3;
+      el.textContent = (from + (to - from) * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+
+  /* ---------- 실시간 발전/소비 ---------- */
+  let genBase = 2.7, useBase = 2.7;
+  const hist = { gen: Array.from({length:40},(_,i)=>2.4+Math.sin(i/5)*.3), use: Array.from({length:40},(_,i)=>2.6+Math.cos(i/4)*.4) };
+  setInterval(() => {
+    const g = Math.max(0, genBase + (Math.random()-.5) * .3);
+    const u = Math.max(0, useBase + (Math.random()-.5) * .25);
+    
+    animateNum($('#vGen'), g); animateNum($('#vUse'), u);
+    animateNum($('#xGen'), g); animateNum($('#xUse'), u);
+    hist.gen.push(g); hist.gen.shift(); hist.use.push(u); hist.use.shift();
+    document.querySelectorAll('.tile.chart').forEach(drawChart);
+  }, 2000);
+
+  document.querySelectorAll('.tile').forEach(t => t.onclick = () => { t.classList.toggle('chart'); drawChart(t); });
+  function drawChart(tile){
+    const c = tile.querySelector('canvas'), dpr = 2, w = c.clientWidth, h = c.clientHeight;
+    c.width = w*dpr; c.height = h*dpr;
+    const x = c.getContext('2d'); x.scale(dpr,dpr);
+    const data = hist[tile.dataset.k], mx = Math.max(...data)*1.15, mn = Math.min(...data)*.8;
+    const pts = data.map((v,i)=>[i/(data.length-1)*w, h - (v-mn)/(mx-mn)*h*.9]);
+    const grad = x.createLinearGradient(0,0,0,h);
+    grad.addColorStop(0,'rgba(0,105,255,.45)'); grad.addColorStop(1,'rgba(0,105,255,0)');
+    x.beginPath(); x.moveTo(0,h); pts.forEach(p=>x.lineTo(p[0],p[1])); x.lineTo(w,h); x.fillStyle=grad; x.fill();
+    x.beginPath(); pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])); x.strokeStyle='#2b82ff'; x.lineWidth=1.6; x.stroke();
+  }
+
+  /* ---------- 게이지 ---------- */
+  const G = $('#gauge'), NS = 'http://www.w3.org/2000/svg';
+  const cx = 148, cy = 245, R = 120, A0 = 195, A1 = -15, MAX = 45, VAL = 12.5;
+  const pt = (a, r) => [cx + Math.cos(a*Math.PI/180)*r, cy - Math.sin(a*Math.PI/180)*r];
+  const ticks = [];
+  for (let i = 0; i <= 20; i++){
+    const a = A0 + (A1 - A0) * i / 20, [x1,y1] = pt(a, R - 6), [x2,y2] = pt(a, R + 2);
+    const l = document.createElementNS(NS,'line');
+    Object.entries({x1,y1,x2,y2,stroke:'#fff','stroke-width':1.4,'stroke-linecap':'round',opacity:.55}).forEach(([k,v])=>l.setAttribute(k,v));
+    G.appendChild(l); ticks.push(l);
+  }
+  const needle = document.createElementNS(NS,'line');
+  needle.setAttribute('stroke','#0069FF'); needle.setAttribute('stroke-width',2); needle.setAttribute('stroke-linecap','round');
+  const knob = document.createElementNS(NS,'circle');
+  knob.setAttribute('r',5); knob.setAttribute('fill','#fff'); knob.setAttribute('stroke','#0069FF'); knob.setAttribute('stroke-width',2);
+  G.append(needle, knob);
+  function setGauge(v){
+    const f = v / MAX, a = A0 + (A1 - A0) * f;
+    const [x1,y1] = pt(a, R - 6), [x2,y2] = pt(a, R - 42);
+    needle.setAttribute('x1',x1); needle.setAttribute('y1',y1); needle.setAttribute('x2',x2); needle.setAttribute('y2',y2);
+    knob.setAttribute('cx',x1); knob.setAttribute('cy',y1);
+    ticks.forEach((t,i) => { const on = i/20 <= f; t.setAttribute('stroke', on ? '#2b82ff' : '#fff'); t.setAttribute('opacity', on ? 1 : .5); });
+    $('#gNum').textContent = v.toFixed(1);
+  }
+  function playGauge(){
+    const t0 = performance.now();
+    (function step(t){
+      const p = Math.max(0, Math.min(1, (t - t0) / 1600));
+      const e = p < 1 ? 1 - Math.pow(2, -10 * p) * Math.cos(p * 7) : 1; // 살짝 출렁이는 이징
+      setGauge(Math.max(0, VAL * Math.min(e, 1.08)));
+      if (p < 1) requestAnimationFrame(step); else setGauge(VAL);
+    })(t0);
+  }
+  $('#gaugeHit').onclick = playGauge;
+  setTimeout(playGauge, 400);
+
+  /* ---------- 내비 ---------- */
+  const navInd = $('#navInd');
+  const moveInd = b => navInd.style.top = (parseFloat(b.style.top) - 4) + 'px';
+  document.querySelectorAll('#nav button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('active', x === b)); moveInd(b);
+  });
+  moveInd(document.querySelector('#nav button.active'));
+
+  /* ---------- 토스트 ---------- */
+  let tt;
+  function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('show'), 2200); }
+
+
+  /* ---------- 자동 시연 (처음 보는 사람용) ---------- */
+  const finger = $('#finger');
+  const init = devices.map(d => ({ d, on: d.on }));
+  let gen = 0, visible = true, idleT;
+  const ABORT = {};
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
+  async function wait(ms, g){
+    await sleep(ms);
+    while (!visible || document.hidden) { await sleep(250); }
+    if (g !== gen) throw ABORT;
+  }
+  const dev = id => devices.find(d => d.id === id);
+  async function tap(el, g, after = 900){
+    if (!el) return;
+    const sr = stage.getBoundingClientRect(), k = sr.width / 1280, r = el.getBoundingClientRect();
+    const x = (r.left + r.width/2 - sr.left) / k, y = (r.top + r.height/2 - sr.top) / k;
+    finger.classList.add('show');
+    finger.style.transform = `translate(${x}px,${y}px)`;
+    await wait(1700, g);
+    { const sr2 = stage.getBoundingClientRect(), k2 = sr2.width / 1280, r2 = el.getBoundingClientRect();
+      finger.style.transform = `translate(${(r2.left + r2.width/2 - sr2.left) / k2}px,${(r2.top + r2.height/2 - sr2.top) / k2}px)`; }
+    finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap');
+    el.click();
+    await wait(after, g);
+  }
+  function resetState(){
+    devices.forEach(o => { if (o.open){ o.open = false; o.el.classList.remove('open'); o.paint(); } });
+    init.forEach(({d, on}) => { if (d.on !== on) setPower(d, on); else if (on) d.el.querySelector('.mode').textContent = d.mode; });
+    floor.querySelector('button[data-f="1"]').click();
+    stage.classList.contains('expanded') && toggleExpand(false);
+    $('#alert').classList.remove('open');
+    document.querySelectorAll('.tile.chart').forEach(t => t.classList.remove('chart'));
+    z = 1; px = py = 0; apply();
+  }
+  const tagOf = id => dev(id).el.querySelector('.tag');
+  const zoomReset = () => { z = 1; px = py = 0; apply(); };
+  async function demo(g){
+    await wait(2000, g);
+    while (true){
+      // 1) 가전을 눌러 상태 확인
+      await tap(tagOf('washer'), g, 4000);
+      await tap(dev('washer').el.querySelector('.act-close'), g, 800);
+      zoomReset(); await wait(1800, g);
+      // 2) 2층으로 이동
+      await tap(floor.querySelector('button[data-f="2"]'), g, 2800);
+      await tap(tagOf('robot'), g, 4000);
+      await tap(dev('robot').el.querySelector('.act-close'), g, 800);
+      zoomReset(); await wait(1800, g);
+      await tap(floor.querySelector('button[data-f="1"]'), g, 2500);
+      // 3) 발전량 그래프
+      const tile = document.querySelector('.tile[data-k="gen"]');
+      await tap(tile, g, 4000); await tap(tile, g, 1500);
+      finger.classList.remove('show');
+      await wait(4000, g);
+      resetState();
+      await wait(2500, g);
+    }
+  }
+  function startDemo(){
+    const g = ++gen;
+    resetState();
+    demo(g).catch(e => { if (e !== ABORT) console.error(e); });
+  }
+  function interrupt(e){
+    if (!e.isTrusted) return;
+    gen++; finger.classList.remove('show');
+    clearTimeout(idleT); idleT = setTimeout(startDemo, 12000);
+  }
+  ['pointerdown','keydown'].forEach(t => addEventListener(t, interrupt, true));
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: .3 }).observe(stage);
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) startDemo();
+
+  updateTotals(); useBase = 2.7; apply();
+})();
+</script>
+<script>gen=1e9;addEventListener("load",()=>{document.querySelector('#floor button[data-f="2"]').click();})</script></body>
+</html>
