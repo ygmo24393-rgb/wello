@@ -51,7 +51,7 @@
          transition:transform .55s var(--ease)}
   .viewport.dragging .world,.world.no-anim{transition:none}
   .house{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:color-dodge;transition:filter .6s,opacity .5s;user-select:none;-webkit-user-drag:none}
-  .house2{opacity:0;mix-blend-mode:normal}
+  .house2{opacity:0}
   .world.floor2 .house:not(.house2){opacity:0}
   .world.floor2 .house2{opacity:1}
   .floor2-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:15px;opacity:0;pointer-events:none;transition:opacity .4s}
@@ -301,11 +301,11 @@
 
   /* ---------- 기기 데이터 (좌표 = 집 이미지 기준 %) ---------- */
   const devices = [
-    { id:'fridge', name:'냉장고', x:30.2, y:32.6, kw:1.4, on:true,  today:'8.6 kWh', mode:'일반 냉장 3°C', w:[5,6,5,7,6,6,7,6,5,6,7,6] },
-    { id:'styler', name:'스타일러', x:71.6, y:34.9, kw:0.7, on:true,  today:'1.2 kWh', mode:'리프레시 코스', w:[0,0,1,3,7,8,6,2,0,0,0,0] },
-    { id:'washer', name:'세탁기', x:90.3, y:48.1, kw:1.7, on:true,  today:'2.4 kWh', mode:'표준 세탁 · 32분 남음', w:[0,0,0,2,6,9,9,8,4,1,0,0] },
-    { id:'ac',     name:'에어컨', x:17.6, y:44.5, kw:1.9, on:false, today:'0 kWh',   mode:'꺼짐', w:[3,4,6,8,9,8,7,5,0,0,0,0] },
-    { id:'tv',     name:'TV',     x:15.8, y:52.5, kw:0.3, on:false, today:'0.6 kWh', mode:'꺼짐', w:[0,1,2,1,0,0,2,4,6,5,0,0] },
+    { id:'fridge', name:'냉장고', x:31.2, y:44.8, kw:1.4, on:true,  today:'8.6 kWh', mode:'일반 냉장 3°C', w:[5,6,5,7,6,6,7,6,5,6,7,6] },
+    { id:'styler', name:'스타일러', x:70.1, y:45.3, kw:0.7, on:true,  today:'1.2 kWh', mode:'리프레시 코스', w:[0,0,1,3,7,8,6,2,0,0,0,0] },
+    { id:'washer', name:'세탁기', x:86.1, y:55.0, kw:1.7, on:true,  today:'2.4 kWh', mode:'표준 세탁 · 32분 남음', w:[0,0,0,2,6,9,9,8,4,1,0,0] },
+    { id:'ac',     name:'스탠드 에어컨', x:13.1, y:60.4, kw:1.9, on:false, today:'0 kWh',   mode:'꺼짐', w:[3,4,6,8,9,8,7,5,0,0,0,0] },
+    { id:'tv',     name:'TV',     x:19.5, y:54.5, kw:0.3, on:false, today:'0.6 kWh', mode:'꺼짐', w:[0,1,2,1,0,0,2,4,6,5,0,0] },
     { id:'ac2',    name:'안방 에어컨', f:2, x:21.3, y:45.0, kw:1.2, on:false, today:'0 kWh', mode:'꺼짐', w:[2,3,5,7,8,7,6,4,0,0,0,0] },
     { id:'robot',  name:'로봇청소기', f:2, x:36.7, y:53.3, kw:0.1, on:true, today:'0.3 kWh', mode:'거실·안방 청소 중', w:[0,0,0,3,6,4,0,0,0,0,0,0] },
     { id:'pc',     name:'PC',     f:2, x:43.8, y:68.1, kw:0.4, on:true, today:'1.8 kWh', mode:'작업 중', w:[0,0,2,5,6,6,5,6,4,2,0,0] },
