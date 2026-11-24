@@ -149,8 +149,8 @@
   .alert .more{display:none;color:var(--muted);font-size:12px;margin-top:6px}
   .alert.open .more{display:block}
 
-  .energy{margin-top:12px;height:184px;border-radius:16px;background:#141517;border:1px solid rgba(41,42,51,.2);padding:13px 19px 14px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3);transition:margin .45s var(--ease)}
-  .energy .card-h h3{font-size:18px;font-weight:500;letter-spacing:-.4px}
+  .energy{margin-top:12px;height:184px;border-radius:16px;background:#141517;border:1px solid rgba(41,42,51,.2);padding:10px 19px 14px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3);transition:margin .45s var(--ease)}
+  .energy .card-h h3{font-size:18px;font-weight:400;letter-spacing:-.4px}
   .energy .live{font-size:12.5px;color:#787F8A;gap:9px}
   .energy .live .dot{width:6px;height:6px}
   .alert.open + .energy{margin-top:12px}
@@ -159,12 +159,13 @@
   .live{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}
   .live .dot{animation:blink 1.4s infinite}
   @keyframes blink{50%{opacity:.25}}
-  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-  .tile{height:112px;border-radius:12px;background:#202329;padding:14px 18px;text-align:left;position:relative;overflow:hidden;transition:transform .25s var(--ease),background .25s}
-  .tile:hover{background:#252931;transform:translateY(-2px)}
-  .tile .lb{font-size:15px}
-  .tile .val{position:absolute;right:18px;bottom:16px;font-size:22px;letter-spacing:-1px;font-variant-numeric:tabular-nums;transition:opacity .3s}
-  .tile .val small{font-size:12px;color:var(--muted);margin-left:4px;letter-spacing:0}
+  .energy{position:relative}
+  .tiles{position:absolute;left:16px;right:14px;top:56px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{display:block;height:112px;border-radius:16px;background:#191B1F;padding:16px 19px;text-align:left;position:relative;overflow:hidden;transition:transform .25s var(--ease),background .25s}
+  .tile:hover{background:#1f2227;transform:translateY(-2px)}
+  .tile .lb{position:absolute;left:19px;top:16px;font-size:16px;font-weight:400;letter-spacing:-.3px;line-height:1.3}
+  .tile .val{position:absolute;right:20px;bottom:17px;font-size:24px;line-height:1;letter-spacing:-.5px;font-variant-numeric:tabular-nums;transition:opacity .3s}
+  .tile .val small{font-size:13px;color:#787F8B;margin-left:5px;letter-spacing:0}
   .tile canvas{position:absolute;left:0;right:0;bottom:0;width:100%;height:56px;opacity:0;transition:opacity .35s}
   .tile.chart .val{opacity:.15}
   .tile.chart canvas{opacity:1}
@@ -250,6 +251,10 @@
 
     <div class="energy">
       <div class="card-h"><h3>우리 집 에너지</h3><span class="live"><span class="dot"></span>실시간</span></div>
+      <div class="tiles">
+        <button class="tile" data-k="gen"><span class="lb">발전량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vGen">2.7</span><small>kw</small></span><canvas></canvas></button>
+        <button class="tile" data-k="use"><span class="lb">소비량</span><span class="delta">탭하면 그래프</span><span class="val"><span id="vUse">2.7</span><small>kw</small></span><canvas></canvas></button>
+      </div>
     </div>
 
     <div class="forecast">
@@ -481,6 +486,7 @@
     const g = Math.max(0, genBase + (Math.random()-.5) * .3);
     const u = Math.max(0, useBase + (Math.random()-.5) * .25);
     
+    animateNum($('#vGen'), g); animateNum($('#vUse'), u);
     animateNum($('#xGen'), g); animateNum($('#xUse'), u);
     hist.gen.push(g); hist.gen.shift(); hist.use.push(u); hist.use.shift();
     document.querySelectorAll('.tile.chart').forEach(drawChart);
