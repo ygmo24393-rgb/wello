@@ -131,7 +131,7 @@
   .x:hover{background:#E4E6E9}
   .x svg{width:20px;height:20px;stroke:#1E1F22;stroke-width:1.8}
   .q{position:absolute;left:24px;display:flex;align-items:center;gap:10px;font-size:16px;letter-spacing:-.4px}
-  .q i{width:20px;height:20px;border-radius:50%;background:#E3F1FF;color:var(--blue2);font-style:normal;font-size:11px;display:grid;place-items:center}
+  .q i{width:22px;height:22px;border-radius:50%;background:#E3F1FF;color:var(--blue2);font-style:normal;font-size:12px;display:grid;place-items:center}
   .pick{position:absolute;left:24px;width:348px;height:56px;border-radius:12px;background:#fff;border:1px solid #E4E6E9;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:15px;font-weight:500;text-align:left;transition:border-color .25s}
   .pick:hover,.pick.open{border-color:#CDD1D7}
   .pick small{font-size:13px;color:#8A8F98;font-weight:400}
@@ -237,14 +237,14 @@
   <aside class="sheetp" id="sheet">
     <h2 id="shTitle">새 예약</h2>
     <button class="x" id="shClose" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-    <div class="q" style="top:74px"><i>1</i>어떤 가전을 쓸까요?</div>
-    <button class="pick" id="sApp" style="top:108px"></button>
-    <div class="q" style="top:192px"><i>2</i>코스를 골라 주세요</div>
-    <button class="pick" id="sCourse" style="top:226px"></button>
-    <div class="q" style="top:310px"><i>3</i>언제까지 끝낼까요?</div>
-    <button class="pick" id="sEnd" style="top:344px"></button>
+    <div class="q" style="top:86px"><i>1</i>어떤 가전을 쓸까요?</div>
+    <button class="pick" id="sApp" style="top:120px"></button>
+    <div class="q" style="top:200px"><i>2</i>코스를 골라 주세요</div>
+    <button class="pick" id="sCourse" style="top:234px"></button>
+    <div class="q" style="top:314px"><i>3</i>언제까지 끝낼까요?</div>
+    <button class="pick" id="sEnd" style="top:348px"></button>
     <div class="opts" id="opts"></div>
-    <div class="wheel" id="wheel" style="top:344px"><div class="list" id="wlist"></div><div class="wband"></div></div>
+    <div class="wheel" id="wheel" style="top:348px"><div class="list" id="wlist"></div><div class="wband"></div></div>
     <div class="est" id="est"><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>예상 시작<b id="eStart"></b><span class="e" id="eEnd"></span></div>
     <button class="go" id="go">예약하기</button>
   </aside>
@@ -519,6 +519,7 @@
   const wItems = [...wlist.children];
   let wRaf = 0, wIdx = -1;
   function wSync(){
+    if (!wheel.classList.contains('show')) return;
     const i = Math.max(0, Math.min(ENDS.length - 1, Math.round(wlist.scrollTop / IH)));
     if (i === wIdx) return; wIdx = i;
     wItems.forEach((el, k) => el.classList.toggle('cur', k === i));
