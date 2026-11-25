@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>완료 — 월패드 인터랙티브</title>
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600;font-display:swap}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800;font-display:swap}
+:root{--bg:#EEEEEF;--panel:#F7F7F8;--ink:#1E1F22;--muted:#8A8F98;--sub:#3A3D42;--blue:#2B9CFF;--ease:cubic-bezier(.22,.8,.2,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EEEEEF;overflow:hidden}
+body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center}
+
+.date{position:absolute;left:44px;top:50px;font-size:13px;letter-spacing:-.2px;color:var(--sub)}
+.time{position:absolute;left:42px;top:68px;display:flex;align-items:baseline;gap:8px}
+.time b{font-weight:400;font-size:50px;letter-spacing:-3px;line-height:1}
+.time span{font-size:12px;color:var(--sub)}
+.weather{position:absolute;right:136px;top:72px;text-align:right;font-size:13px;color:var(--sub)}
+.weather .gen{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--blue);display:inline-block}
+
+.panel{position:absolute;border-radius:20px;background:var(--panel)}
+
+/* main result */
+.main{left:32px;top:146px;width:704px;height:538px}
+.main .ic{position:absolute;left:24px;top:24px;width:54px;height:54px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.main .ic svg{width:26px;height:26px;stroke:var(--ink);stroke-width:1.5;fill:none}
+.main .ic::after{content:"";position:absolute;right:-2px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/12px no-repeat;
+                 box-shadow:0 0 0 3px var(--panel);transform:scale(0);transition:transform .5s var(--ease) .3s}
+.in .main .ic::after{transform:scale(1)}
+.main .nm{position:absolute;left:92px;top:26px;font-size:22px;font-weight:500;letter-spacing:-.6px}
+.main .sb{position:absolute;left:92px;top:58px;font-size:13px;color:var(--muted)}
+.badge{position:absolute;right:24px;top:30px;height:30px;padding:0 12px;border-radius:15px;background:#E3F1FF;color:#1C78CC;font-size:13px;display:flex;align-items:center;gap:6px}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.hero{position:absolute;left:24px;top:104px;font-size:30px;font-weight:500;letter-spacing:-1.2px}
+.hero b{color:var(--blue);font-weight:500}
+.hero-s{position:absolute;left:24px;top:146px;font-size:14px;color:var(--muted);letter-spacing:-.2px}
+
+.chart{position:absolute;left:24px;top:178px;width:656px;height:214px}
+.chart svg{width:656px;height:214px;overflow:visible}
+.chart text{font-family:"Creato Display","Asta Sans",sans-serif;font-size:12px;fill:var(--muted)}
+.lab{position:absolute;font-size:12px;white-space:nowrap;transform:translateX(-50%);padding:5px 10px;border-radius:12px;opacity:0;transition:opacity .5s}
+.lab.w{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.lab.w b{color:var(--blue);font-weight:500}
+.lab.g{color:var(--muted);background:rgba(255,255,255,.7)}
+.in .lab{opacity:1}
+.in .lab.w{transition-delay:1.5s}.in .lab.g{transition-delay:2s}
+
+.stats{position:absolute;left:24px;top:418px;display:grid;grid-template-columns:repeat(3,208px);gap:16px}
+.st{height:96px;border-radius:14px;background:#fff;position:relative}
+.st em{position:absolute;left:18px;top:16px;font-style:normal;font-size:13px;color:var(--sub)}
+.st div{position:absolute;right:18px;bottom:14px;display:flex;align-items:baseline;gap:4px}
+.st b{font-size:28px;font-weight:400;letter-spacing:-1.2px}
+.st span{font-size:14px;color:var(--muted)}
+.st.k b{color:var(--blue)}
+
+/* compare */
+.cmp{left:750px;top:146px;width:396px;height:200px}
+.cmp h3{position:absolute;left:22px;top:20px;font-size:16px;font-weight:500;letter-spacing:-.3px}
+.cmp p{position:absolute;left:22px;top:46px;font-size:13px;color:var(--sub)}
+.cmp p b{color:var(--blue);font-weight:500}
+.hb{position:absolute;left:22px;right:22px;height:40px}
+.hb span{position:absolute;left:0;top:0;font-size:13px;color:var(--sub)}
+.hb .tr{position:absolute;left:0;right:56px;top:22px;height:10px;border-radius:5px;background:#E9EAED;overflow:hidden}
+.hb .tr i{display:block;height:100%;width:0;border-radius:5px;transition:width 1.4s var(--ease)}
+.hb b{position:absolute;right:0;top:12px;font-size:18px;font-weight:500;letter-spacing:-.6px}
+.hb.a .tr i{background:var(--blue)} .hb.b .tr i{background:#C9CDD3} .hb.b b{color:var(--muted);font-weight:400}
+
+/* next */
+.next{left:750px;top:359px;width:396px;height:325px}
+.next h3{position:absolute;left:22px;top:20px;font-size:16px;font-weight:500;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.next h3 svg{width:18px;height:18px}
+.next .t{position:absolute;left:24px;top:62px;font-size:22px;font-weight:500;letter-spacing:-.7px;line-height:1.35}
+.next .d{position:absolute;left:24px;top:128px;font-size:13px;color:var(--sub);line-height:1.6}
+.next .d b{color:var(--blue);font-weight:500}
+.app{position:absolute;left:24px;right:24px;top:184px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 14px}
+.app .ai{width:34px;height:34px;border-radius:50%;background:#F1F2F4;display:grid;place-items:center}
+.app .ai svg{width:18px;height:18px;stroke:var(--ink);stroke-width:1.5;fill:none}
+.app b{font-size:14px;font-weight:500}
+.app span{font-size:13px;color:var(--muted)}
+.app em{margin-left:auto;font-style:normal;font-size:13px;color:var(--sub)}
+.b1,.b2{position:absolute;top:252px;height:52px;border-radius:14px;font-size:16px;font-weight:500;letter-spacing:-.3px;transition:background .25s,color .25s,width .45s var(--ease)}
+.b1{left:24px;width:212px;background:var(--blue);color:#fff}
+.b1:hover{background:#1F8BEF}
+.b1.ok{background:#E3F1FF;color:#1C78CC}
+.b2{left:248px;width:124px;background:#fff;border:1px solid #E4E6E9;color:var(--sub)}
+.b2:hover{background:#F1F2F4}
+
+/* nav */
+.nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.nav span.n{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
+.nav span.n.act{left:6px;width:56px;height:56px;background:var(--blue)}
+.nav svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav .act svg{stroke:#fff}
+.set{position:absolute;left:1179px;top:540px;width:70px;height:70px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;place-items:center}
+.set svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round}
+.avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:13px;box-shadow:0 0 0 1px #E4E6E9}
+.avatar.more{color:var(--muted);font-size:12px;box-shadow:0 0 0 2px #fff}
+
+.toast{position:absolute;left:50%;top:24px;transform:translate(-50%,-80px);background:#fff;border:1px solid rgba(0,0,0,.07);padding:11px 18px;border-radius:12px;font-size:13px;z-index:50;transition:transform .5s var(--ease);box-shadow:0 10px 30px rgba(0,0,0,.1);white-space:nowrap}
+.toast.show{transform:translate(-50%,0)}
+.finger{position:absolute;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;z-index:60;pointer-events:none;background:rgba(30,31,34,.42);box-shadow:0 2px 10px rgba(0,0,0,.12),0 0 0 5px rgba(30,31,34,.08);opacity:0;transition:transform 1.1s cubic-bezier(.65,0,.35,1),opacity .6s}
+.finger.show{opacity:1}
+.finger::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(30,31,34,.45);opacity:0}
+.finger.tap::after{animation:ripple 1s ease-out}
+@keyframes ripple{0%{opacity:.6;scale:1}100%{opacity:0;scale:2}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="date">2026. 10. 16 (금)</div>
+  <div class="time"><b>2:58</b><span>PM</span></div>
+  <div class="weather"><div>맑음 25° / 19°</div><div class="gen"><span class="dot"></span>발전 중</div></div>
+
+  <section class="panel main">
+    <div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6.5h2"/></svg></div>
+    <div class="nm">세탁이 끝났어요</div>
+    <div class="sb num">세탁기 · 표준 코스 · 오후 1:20 – 2:58</div>
+    <div class="badge"><i></i>예약대로 완료</div>
+    <div class="hero">태양광으로 <b class="num" id="hPct">0%</b> 채웠어요</div>
+    <div class="hero-s">오후 6시까지 끝내도록 맡긴 세탁을, 발전이 가장 좋은 시간에 돌렸어요.</div>
+    <div class="chart" id="chart">
+      <svg viewBox="0 0 656 214" id="csv"></svg>
+      <div class="lab w num" id="labW">WELLO 예약 <b>92%</b></div>
+      <div class="lab g num" id="labG">바로 시작했다면 41%</div>
+    </div>
+    <div class="stats">
+      <div class="st k"><em>아낀 전기요금</em><div><b class="num" data-to="1240" data-d="0">0</b><span>원</span></div></div>
+      <div class="st"><em>태양광 사용</em><div><b class="num" data-to="1.6" data-d="1">0</b><span>kWh</span></div></div>
+      <div class="st"><em>전력망 사용</em><div><b class="num" data-to="0.1" data-d="1">0</b><span>kWh</span></div></div>
+    </div>
+  </section>
+
+  <section class="panel cmp">
+    <h3>바로 시작했다면</h3>
+    <p>예약 덕분에 태양광을 <b class="num">51%p</b> 더 썼어요</p>
+    <div class="hb a" style="top:84px"><span>WELLO 예약 · 오후 1:20</span><div class="tr"><i id="barA"></i></div><b class="num">92%</b></div>
+    <div class="hb b" style="top:136px"><span>바로 시작 · 오전 11:08</span><div class="tr"><i id="barB"></i></div><b class="num">41%</b></div>
+  </section>
+
+  <section class="panel next">
+    <h3><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>다음 추천</h3>
+    <div class="t">건조기도 지금 돌리면<br>좋아요</div>
+    <div class="d">발전이 오후 4시까지 이어져요.<br>지금 시작하면 태양광 <b>88%</b>로 끝낼 수 있어요.</div>
+    <div class="app"><div class="ai"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M10.5 13a1.5 1.5 0 1 0 3 0"/></svg></div><div><b>건조기</b> <span>표준 · 1시간 30분</span></div><em class="num">~ 오후 4:28</em></div>
+    <button class="b1" id="go">지금 시작</button>
+    <button class="b2" id="later">나중에</button>
+  </section>
+
+  <nav class="nav">
+    <span class="n" style="top:14px"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20h-5v-5h-6v5H4z"/></svg></span>
+    <span class="n act" style="top:74px"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+    <span class="n" style="top:142px"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></span>
+    <span class="n" style="top:206px"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span>
+    <span class="avatar" style="top:294px">지</span>
+    <span class="avatar more" style="top:322px;background:#F1F2F4">+3</span>
+  </nav>
+  <div class="set"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/><circle cx="15" cy="8" r="2.2" fill="#fff"/><circle cx="9" cy="16" r="2.2" fill="#fff"/></svg></div>
+  <div class="toast" id="toast"></div>
+  <div class="finger" id="finger" aria-hidden="true"></div>
+</div>
+<script>
+{
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+  function fit(){ const s = Math.min(innerWidth/1280, innerHeight/720); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+  addEventListener('resize', fit); addEventListener('load', fit); fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
+  const STATIC = location.search.includes('static');
+
+  /* ---------- 차트: 하루 발전 곡선 + 실행 구간 ---------- */
+  const NS = 'http://www.w3.org/2000/svg', svg = $('#csv');
+  const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const W = 656, H = 214, B = 186, TOP = 30;              // 그래프 바닥(B)과 위쪽 여백
+  const T0 = 360, T1 = 1200;                              // 6:00 ~ 20:00
+  const x = t => (t - T0) / (T1 - T0) * W;
+  const gen = t => Math.max(0, Math.sin(Math.PI * (t - 390) / (1170 - 390))) ** 1.35 * 3.4;   // kW
+  const y = v => B - v / 3.6 * (B - TOP);
+  const pts = []; for (let t = T0; t <= T1; t += 10) pts.push([x(t), y(gen(t))]);
+  const area = `M0 ${B} ` + pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ') + ` L${W} ${B} Z`;
+  for (let i = 0; i < 4; i++) svg.appendChild(mk('line', { x1:0, x2:W, y1:B - i * 52, y2:B - i * 52, stroke:'#ECEDEF' }));
+  svg.appendChild(mk('path', { d:area, fill:'#E9EBEE' }));
+  svg.appendChild(mk('path', { d:'M' + pts.map(p => p.join(' ')).join(' L'), fill:'none', stroke:'#C9CDD3', 'stroke-width':1.5 }));
+  // 세탁기 사용 전력 (약 1.0kW)
+  // 세탁 단계별 전력: 물 데우기 → 세탁·헹굼 → 탈수
+  const use = (t, s = 800) => { const m = t - s; const sm = (a, b, k) => 1 / (1 + Math.exp(-(m - a) / k)) - 1 / (1 + Math.exp(-(m - b) / k));
+    return 1.9 * sm(0, 22, 1.5) + 0.55 * sm(22, 80, 1.5) + 1.2 * sm(80, 98, 1.5); };
+  const run = (a, b, fill, id, dash) => {
+    let d = `M${x(a)} ${B}`; for (let t = a; t <= b; t += 1) d += ` L${x(t).toFixed(1)} ${y(use(t, a)).toFixed(1)}`; d += ` L${x(b)} ${B} Z`;
+    const p = mk('path', { d, fill, id }); if (dash){ p.setAttribute('stroke', '#A9AEB6'); p.setAttribute('stroke-dasharray', '4 4'); p.setAttribute('fill', 'none'); }
+    svg.appendChild(p); return p;
+  };
+  const ghost = run(668, 766, 'none', 'ghost', true);
+  const clip = mk('clipPath', { id:'wipe' }); const cr = mk('rect', { x:x(800), y:0, width:0, height:H }); clip.appendChild(cr); svg.appendChild(clip);
+  const real = run(800, 898, '#2B9CFF', 'real'); real.setAttribute('clip-path', 'url(#wipe)'); real.setAttribute('opacity', .9);
+  svg.appendChild(mk('rect', { x:x(800), y:TOP - 10, width:x(898) - x(800), height:B - TOP + 10, fill:'rgba(43,156,255,.08)', rx:6 }));
+  [[360,'6AM'],[540,'9AM'],[720,'12PM'],[900,'3PM'],[1080,'6PM']].forEach(([t, s]) => { const e = mk('text', { x:x(t), y:206, 'text-anchor':'middle' }); e.textContent = s; svg.appendChild(e); });
+  $('#labW').style.left = x(849) + 'px'; $('#labW').style.top = (y(gen(849)) - 40) + 'px';
+  $('#labG').style.left = x(717) + 'px'; $('#labG').style.top = (y(1.9) - 40) + 'px';
+
+  /* ---------- 숫자 ---------- */
+  function count(el, to, d, dur = 1400, suf = ''){
+    const t0 = performance.now();
+    const step = () => { const p = Math.max(0, Math.min(1, (performance.now() - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * e).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d }) + suf; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  function play(){
+    stage.classList.remove('in'); cr.style.transition = 'none'; cr.setAttribute('width', 0);
+    $('#barA').style.width = 0; $('#barB').style.width = 0; $('#go').classList.remove('ok'); $('#go').textContent = '지금 시작';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      stage.classList.add('in');
+      const w = x(898) - x(800), t0 = performance.now();
+      const grow = () => { const p = Math.min(1, (performance.now() - t0) / (STATIC ? 1 : 1400)); cr.setAttribute('width', w * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(grow); };
+      requestAnimationFrame(grow);
+      count($('#hPct'), 92, 0, 1400, '%');
+      document.querySelectorAll('.st b').forEach(b => count(b, +b.dataset.to, +b.dataset.d, 1600));
+      setTimeout(() => { $('#barA').style.width = '92%'; $('#barB').style.width = '41%'; }, 400);
+    }));
+  }
+
+  /* ---------- 버튼 ---------- */
+  const toast = $('#toast'); let tT;
+  function say(m){ toast.textContent = m; toast.classList.add('show'); clearTimeout(tT); tT = setTimeout(() => toast.classList.remove('show'), 2400); }
+  $('#go').onclick = () => { const b = $('#go'); if (b.classList.contains('ok')) return; b.classList.add('ok'); b.textContent = '건조기 시작했어요'; say('건조기를 시작했어요 · 오후 4:28에 끝나요'); };
+  $('#later').onclick = () => say('오후 3시 30분에 다시 알려드릴게요');
+  play();
+
+  /* ---------- 자동 시연 ---------- */
+  const finger = $('#finger');
+  let g0 = 0, visible = true, idleT;
+  const ABORT = {}, sleep = ms => new Promise(r => setTimeout(r, ms));
+  async function wait(ms, g){ await sleep(ms); while (!visible || document.hidden) await sleep(250); if (g !== g0) throw ABORT; }
+  function place(el){ const sr = stage.getBoundingClientRect(), k = sr.width / 1280, r = el.getBoundingClientRect();
+    finger.style.transform = `translate(${(r.left + r.width/2 - sr.left) / k}px,${(r.top + r.height/2 - sr.top) / k}px)`; }
+  async function tap(el, g, after){ finger.classList.add('show'); place(el); await wait(1200, g); place(el);
+    finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap'); el.click(); await wait(after, g); }
+  async function demo(g){
+    while (true){
+      await wait(5200, g);
+      await tap($('#go'), g, 3200);
+      finger.classList.remove('show'); await wait(2400, g);
+      play();
+    }
+  }
+  function start(){ const g = ++g0; demo(g).catch(e => { if (e !== ABORT) console.error(e); }); }
+  function interrupt(e){ if (!e.isTrusted) return; g0++; finger.classList.remove('show'); clearTimeout(idleT); idleT = setTimeout(() => { play(); start(); }, 12000); }
+  ['pointerdown','keydown'].forEach(t => addEventListener(t, interrupt, true));
+  let first = true;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { const v = es[0].isIntersecting; if (v && !visible) play(); visible = v; }, { threshold:.3 }).observe(stage);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !STATIC) start();
+}
+</script>
+</body>
+</html>
