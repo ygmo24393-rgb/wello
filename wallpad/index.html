@@ -55,15 +55,15 @@
          transform:translate(-50%,-48%) translate(var(--px,0px),var(--py,0px)) scale(var(--z,1));transform-origin:center;background:var(--panel);
          transition:transform .55s var(--ease)}
   .viewport.dragging .world,.world.no-anim{transition:none}
-  /* 층 전환: 2층은 위에서 내려앉고, 1층은 살짝 가라앉으며 사라짐 */
+  /* 층 전환: 짧은 크로스페이드 + 층 방향으로 살짝 이동 (블러·스케일 없음) */
   .house{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;
-         transition:opacity .55s var(--ease),transform .8s var(--ease),filter .8s var(--ease);will-change:transform,opacity}
-  .house2{opacity:0;transform:translateY(-14%) scale(1.04);filter:blur(2px)}
-  .world.floor2 .house:not(.house2){opacity:0;transform:translateY(6%) scale(.96);filter:blur(2px)}
-  .world.floor2 .house2{opacity:1;transform:none;filter:none}
+         transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform,opacity}
+  .house2{opacity:0;transform:translateY(-3%)}
+  .world.floor2 .house:not(.house2){opacity:0;transform:translateY(3%)}
+  .world.floor2 .house2{opacity:1;transform:none}
   .floor2-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:15px;opacity:0;pointer-events:none;transition:opacity .4s}
   .world:not(.floor2) .spot.f2,.world.floor2 .spot:not(.f2){opacity:0;pointer-events:none;transition:opacity .2s}
-  .world.floor2 .spot.f2,.world:not(.floor2) .spot:not(.f2){transition:opacity .4s .45s}
+  .world.floor2 .spot.f2,.world:not(.floor2) .spot:not(.f2){transition:opacity .35s .3s}
 
   /* 기기 조명 효과 */
   .glow{position:absolute;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;mix-blend-mode:screen;
