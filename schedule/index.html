@@ -4,13 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>일정 — 월패드 인터랙티브</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Bold.woff2") format("woff2");font-weight:700 800;font-display:swap}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800;font-display:swap}
+</style>
 <style>
   :root{--bg:#EEEEEF;--panel:#F7F7F8;--card:#FFFFFF;--muted:#8A8F98;--blue:#2B9CFF;--blue2:#2B9CFF;--ease:cubic-bezier(.22,.8,.2,1)}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:#EEEEEF;overflow:hidden}
-  body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;color:#1E1F22;-webkit-font-smoothing:antialiased}
+  body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:#1E1F22;-webkit-font-smoothing:antialiased}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center}
   .stage::before{content:"";position:absolute;inset:0 0 auto 0;height:391px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0));pointer-events:none}
@@ -102,13 +107,13 @@
   .dt.none::after{content:"예약된 가전이 없어요";position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
 
   /* nav */
-  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:linear-gradient(180deg,#9A9CA1,#8B8D92);border:0}
+  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;border:0;box-shadow:0 6px 18px rgba(0,0,0,.06)}
   .nav span.n{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
-  .nav span.n.act{left:6px;width:56px;height:56px;background:#3A3B3F}
-  .nav svg{width:20px;height:20px;stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .nav span.n.act{left:6px;width:56px;height:56px;background:#2B9CFF}
+  .nav svg{width:20px;height:20px;stroke:#1E1F22;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
   .nav .act svg{stroke:#fff}
-  .set{position:absolute;left:1179px;top:540px;width:72px;height:72px;border-radius:50%;background:#8E9095;border:0;display:grid;place-items:center}
-  .set svg{width:20px;height:20px;stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round}
+  .set{position:absolute;left:1179px;top:540px;width:72px;height:72px;border-radius:50%;background:#fff;border:0;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;place-items:center}
+  .set svg{width:20px;height:20px;stroke:#1E1F22;stroke-width:1.6;fill:none;stroke-linecap:round}
 
   /* sheet */
   .dim{position:absolute;inset:0;background:rgba(30,31,34,.18);opacity:0;pointer-events:none;transition:opacity .45s;z-index:20}
@@ -204,7 +209,7 @@
     <span class="n" style="top:142px"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></span>
     <span class="n" style="top:206px"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span>
   </nav>
-  <div class="set"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/><circle cx="15" cy="8" r="2.2" fill="#8E9095"/><circle cx="9" cy="16" r="2.2" fill="#8E9095"/></svg></div>
+  <div class="set"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/><circle cx="15" cy="8" r="2.2" fill="#fff"/><circle cx="9" cy="16" r="2.2" fill="#fff"/></svg></div>
 
   <div class="dim" id="dim"></div>
   <aside class="sheetp" id="sheet">

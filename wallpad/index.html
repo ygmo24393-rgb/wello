@@ -4,8 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>우리 집 에너지 — 월패드 인터랙티브</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Bold.woff2") format("woff2");font-weight:700 800;font-display:swap}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800;font-display:swap}
+</style>
 <style>
   :root{
     --bg:#EEEEEF; --panel:#F7F7F8; --card:#FFFFFF; --chip:#E9EAED;
@@ -15,7 +20,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:#EEEEEF;overflow:hidden}
-  body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;color:var(--white);-webkit-font-smoothing:antialiased;display:grid;place-items:center}
+  body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--white);-webkit-font-smoothing:antialiased;display:grid;place-items:center}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   /* 1280×720 무대를 화면에 맞게 스케일 */
@@ -193,13 +198,13 @@
   .gauge-hit{position:absolute;left:20px;right:20px;top:120px;height:150px;cursor:pointer}
 
   /* NAV */
-  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:linear-gradient(180deg,#9A9CA1,#8B8D92);box-shadow:0 6px 18px rgba(0,0,0,.08)}
-  .nav .ind{position:absolute;left:6px;width:56px;height:56px;border-radius:50%;background:#3A3B3F;transition:top .45s var(--ease)}
+  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .nav .ind{position:absolute;left:6px;width:56px;height:56px;border-radius:50%;background:#2B9CFF;transition:top .45s var(--ease)}
   .nav button{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
-  .nav svg{width:20px;height:20px;stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+  .nav svg{width:20px;height:20px;stroke:#1E1F22;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
   .nav button.active svg{stroke:#fff}
-  .avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#fff;color:#1E1F22;display:grid;place-items:center;font-size:13px;box-shadow:0 0 0 2px #929499}
-  .avatar.more{color:#fff;font-size:12px;box-shadow:0 0 0 2px #8E9095}
+  .avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#fff;color:#1E1F22;display:grid;place-items:center;font-size:13px;box-shadow:0 0 0 1px #E4E6E9}
+  .avatar.more{color:#8A8F98;font-size:12px;box-shadow:0 0 0 2px #fff}
 
   .toast{position:absolute;left:50%;top:24px;transform:translate(-50%,-80px);background:#FFFFFF;border:1px solid rgba(0,0,0,.07);padding:11px 18px;border-radius:12px;font-size:13px;z-index:50;transition:transform .5s var(--ease);box-shadow:0 10px 30px rgba(0,0,0,.1)}
   .toast.show{transform:translate(-50%,0)}
@@ -296,7 +301,7 @@
     <button style="top:142px" data-i="2"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></button>
     <button style="top:206px" data-i="3"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></button>
     <span class="avatar" style="top:294px">지</span>
-    <span class="avatar more" style="top:322px;background:#A9ABB0">+3</span>
+    <span class="avatar more" style="top:322px;background:#F1F2F4">+3</span>
   </nav>
 
   <div class="toast" id="toast"></div>
