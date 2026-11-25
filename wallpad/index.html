@@ -360,7 +360,7 @@
       </div>`;
     d.el = el; spotsEl.appendChild(el);
     const tagEl = el.querySelector('.tag'), headEl = el.querySelector('.tag-head');
-    const setW = () => tagEl.style.setProperty('--w', (d.open ? 282 : headEl.scrollWidth + 2) + 'px');
+    const setW = () => tagEl.style.setProperty('--w', (d.open ? 284 : headEl.scrollWidth + 2) + 'px');
     requestAnimationFrame(setW); document.fonts && document.fonts.ready.then(setW);
 
     const paintBars = () => {};
