@@ -658,12 +658,7 @@
       await tap($('#sEnd'), g, 900); place(wheel); wheelTo(900); await wait(1600, g); await tap($('#sEnd'), g, 700);   // 오후 3시까지
       await tap($('#go'), g, 3200);                         // 예약하기
       finger.classList.remove('show');
-      await wait(1500, g);
-      openSum(); await wait(6500, g);                       // 오늘 예약이 모두 끝나면 하루 요약
-      finger.classList.add('show'); place(stage); await wait(1100, g);
-      finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap'); closeSum();
-      await wait(600, g); finger.classList.remove('show');
-      await wait(1500, g);
+      await wait(2500, g);
       resetAll();
       await wait(1500, g);
     }
