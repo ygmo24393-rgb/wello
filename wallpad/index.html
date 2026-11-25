@@ -167,7 +167,11 @@
   .alert .tri svg{position:relative;width:18px;height:18px}
   .alert .txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#3A3D42}
   .alert .chev{transition:transform .35s var(--ease);flex:none}
-  .alert.open{height:118px;align-items:flex-start;padding-top:11px;background:#EDEEF0}
+  /* 펼쳐도 아래 카드를 밀지 않고 위에 덮어요 */
+  .side{position:absolute}
+  .alert{position:absolute!important;left:0;top:0}
+  .side > .energy{margin-top:52px}
+  .alert.open{height:118px;align-items:flex-start;padding-top:11px;background:#EDEEF0;box-shadow:0 12px 28px rgba(0,0,0,.10)}
   .alert.open .txt{white-space:normal;line-height:1.55}
   .alert.open .chev{transform:rotate(90deg)}
   .alert .more{display:none;color:var(--muted);font-size:12px;margin-top:6px}
@@ -177,7 +181,7 @@
   .energy .card-h h3{font-size:18px;font-weight:400;letter-spacing:-.4px}
   .energy .live{font-size:12.5px;color:#8A8F98;gap:9px}
   .energy .live .dot{width:6px;height:6px}
-  .alert.open + .energy{margin-top:12px}
+  .alert.open + .energy{margin-top:52px}
   .card-h{display:flex;justify-content:space-between;align-items:center}
   .card-h h3{font-size:16px;font-weight:500;letter-spacing:-.3px}
   .live{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}
