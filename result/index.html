@@ -15,7 +15,9 @@ html,body{background:#fff;overflow:hidden}
 body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .num{font-variant-numeric:tabular-nums}
-.cv{position:absolute;left:0;top:0;width:1920px;height:4024px;transform-origin:0 0}
+.cv{position:absolute;left:0;top:0;width:1920px;height:5028px;transform-origin:0 0}
+.t.grid{background:#EFEFEF}
+.gsv{position:absolute;inset:0;width:100%;height:100%}
 
 /* header (matches /04) */
 .hd{position:absolute;left:0;top:0;width:1920px;height:80px}
@@ -218,6 +220,73 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       <button class="on">시작하기<i></i></button><button>우리 집 에너지<i></i></button><button>오늘 일정<i></i></button><button>새 예약<i></i></button><button>에너지 리포트<i></i></button>
     </div>
     <div class="pdesc" id="pdesc"></div>
+  </section>
+
+  <!-- R5: 그리드 시스템 -->
+  <section class="t grid" data-rv style="left:40px;top:3668px;width:1840px;height:1120px">
+<svg class="gsv" viewBox="0 0 1840 1120" font-family="Creato Display, Asta Sans, sans-serif">
+<text x="1000.0" y="110.0" text-anchor="start" font-size="40" fill="#1E1F22" font-weight="500">Grid System</text>
+<text x="1000.0" y="142.0" text-anchor="start" font-size="16" fill="#8A8F98" font-weight="400">Wallpad 1280 px · Mobile 402 px</text>
+<rect x="170" y="300" width="1100.8" height="619.2" rx="20.6" fill="#F7F7F8" stroke="#DADBDD"/>
+<rect x="197.5" y="425.6" width="605.4" height="462.7" rx="17.2" fill="#E9EAEC"/>
+<rect x="815.0" y="425.6" width="342.3" height="172.0" rx="17.2" fill="#E9EAEC"/>
+<rect x="815.0" y="608.7" width="342.3" height="279.5" rx="17.2" fill="#E9EAEC"/>
+<rect x="1184.8" y="425.6" width="58.5" height="323.4" rx="29.2" fill="#E9EAEC"/>
+<rect x="1183.9" y="764.4" width="60.2" height="60.2" rx="30.1" fill="#E9EAEC"/>
+<line x1="170.0" y1="266.0" x2="1270.8" y2="266.0" stroke="#1E1F22" stroke-width="1"/>
+<line x1="170.0" y1="266.0" x2="170.0" y2="336.0" stroke="#1E1F22" stroke-width="1"/>
+<text x="166.0" y="254.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">0</text>
+<line x1="197.5" y1="266.0" x2="197.5" y2="943.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="201.5" y="254.0" text-anchor="start" font-size="12" fill="#8A8F98" font-weight="400">32</text>
+<line x1="1157.3" y1="266.0" x2="1157.3" y2="943.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="1153.3" y="254.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">1148</text>
+<line x1="1184.8" y1="266.0" x2="1184.8" y2="943.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="1188.8" y="254.0" text-anchor="start" font-size="12" fill="#8A8F98" font-weight="400">1180</text>
+<line x1="1243.3" y1="266.0" x2="1243.3" y2="943.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="1239.3" y="254.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">1248</text>
+<line x1="1270.8" y1="266.0" x2="1270.8" y2="336.0" stroke="#1E1F22" stroke-width="1"/>
+<text x="1274.8" y="254.0" text-anchor="start" font-size="12" fill="#8A8F98" font-weight="400">1280</text>
+<line x1="156.0" y1="343.0" x2="299.0" y2="343.0" stroke="#1E1F22" stroke-width="1"/>
+<text x="146.0" y="340.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">50</text>
+<text x="146.0" y="355.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">header</text>
+<line x1="156.0" y1="425.6" x2="324.8" y2="425.6" stroke="#1E1F22" stroke-width="1"/>
+<text x="146.0" y="422.6" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">146</text>
+<text x="146.0" y="437.6" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">content</text>
+<line x1="156.0" y1="888.2" x2="299.0" y2="888.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="146.0" y="885.2" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">684</text>
+<text x="146.0" y="900.2" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">bottom 36</text>
+<text x="170.0" y="985.2" text-anchor="start" font-size="22" fill="#1E1F22" font-weight="500">Wallpad</text>
+<text x="170.0" y="1011.2" text-anchor="start" font-size="14" fill="#8A8F98" font-weight="400">1280 × 720 · margin 32 · gutter 32 · header 146</text>
+<rect x="1430" y="300" width="289.4" height="629.3" rx="23.0" fill="#F7F7F8" stroke="#DADBDD"/>
+<rect x="1444.4" y="478.6" width="260.6" height="60.5" rx="11.5" fill="#E9EAEC"/>
+<rect x="1444.4" y="547.7" width="260.6" height="60.5" rx="11.5" fill="#E9EAEC"/>
+<rect x="1444.4" y="670.8" width="260.6" height="63.4" rx="11.5" fill="#E9EAEC"/>
+<rect x="1444.4" y="742.8" width="260.6" height="63.4" rx="11.5" fill="#E9EAEC"/>
+<rect x="1442.2" y="845.8" width="265.0" height="46.1" rx="10.8" fill="#E9EAEC"/>
+<line x1="1430.0" y1="266.0" x2="1719.4" y2="266.0" stroke="#1E1F22" stroke-width="1"/>
+<line x1="1430.0" y1="266.0" x2="1430.0" y2="336.0" stroke="#1E1F22" stroke-width="1"/>
+<text x="1426.0" y="254.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">0</text>
+<line x1="1444.4" y1="266.0" x2="1444.4" y2="953.3" stroke="#1E1F22" stroke-width="1"/>
+<text x="1448.4" y="254.0" text-anchor="start" font-size="12" fill="#8A8F98" font-weight="400">20</text>
+<line x1="1705.0" y1="266.0" x2="1705.0" y2="953.3" stroke="#1E1F22" stroke-width="1"/>
+<text x="1701.0" y="254.0" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">382</text>
+<line x1="1719.4" y1="266.0" x2="1719.4" y2="336.0" stroke="#1E1F22" stroke-width="1"/>
+<text x="1723.4" y="254.0" text-anchor="start" font-size="12" fill="#8A8F98" font-weight="400">402</text>
+<line x1="1416.0" y1="338.2" x2="1509.2" y2="338.2" stroke="#1E1F22" stroke-width="1"/>
+<text x="1406.0" y="335.2" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">53</text>
+<text x="1406.0" y="350.2" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">status bar</text>
+<line x1="1416.0" y1="381.4" x2="1523.6" y2="381.4" stroke="#1E1F22" stroke-width="1"/>
+<text x="1406.0" y="378.4" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">113</text>
+<text x="1406.0" y="393.4" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">header</text>
+<line x1="1416.0" y1="845.8" x2="1509.2" y2="845.8" stroke="#1E1F22" stroke-width="1"/>
+<text x="1406.0" y="842.8" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">758</text>
+<text x="1406.0" y="857.8" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">CTA 64</text>
+<line x1="1416.0" y1="904.8" x2="1509.2" y2="904.8" stroke="#1E1F22" stroke-width="1"/>
+<text x="1406.0" y="901.8" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">840</text>
+<text x="1406.0" y="916.8" text-anchor="end" font-size="12" fill="#8A8F98" font-weight="400">bottom 34</text>
+<text x="1430.0" y="995.3" text-anchor="start" font-size="22" fill="#1E1F22" font-weight="500">Mobile</text>
+<text x="1430.0" y="1021.3" text-anchor="start" font-size="14" fill="#8A8F98" font-weight="400">402 × 874 · margin 20 · gap 12</text>
+</svg>
   </section>
 </div>
 
