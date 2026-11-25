@@ -36,8 +36,11 @@
 
 /* 6. 도면 패널 */
 /* 도면 이미지가 바닥·그림자까지 포함 → 패널 바탕도 같은 회색으로 */
-.map{background:radial-gradient(ellipse at 50% 45%,#E6E8EA,#DCDEE1)!important}
+.map{background:#D8DADE!important}
 .world{background:transparent!important}
 
 /* 선택 상태 */
 .opt.sel,.chip.sel{background:var(--b50)!important;box-shadow:inset 0 0 0 1.5px #2B9CFF!important}
+
+/* 도면: 넓게 렌더한 원본 전체를 쓰되, 집 위치·크기는 기존 좌표계(1548×1016) 그대로 */
+.world .house,.plan img{inset:auto!important;left:-50.5436%!important;top:-40.3443%!important;width:206.1311%!important;height:181.1918%!important;max-width:none!important;object-fit:fill!important}
