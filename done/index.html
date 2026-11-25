@@ -52,8 +52,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero b{color:var(--blue);font-weight:500}
 .hero-s{position:absolute;left:24px;top:146px;font-size:14px;color:var(--muted);letter-spacing:-.2px}
 
-.chart{position:absolute;left:24px;top:178px;width:656px;height:214px}
-.chart svg{width:656px;height:214px;overflow:visible}
+.chart{position:absolute;left:24px;top:180px;width:656px;height:226px}
+.chart svg{width:656px;height:226px;overflow:visible}
+.lgd{position:absolute;right:0;top:-2px;display:flex;gap:14px;font-size:12px;color:var(--muted)}
+.lgd span{display:flex;align-items:center;gap:6px}
+.lgd i{width:10px;height:10px;border-radius:3px}
 .chart text{font-family:"Creato Display","Asta Sans",sans-serif;font-size:12px;fill:var(--muted)}
 .lab{position:absolute;font-size:12px;white-space:nowrap;transform:translateX(-50%);padding:5px 10px;border-radius:12px;opacity:0;transition:opacity .5s}
 .lab.w{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.06)}
@@ -151,7 +154,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <div class="hero-s">발전이 가장 좋은 시간에 맞춰 세 가전을 차례로 돌렸어요.</div>
     <div class="chart" id="chart">
       <svg viewBox="0 0 656 214" id="csv"></svg>
-      <div class="lab w num" id="labW">오늘 예약 <b>89%</b></div>
+      <div class="lgd"><span><i style="background:linear-gradient(#7CC2FF,#D6EBFF)"></i>사용한 태양광</span><span><i style="background:#EEF0F3;box-shadow:inset 0 0 0 1px #C9CDD3"></i>발전량</span></div>
     </div>
     <div class="stats">
       <div class="st k"><em>아낀 전기요금</em><div><b class="num" data-to="2860" data-d="0">0</b><span>원</span></div></div>
@@ -187,28 +190,46 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
   const STATIC = location.search.includes('static');
 
-  /* ---------- 차트: 하루 발전 곡선 + 오늘 예약 3건 ---------- */
+  /* ---------- 차트: 발전 곡선 + 실제로 쓴 구간 + 가전 타임라인 ---------- */
   const NS = 'http://www.w3.org/2000/svg', svg = $('#csv');
   const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  const W = 656, H = 214, B = 186, TOP = 30;
-  const T0 = 360, T1 = 1200;
+  const W = 656, B = 140, TOP = 22;                       // 곡선 바닥(B)
+  const T0 = 480, T1 = 1080;                              // 8AM ~ 6PM
   const x = t => (t - T0) / (T1 - T0) * W;
-  const gen = t => Math.max(0, Math.sin(Math.PI * (t - 390) / (1170 - 390))) ** 1.35 * 3.4;
-  const y = v => B - v / 3.6 * (B - TOP);
-  const pts = []; for (let t = T0; t <= T1; t += 10) pts.push([x(t), y(gen(t))]);
-  for (let i = 0; i < 4; i++) svg.appendChild(mk('line', { x1:0, x2:W, y1:B - i * 52, y2:B - i * 52, stroke:'#ECEDEF' }));
-  svg.appendChild(mk('path', { d:`M0 ${B} ` + pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ') + ` L${W} ${B} Z`, fill:'#E9EBEE' }));
-  svg.appendChild(mk('path', { d:'M' + pts.map(p => p.join(' ')).join(' L'), fill:'none', stroke:'#C9CDD3', 'stroke-width':1.5 }));
-  const sm = (m, a, b, k = 1.5) => 1 / (1 + Math.exp(-(m - a) / k)) - 1 / (1 + Math.exp(-(m - b) / k));
-  const JOBS = [ [660, 70, m => 1.6 * sm(m, 0, 25) + 0.3 * sm(m, 25, 55) + 1.2 * sm(m, 55, 70)],     // 식기세척기
-                 [705, 85, m => 1.9 * sm(m, 0, 20) + 0.5 * sm(m, 20, 68) + 1.1 * sm(m, 68, 85)],     // 세탁기
-                 [800, 90, m => 2.2 * sm(m, 0, 80) + 0.4 * sm(m, 80, 90)] ];                          // 건조기
-  const use = t => JOBS.reduce((a, [s, d, f]) => a + (t >= s - 5 && t <= s + d + 5 ? f(t - s) : 0), 0);
-  let d = `M${x(655)} ${B}`; for (let t = 655; t <= 895; t += 1) d += ` L${x(t).toFixed(1)} ${y(use(t)).toFixed(1)}`; d += ` L${x(895)} ${B} Z`;
-  const clip = mk('clipPath', { id:'wipe' }); const cr = mk('rect', { x:x(655), y:0, width:0, height:H }); clip.appendChild(cr); svg.appendChild(clip);
-  const real = mk('path', { d, fill:'#2B9CFF', opacity:.9, 'clip-path':'url(#wipe)' }); svg.appendChild(real);
-  [[360,'6AM'],[540,'9AM'],[720,'12PM'],[900,'3PM'],[1080,'6PM']].forEach(([t, s]) => { const e = mk('text', { x:x(t), y:206, 'text-anchor':'middle' }); e.textContent = s; svg.appendChild(e); });
-  $('#labW').style.left = x(775) + 'px'; $('#labW').style.top = (y(gen(775)) - 44) + 'px';
+  const gen = t => Math.max(0, Math.sin(Math.PI * (t - 400) / (1160 - 400))) ** 1.6 * 3.4;
+  const y = v => B - v / 3.4 * (B - TOP);
+  const defs = mk('defs', {});
+  defs.innerHTML = `<linearGradient id="gG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9CDD3" stop-opacity=".35"/><stop offset="1" stop-color="#C9CDD3" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B9CFF" stop-opacity=".55"/><stop offset="1" stop-color="#2B9CFF" stop-opacity=".06"/></linearGradient>
+    <clipPath id="used"><rect x="${x(660)}" y="0" width="${x(790) - x(660)}" height="${B}"/><rect x="${x(800)}" y="0" width="${x(890) - x(800)}" height="${B}"/></clipPath>
+    <clipPath id="wipe"><rect id="wr" x="0" y="0" width="0" height="240"/></clipPath>`;
+  svg.appendChild(defs);
+  for (let i = 0; i < 3; i++) svg.appendChild(mk('line', { x1:0, x2:W, y1:B - i * 52, y2:B - i * 52, stroke:'#ECEDEF' }));
+  let line = ''; for (let t = T0; t <= T1; t += 4) line += `${t === T0 ? 'M' : ' L'}${x(t).toFixed(1)} ${y(gen(t)).toFixed(1)}`;
+  const area = line + ` L${W} ${B} L0 ${B} Z`;
+  svg.appendChild(mk('path', { d:area, fill:'url(#gG)' }));
+  svg.appendChild(mk('path', { d:line, fill:'none', stroke:'#C9CDD3', 'stroke-width':1.5, 'stroke-dasharray':'3 4' }));
+  const wipeG = mk('g', { 'clip-path':'url(#wipe)' }); svg.appendChild(wipeG);
+  const usedG = mk('g', { 'clip-path':'url(#used)' }); wipeG.appendChild(usedG);
+  usedG.appendChild(mk('path', { d:area, fill:'url(#gB)' }));
+  usedG.appendChild(mk('path', { d:line, fill:'none', stroke:'#2B9CFF', 'stroke-width':2.5, 'stroke-linecap':'round' }));
+  // 구간 경계선
+  for (const t of [660, 790, 800, 890]) wipeG.appendChild(mk('line', { x1:x(t), x2:x(t), y1:y(gen(t)), y2:B, stroke:'#2B9CFF', 'stroke-opacity':.35, 'stroke-width':1 }));
+  // 지금 표시
+  const nowX = x(892), nowY = y(gen(892));
+  wipeG.appendChild(mk('circle', { cx:nowX, cy:nowY, r:5, fill:'#fff', stroke:'#2B9CFF', 'stroke-width':2.5 }));
+  // 가전 타임라인 (2줄)
+  const JOBS = [['식기세척기', 660, 730, 0], ['세탁기', 705, 790, 1], ['건조기', 800, 890, 0]];
+  JOBS.forEach(([n, a, b, lane], i) => {
+    const g = mk('g', { class:'job' }); g.style.opacity = 0; g.style.transition = `opacity .5s ${0.5 + i * 0.35}s`;
+    const yy = 170 + lane * 26;
+    g.appendChild(mk('rect', { x:x(a), y:yy, width:x(b) - x(a), height:20, rx:10, fill:'#E3F1FF' }));
+    const tx = mk('text', { x:x(a) + 10, y:yy + 14, 'font-size':11.5, fill:'#1C78CC' }); tx.textContent = n; g.appendChild(tx);
+    svg.appendChild(g);
+  });
+  [[480,'8AM'],[600,'10AM'],[720,'12PM'],[840,'2PM'],[960,'4PM'],[1080,'6PM']].forEach(([t, l]) => {
+    const e = mk('text', { x:x(t), y:157, 'text-anchor':t === 480 ? 'start' : t === 1080 ? 'end' : 'middle' }); e.textContent = l; svg.appendChild(e); });
+  const cr = $('#wr');
 
   function count(el, to, d, dur = 1400, suf = ''){
     const t0 = performance.now();
@@ -224,11 +245,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   let isOpen = false;
   function open(){
     isOpen = true; again.classList.remove('on'); ov.classList.add('open'); stage.classList.remove('in');
-    cr.setAttribute('width', 0); document.querySelectorAll('.ar .tr i').forEach(i => i.style.width = 0);
+    cr.setAttribute('width', 0); svg.querySelectorAll('.job').forEach(j => j.style.opacity = 0); document.querySelectorAll('.ar .tr i').forEach(i => i.style.width = 0);
     setTimeout(() => {
       stage.classList.add('in');
-      const w = x(895) - x(655), t0 = performance.now();
-      const grow = () => { const p = Math.min(1, (performance.now() - t0) / (STATIC ? 1 : 1600)); cr.setAttribute('width', w * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(grow); };
+      const w = W + 10, t0 = performance.now();
+      svg.querySelectorAll('.job').forEach(j => j.style.opacity = 1);
+      const grow = () => { const p = Math.min(1, (performance.now() - t0) / (STATIC ? 1 : 1800)); cr.setAttribute('width', w * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(grow); };
       requestAnimationFrame(grow);
       count($('#hPct'), 89, 0, 1400, '%');
       document.querySelectorAll('.st b').forEach(b => count(b, +b.dataset.to, +b.dataset.d, 1600));
