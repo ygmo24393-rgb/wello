@@ -51,8 +51,8 @@
   .stage.expanded .map{left:0;top:0;width:1280px;height:720px;border-radius:24px;border-color:transparent}
   .viewport{position:absolute;inset:0;cursor:grab;touch-action:none}
   .viewport.dragging{cursor:grabbing}
-  .world{position:absolute;left:50%;top:50%;aspect-ratio:1548/1016;height:calc(100% - 22px);max-width:calc(100% - 22px);
-         transform:translate(-50%,-48%) translate(var(--px,0px),var(--py,0px)) scale(var(--z,1));transform-origin:center;background:var(--panel);
+  .world{position:absolute;left:50%;top:50%;aspect-ratio:1548/1016;height:100%;
+         transform:translate(-50%,-50%) translate(var(--px,0px),var(--py,0px)) scale(var(--z,1));transform-origin:center;background:var(--panel);
          transition:transform .55s var(--ease)}
   .viewport.dragging .world,.world.no-anim{transition:none}
   /* 층 전환: 짧은 크로스페이드 + 층 방향으로 살짝 이동 (블러·스케일 없음) */
