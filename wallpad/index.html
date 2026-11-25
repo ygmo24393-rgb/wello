@@ -169,8 +169,10 @@
   .alert .chev{transition:transform .35s var(--ease);flex:none}
   /* 펼쳐도 아래 카드를 밀지 않고 위에 덮어요 */
   .side{position:absolute}
-  .alert{position:absolute!important;left:0;top:0}
+  .alert{position:absolute!important;left:0;top:0;z-index:9!important}
   .side > .energy{margin-top:52px}
+  .scrim{position:fixed;inset:0;z-index:8;background:rgba(30,31,34,.22);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
+  .scrim.on{opacity:1;pointer-events:auto}
   .alert.open{height:118px;align-items:flex-start;padding-top:11px;background:#EDEEF0;box-shadow:0 12px 28px rgba(0,0,0,.10)}
   .alert.open .txt{white-space:normal;line-height:1.55}
   .alert.open .chev{transform:rotate(90deg)}
@@ -282,6 +284,7 @@
 
   <!-- RIGHT -->
   <aside class="side fade-ui">
+    <div class="scrim" id="scrim"></div>
     <button class="alert" id="alert">
       <span class="tri"><svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z" fill="#FF0842"/><path d="M12 10v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.2" fill="#fff"/></svg></span>
       <span class="txt">태양광 설비 점검이 필요해요 설비에서 출력 저하가 감지됐어요. 패널 오염이나 인버터 이상일 수 있어요.<span class="more">마지막 점검 2026. 07. 02 · 탭해서 접기</span></span>
@@ -509,6 +512,8 @@
 
   /* ---------- 경고 배너 ---------- */
   $('#alert').onclick = () => $('#alert').classList.toggle('open');
+  $('#scrim').onclick = () => $('#alert').classList.remove('open');
+  new MutationObserver(() => $('#scrim').classList.toggle('on', $('#alert').classList.contains('open'))).observe($('#alert'), { attributes:true, attributeFilter:['class'] });
 
   /* ---------- 숫자 애니메이션 ---------- */
   function animateNum(el, to, dec = 1, dur = 600){
