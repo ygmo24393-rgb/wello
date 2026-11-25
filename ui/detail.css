@@ -21,14 +21,6 @@
 .orb.alert-dot::after{content:"";position:absolute;right:-2px;top:-2px;width:8px;height:8px;border-radius:50%;background:#FF085E;box-shadow:0 0 0 2px var(--anchor)}
 @keyframes wd-spin{to{transform:rotate(360deg)}}
 
-/* 진한 캡슐: 홈의 경고 바 */
-.alert{background:var(--anchor)!important;color:#fff;border-radius:14px!important;box-shadow:0 10px 24px rgba(0,55,117,.16)}
-.alert .txt{color:#fff!important}
-.alert .txt b.ai{font-weight:500;color:var(--b300);margin-right:6px;font-size:12px}
-.alert .more{color:#AFB2B5!important}
-.alert.open{background:var(--anchor)!important}
-.alert .chev{opacity:.7}
-
 /* 3. 카드 가장자리 · 주요 버튼 그림자 */
 .tile,.bk:not(.sel),.dv,.rc,.rw,.row,.st,.app,.opt:not(.sel),.pill,.xcard{box-shadow:inset 0 0 0 1px var(--edge)}
 .go:not(:disabled),.btn.primary,.b1{box-shadow:0 10px 24px rgba(43,156,255,.24)}
