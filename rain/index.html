@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>비 오는 날 — Wello</title>
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0B1220}
+body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.bg{position:absolute;inset:-6%;background:url("../assets/i03.jpg") center/cover;filter:blur(18px) brightness(.62) saturate(1.15);transform:scale(1.08)}
+.tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,44,.55),rgba(10,18,34,.15) 45%,rgba(6,10,20,.6))}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.ui{position:absolute;left:0;top:0;width:904px;height:966px;transform-origin:0 0}
+.chip{position:absolute;left:56px;top:56px;display:flex;align-items:center;gap:14px;height:64px;padding:0 26px 0 20px;border-radius:32px;
+      background:rgba(255,255,255,.14);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);color:#fff;font-size:22px;letter-spacing:-.4px}
+.chip svg{width:30px;height:30px}
+.chip small{font-size:18px;opacity:.7}
+.gen{position:absolute;left:56px;bottom:56px;color:#fff}
+.gen em{display:block;font-style:normal;font-size:20px;opacity:.72;letter-spacing:-.3px;margin-bottom:10px}
+.gen b{font-weight:400;font-size:88px;letter-spacing:-4px;line-height:1}
+.gen b span{font-size:34px;letter-spacing:-1px;opacity:.7;margin-left:8px}
+.gen i{font-style:normal;display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:20px;background:rgba(255,120,120,.18);color:#FFB4B4;font-size:18px;margin-left:16px;vertical-align:14px}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="tint"></div>
+<canvas id="streaks"></canvas><canvas id="glass"></canvas>
+<div class="ui" id="ui">
+  <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"><path d="M7 15a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 17.7 8 3.5 3.5 0 0 1 17 15H7Z"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2"/></svg>소나기 <small>오후 2시 · 25° / 19°</small></div>
+  <div class="gen"><em>지금 발전량</em><b>0.8<span>kW</span></b><i>예상보다 −38%</i></div>
+</div>
+<script>
+{
+  const ui = document.getElementById('ui');
+  const S = document.getElementById('streaks'), G = document.getElementById('glass');
+  const sc = S.getContext('2d'), gc = G.getContext('2d');
+  let W, H, dpr, drops = [], streaks = [];
+  const R = (a, b) => a + Math.random() * (b - a);
+  function size(){
+    dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+    for (const c of [S, G]){ c.width = W * dpr; c.height = H * dpr; }
+    sc.setTransform(dpr,0,0,dpr,0,0); gc.setTransform(dpr,0,0,dpr,0,0);
+    ui.style.transform = `scale(${W / 904})`;
+    const k = W / 904;
+    streaks = Array.from({ length: Math.round(140 * k) }, () => ({ x:R(0,W), y:R(-H,H), l:R(14,34)*k, v:R(9,16)*k, a:R(.08,.26) }));
+    drops = Array.from({ length: Math.round(320 * k) }, () => newDrop(true));
+  }
+  function newDrop(init){
+    const k = W / 904;
+    return { x:R(0,W), y:init ? R(0,H) : R(-20,H*.6), r:R(.6,2.6)*k, slide:0, v:0, trail:[] , life:R(200,900) };
+  }
+  function drawDrop(d){
+    const g = gc.createRadialGradient(d.x - d.r*.3, d.y - d.r*.4, 0, d.x, d.y, d.r);
+    g.addColorStop(0, 'rgba(255,255,255,.55)'); g.addColorStop(.6, 'rgba(190,215,255,.18)'); g.addColorStop(1, 'rgba(255,255,255,.05)');
+    gc.fillStyle = g; gc.beginPath(); gc.ellipse(d.x, d.y, d.r, d.r * 1.15, 0, 0, Math.PI*2); gc.fill();
+  }
+  let last = 0, running = true;
+  function frame(t){
+    requestAnimationFrame(frame);
+    if (!running || t - last < 30) return; last = t;
+    sc.clearRect(0,0,W,H);
+    sc.lineCap = 'round'; sc.lineWidth = 1;
+    for (const s of streaks){
+      s.y += s.v; s.x -= s.v * .12;
+      if (s.y > H){ s.y = R(-80,-10); s.x = R(0, W*1.1); }
+      sc.strokeStyle = `rgba(200,220,255,${s.a})`;
+      sc.beginPath(); sc.moveTo(s.x, s.y); sc.lineTo(s.x + s.l*.12, s.y - s.l); sc.stroke();
+    }
+    gc.clearRect(0,0,W,H);
+    for (let i = 0; i < drops.length; i++){
+      const d = drops[i];
+      if (d.r > 2.1 * (W/904) && !d.slide && Math.random() < .004) d.slide = 1;
+      if (d.slide){
+        d.v = Math.min(d.v + .25, 6 * (W/904)); d.y += d.v; d.x += R(-.4,.4);
+        d.trail.push([d.x, d.y]); if (d.trail.length > 26) d.trail.shift();
+        gc.strokeStyle = 'rgba(210,228,255,.12)'; gc.lineWidth = d.r * .9; gc.lineCap = 'round';
+        gc.beginPath(); d.trail.forEach(([x,y], j) => j ? gc.lineTo(x,y) : gc.moveTo(x,y)); gc.stroke();
+        if (d.y > H + 20){ drops[i] = newDrop(false); continue; }
+      } else if (Math.random() < .01) d.r = Math.min(d.r + .15, 3.2 * (W/904));
+      drawDrop(d);
+    }
+    if (Math.random() < .25) drops[(Math.random()*drops.length)|0] = newDrop(false);
+  }
+  size(); addEventListener('resize', size); requestAnimationFrame(frame);
+  if ('IntersectionObserver' in window) new IntersectionObserver(e => { running = e[0].isIntersecting; }).observe(document.body);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ running = false; requestAnimationFrame(() => { running = true; requestAnimationFrame(t => { frame(t + 100); running = false; }); }); }
+}
+</script>
+</body>
+</html>
