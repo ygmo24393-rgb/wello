@@ -68,16 +68,19 @@
 
   /* 전기 흐름: 태양광 → 켜진 가전 */
   .flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:opacity .4s}
-  .flow .base{fill:none;stroke:rgba(43,156,255,.22);stroke-width:5;stroke-linecap:round}
-  .flow .dash{fill:none;stroke:#2B9CFF;stroke-width:6;stroke-linecap:round;stroke-dasharray:1 30;animation:flowmv var(--dur,1.6s) linear infinite}
-  @keyframes flowmv{to{stroke-dashoffset:-31}}
-  .flow path{opacity:0;transition:opacity .5s}
+  .flow .base{fill:none;stroke:url(#flowG);stroke-width:1.4;vector-effect:non-scaling-stroke}
+  .flow .pulse{fill:none;stroke:#2B9CFF;stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:var(--seg) var(--L);
+               animation:flowpulse var(--dur,2s) cubic-bezier(.45,0,.25,1) infinite;animation-delay:var(--dl,0s)}
+  .flow .glow{stroke-width:9;opacity:.28;filter:blur(3px)}
+  @keyframes flowpulse{from{stroke-dashoffset:var(--seg)}to{stroke-dashoffset:calc(var(--L) * -1)}}
+  .flow path{opacity:0;transition:opacity .6s}
   .flow path.on{opacity:1}
+  .flow .glow.on{opacity:.28}
   .src{position:absolute;left:60%;top:7.5%;width:0;height:0;z-index:4}
-  .src .b{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--inv,1));display:flex;align-items:center;gap:7px;height:38px;padding:0 14px 0 8px;border-radius:19px;
-          background:rgba(255,255,255,.95);box-shadow:0 6px 16px rgba(0,0,0,.08);font-size:14px;white-space:nowrap}
-  .src .b i{width:24px;height:24px;border-radius:50%;background:#2B9CFF;display:grid;place-items:center;box-shadow:0 0 0 0 rgba(43,156,255,.5);animation:wd-pulse 2s ease-out infinite}
-  .src .b i svg{width:15px;height:15px}
+  .src .b{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--inv,1));display:flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 6px;border-radius:16px;
+          background:rgba(255,255,255,.95);box-shadow:0 6px 16px rgba(0,0,0,.08);font-size:13px;white-space:nowrap}
+  .src .b i{width:20px;height:20px;border-radius:50%;background:#2B9CFF;display:grid;place-items:center;box-shadow:0 0 0 0 rgba(43,156,255,.5);animation:wd-pulse 2s ease-out infinite}
+  .src .b i svg{width:13px;height:13px}
   .src .b small{color:var(--muted);font-size:13px;margin-left:2px}
 
   /* 기기 조명 효과 */
@@ -436,13 +439,16 @@
   /* ---------- 전기 흐름 ---------- */
   const flowSvg = document.getElementById('flow'), SRC = [60 * 15.48, 7.5 * 10.16];
   const NSF = 'http://www.w3.org/2000/svg';
-  devices.forEach(d => {
+  flowSvg.innerHTML = '<defs><linearGradient id="flowG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1016"><stop offset="0" stop-color="#2B9CFF" stop-opacity=".55"/><stop offset="1" stop-color="#2B9CFF" stop-opacity=".15"/></linearGradient></defs>';
+  devices.forEach((d, i) => {
     const D = [d.x * 15.48, d.y * 10.16], dy = D[1] - SRC[1];
-    const dpath = `M${SRC[0]} ${SRC[1]} C${SRC[0]} ${SRC[1] + dy * .55} ${D[0]} ${D[1] - dy * .45} ${D[0]} ${D[1]}`;
-    const base = document.createElementNS(NSF, 'path'); base.setAttribute('class', 'base'); base.setAttribute('d', dpath);
-    const dash = document.createElementNS(NSF, 'path'); dash.setAttribute('class', 'dash'); dash.setAttribute('d', dpath);
-    dash.style.setProperty('--dur', (2.4 / Math.max(.4, Math.sqrt(d.kw * 2))).toFixed(2) + 's');
-    flowSvg.append(base, dash); d.flow = [base, dash];
+    const dpath = `M${SRC[0]} ${SRC[1]} C${SRC[0]} ${SRC[1] + dy * .6} ${D[0]} ${D[1] - dy * .55} ${D[0]} ${D[1]}`;
+    const mk = c => { const e = document.createElementNS(NSF, 'path'); e.setAttribute('class', c); e.setAttribute('d', dpath); flowSvg.appendChild(e); return e; };
+    const base = mk('base'), glow = mk('pulse glow'), pulse = mk('pulse');
+    const L = Math.round(base.getTotalLength()) || 800, seg = 70;
+    for (const p of [glow, pulse]){ p.style.setProperty('--L', L); p.style.setProperty('--seg', seg);
+      p.style.setProperty('--dur', (L / (260 + d.kw * 160)).toFixed(2) + 's'); p.style.setProperty('--dl', (-i * .37).toFixed(2) + 's'); }
+    d.flow = [base, glow, pulse];
   });
   setTimeout(() => paintFlow(), 0);
   function paintFlow(){
