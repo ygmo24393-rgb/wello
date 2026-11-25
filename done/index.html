@@ -134,7 +134,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 </head>
 <body>
 <div class="stage" id="stage">
-  <iframe class="under" id="under" src="../wallpad/" title="홈" tabindex="-1"></iframe>
+  <iframe class="under" id="under" src="../schedule/" title="일정" tabindex="-1"></iframe>
   <button class="again" id="again"><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>오늘 결과 다시 보기</button>
 
   <div class="ov" id="ov">
@@ -218,7 +218,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   }
 
   /* ---------- 열기 / 닫기 ---------- */
-  const ov = $('#ov'), again = $('#again');
+  const BARE = location.search.includes('bare');        // 일정 화면 안에 겹쳐 띄울 때
+  if (BARE){ $('#under').remove(); $('#again').remove(); document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; stage.style.background = 'transparent'; }
+  const ov = $('#ov'), again = $('#again') || document.createElement('button');
   let isOpen = false;
   function open(){
     isOpen = true; again.classList.remove('on'); ov.classList.add('open'); stage.classList.remove('in');
@@ -233,10 +235,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       setTimeout(() => document.querySelectorAll('.ar .tr i').forEach(i => i.style.width = i.dataset.w + '%'), 300);
     }, STATIC ? 0 : 350);
   }
-  function close(){ isOpen = false; ov.classList.remove('open'); setTimeout(() => { if (!isOpen) again.classList.add('on'); }, 500); }
+  function close(){ isOpen = false; ov.classList.remove('open'); if (BARE){ try { parent.postMessage({ wello:'sum-close' }, '*'); } catch(e){} return; }
+    setTimeout(() => { if (!isOpen) again.classList.add('on'); }, 500); }
+  addEventListener('message', e => { if (e.data && e.data.wello === 'sum-open') open(); });
   ov.addEventListener('click', close);
   again.addEventListener('click', open);
-  open();
+  if (!BARE) open();
+  window.__open = open; window.__close = close;
 
   /* ---------- 자동 시연: 결과 → 닫기 → 홈 → 다시 결과 ---------- */
   const finger = $('#finger');
@@ -262,7 +267,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   function interrupt(e){ if (!e.isTrusted) return; g0++; finger.classList.remove('show'); clearTimeout(idleT); idleT = setTimeout(start, 15000); }
   ['pointerdown','keydown'].forEach(t => addEventListener(t, interrupt, true));
   if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:.3 }).observe(stage);
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !STATIC) start();
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !STATIC && !BARE) start();
 }
 </script>
 </body>
