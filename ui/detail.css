@@ -44,3 +44,6 @@
 
 /* 도면: 넓게 렌더한 원본 전체를 쓰되, 집 위치·크기는 기존 좌표계(1548×1016) 그대로 */
 .world .house,.plan img{inset:auto!important;left:-50.5436%!important;top:-40.3443%!important;width:206.1311%!important;height:181.1918%!important;max-width:none!important;object-fit:fill!important}
+
+/* 집 부분은 원본 해상도 그대로 한 장 더 겹쳐 선명하게 */
+.world .house.hi{left:0!important;top:0!important;width:100%!important;height:100%!important}
