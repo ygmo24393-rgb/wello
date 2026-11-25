@@ -29,13 +29,13 @@
   .dot{width:4px;height:4px;border-radius:50%;background:var(--blue);display:inline-block}
 
   /* period nav */
-  .pnav{position:absolute;left:26px;top:146px;height:42px;display:flex;align-items:center}
+  .pnav{position:absolute;left:25px;top:146px;height:42px;display:flex;align-items:center;gap:28px}
   .pnav button{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;transition:background .2s,opacity .2s}
   .pnav button:hover{background:#E4E6E9}
-  .pnav button:disabled{opacity:.3;cursor:default;background:none}
+  .pnav button:disabled{opacity:.4;cursor:default;background:none}
   .pnav svg{width:16px;height:16px;stroke:var(--ink);stroke-width:1.6;fill:none}
-  .plabel{position:relative;width:262px;height:42px;overflow:hidden}
-  .plabel b{position:absolute;left:27px;top:8px;font-weight:500;font-size:25px;letter-spacing:-1px;white-space:nowrap;transition:transform .45s var(--ease),opacity .35s}
+  .plabel{position:relative;display:grid;height:42px;overflow:hidden;transition:width .45s var(--ease)}
+  .plabel b{grid-area:1/1;line-height:42px;font-weight:500;font-size:25px;letter-spacing:-1px;white-space:nowrap;transition:transform .45s var(--ease),opacity .35s}
   .plabel b.out-l{transform:translateY(-14px);opacity:0}
   .plabel b.in{transform:translateY(14px);opacity:0}
 
@@ -320,10 +320,13 @@
   }
   function swapLabel(dir){
     const box = $('#plabel'), old = $('#pl'), nb = document.createElement('b');
+    const w0 = box.offsetWidth; box.style.width = w0 + 'px';
     nb.textContent = periodLabel(); nb.className = 'in'; nb.style.transform = `translateY(${dir * 14}px)`; box.appendChild(nb);
+    nb.style.position = 'absolute'; const w1 = nb.offsetWidth; nb.style.position = '';
+    requestAnimationFrame(() => box.style.width = w1 + 'px');
     old.removeAttribute('id'); old.style.transform = `translateY(${-dir * 14}px)`; old.style.opacity = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => { nb.className = ''; nb.style.transform = ''; nb.id = 'pl'; }));
-    setTimeout(() => old.remove(), 500);
+    setTimeout(() => { old.remove(); box.style.width = ''; }, 500);
   }
   const segBtns = [...document.querySelectorAll('.seg button')];
   function setMode(m){
