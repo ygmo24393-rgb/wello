@@ -142,14 +142,15 @@
   .hint{position:absolute;left:22px;bottom:20px;font-size:12px;color:#8A8F98;z-index:6;transition:opacity .4s}
 
   /* 확장 모드 하단 요약 바 */
-  .xbar{position:absolute;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;display:flex;gap:0;z-index:6;pointer-events:none;border-radius:16px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.08);
+  .xbar{position:absolute;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;display:flex;gap:0;padding:16px;z-index:6;pointer-events:none;border-radius:16px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.08);
         transition:opacity .4s .2s,transform .6s .2s var(--ease)}
-  .xcard{position:relative;width:162px;height:123px}
-  .xcard+.xcard::before{content:"";position:absolute;left:0;top:20px;bottom:20px;width:1px;background:#ECEDF0}
-  .xcard>span{position:absolute;left:16px;top:16px;font-size:18px;letter-spacing:-.4px}
-  .xcard>div{position:absolute;right:16px;bottom:16px;display:flex;align-items:baseline;gap:6px}
-  .xcard b{font-size:26px;font-weight:400;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
-  .xcard small{font-size:15px;color:#8A8F98}
+  .xcard{position:relative;width:150px;padding:0 16px;display:flex;flex-direction:column;gap:20px}
+  .xcard:first-child{padding-left:0;width:134px}.xcard:last-child{padding-right:0;width:134px}
+  .xcard+.xcard::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:1px;background:#ECEDF0}
+  .xcard>span{font-size:16px;letter-spacing:-.4px;line-height:1.2}
+  .xcard>div{align-self:flex-end;display:flex;align-items:baseline;gap:5px}
+  .xcard b{font-size:24px;font-weight:400;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
+  .xcard small{font-size:14px;color:#8A8F98}
   .stage.expanded .map .xbar{opacity:1;transform:translate(-50%,0)}
   .stage.expanded .map .hint{opacity:0}
   .stage.expanded .map .floor{left:28px;top:28px}
