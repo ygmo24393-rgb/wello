@@ -36,7 +36,7 @@
 
 /* 6. 도면 패널 */
 /* 도면 이미지가 바닥·그림자까지 포함 → 패널 바탕도 같은 회색으로 */
-.map{background:#D8DADE!important}
+.map{background:#E3E5E8!important}
 .world{background:transparent!important}
 
 /* 선택 상태 */
