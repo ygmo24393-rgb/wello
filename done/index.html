@@ -16,12 +16,22 @@ body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--i
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .num{font-variant-numeric:tabular-nums}
 .stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center}
+.under{position:absolute;inset:0;width:1280px;height:720px;border:0}
+.ov{position:absolute;inset:0;background:var(--bg);cursor:pointer;opacity:0;transform:scale(1.02);pointer-events:none;transition:opacity .45s,transform .6s var(--ease)}
+.ov.open{opacity:1;transform:none;pointer-events:auto}
+.hint{position:absolute;right:32px;top:84px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.hint i{width:28px;height:28px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hint svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}
+.again{position:absolute;right:32px;bottom:32px;height:44px;padding:0 18px 0 14px;border-radius:22px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.1);display:flex;align-items:center;gap:8px;font-size:14px;
+       opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .4s,transform .5s var(--ease)}
+.again svg{width:18px;height:18px}
+.again.on{opacity:1;transform:none;pointer-events:auto}
 
 .date{position:absolute;left:44px;top:50px;font-size:13px;letter-spacing:-.2px;color:var(--sub)}
 .time{position:absolute;left:42px;top:68px;display:flex;align-items:baseline;gap:8px}
 .time b{font-weight:400;font-size:50px;letter-spacing:-3px;line-height:1}
 .time span{font-size:12px;color:var(--sub)}
-.weather{position:absolute;right:136px;top:72px;text-align:right;font-size:13px;color:var(--sub)}
+.weather{position:absolute;right:136px;display:none;top:72px;text-align:right;font-size:13px;color:var(--sub)}
 .weather .gen{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px}
 .dot{width:4px;height:4px;border-radius:50%;background:var(--blue);display:inline-block}
 
@@ -61,10 +71,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .st.k b{color:var(--blue)}
 
 /* compare */
-.cmp{left:750px;top:146px;width:396px;height:200px}
+.cmp{left:750px;top:146px;width:498px;height:262px}
 .cmp h3{position:absolute;left:22px;top:20px;font-size:16px;font-weight:500;letter-spacing:-.3px}
 .cmp p{position:absolute;left:22px;top:46px;font-size:13px;color:var(--sub)}
 .cmp p b{color:var(--blue);font-weight:500}
+.ar{position:absolute;left:22px;right:22px;height:52px;display:flex;align-items:center;gap:12px}
+.ar .ai{width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.ar .ai svg{width:18px;height:18px;stroke:var(--ink);stroke-width:1.5;fill:none}
+.ar .tx{width:150px;flex:none}
+.ar .tx b{display:block;font-size:14px;font-weight:500}
+.ar .tx span{font-size:12px;color:var(--muted)}
+.ar .tr{flex:1;height:8px;border-radius:4px;background:#E9EAED;overflow:hidden}
+.ar .tr i{display:block;height:100%;width:0;border-radius:4px;background:var(--blue);transition:width 1.2s var(--ease)}
+.ar>b{width:48px;text-align:right;font-size:17px;font-weight:500;letter-spacing:-.5px}
 .hb{position:absolute;left:22px;right:22px;height:40px}
 .hb span{position:absolute;left:0;top:0;font-size:13px;color:var(--sub)}
 .hb .tr{position:absolute;left:0;right:56px;top:22px;height:10px;border-radius:5px;background:#E9EAED;overflow:hidden}
@@ -73,13 +92,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hb.a .tr i{background:var(--blue)} .hb.b .tr i{background:#C9CDD3} .hb.b b{color:var(--muted);font-weight:400}
 
 /* next */
-.next{left:750px;top:359px;width:396px;height:325px}
+.next{left:750px;top:422px;width:498px;height:262px}
 .next h3{position:absolute;left:22px;top:20px;font-size:16px;font-weight:500;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
 .next h3 svg{width:18px;height:18px}
-.next .t{position:absolute;left:24px;top:62px;font-size:22px;font-weight:500;letter-spacing:-.7px;line-height:1.35}
-.next .d{position:absolute;left:24px;top:128px;font-size:13px;color:var(--sub);line-height:1.6}
+.next .t{position:absolute;left:24px;top:58px;font-size:24px;font-weight:500;letter-spacing:-.7px;line-height:1.35}
+.next .d{position:absolute;left:24px;top:132px;font-size:13px;color:var(--sub);line-height:1.6}
 .next .d b{color:var(--blue);font-weight:500}
-.app{position:absolute;left:24px;right:24px;top:184px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 14px}
+.app{position:absolute;left:24px;right:24px;top:190px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 14px}
 .app .ai{width:34px;height:34px;border-radius:50%;background:#F1F2F4;display:grid;place-items:center}
 .app .ai svg{width:18px;height:18px;stroke:var(--ink);stroke-width:1.5;fill:none}
 .app b{font-size:14px;font-weight:500}
@@ -93,12 +112,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .b2:hover{background:#F1F2F4}
 
 /* nav */
-.nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.nav{display:none;position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
 .nav span.n{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
 .nav span.n.act{left:6px;width:56px;height:56px;background:var(--blue)}
 .nav svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .nav .act svg{stroke:#fff}
-.set{position:absolute;left:1179px;top:540px;width:70px;height:70px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;place-items:center}
+.set{display:none;position:absolute;left:1179px;top:540px;width:70px;height:70px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;place-items:center}
 .set svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round}
 .avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:13px;box-shadow:0 0 0 1px #E4E6E9}
 .avatar.more{color:var(--muted);font-size:12px;box-shadow:0 0 0 2px #fff}
@@ -115,55 +134,48 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 </head>
 <body>
 <div class="stage" id="stage">
+  <iframe class="under" id="under" src="../wallpad/" title="홈" tabindex="-1"></iframe>
+  <button class="again" id="again"><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>오늘 결과 다시 보기</button>
+
+  <div class="ov" id="ov">
   <div class="date">2026. 10. 16 (금)</div>
-  <div class="time"><b>2:58</b><span>PM</span></div>
-  <div class="weather"><div>맑음 25° / 19°</div><div class="gen"><span class="dot"></span>발전 중</div></div>
+  <div class="time"><b>2:52</b><span>PM</span></div>
+  <div class="hint">화면을 누르면 닫혀요<i><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></i></div>
 
   <section class="panel main">
-    <div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6.5h2"/></svg></div>
-    <div class="nm">세탁이 끝났어요</div>
-    <div class="sb num">세탁기 · 표준 코스 · 오후 1:20 – 2:58</div>
-    <div class="badge"><i></i>예약대로 완료</div>
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF" stroke="none"/></svg></div>
+    <div class="nm">오늘 예약이 모두 끝났어요</div>
+    <div class="sb num">식기세척기 · 세탁기 · 건조기 · 오전 11:00 – 오후 2:50</div>
+    <div class="badge"><i></i>3건 완료</div>
     <div class="hero">태양광으로 <b class="num" id="hPct">0%</b> 채웠어요</div>
-    <div class="hero-s">오후 6시까지 끝내도록 맡긴 세탁을, 발전이 가장 좋은 시간에 돌렸어요.</div>
+    <div class="hero-s">발전이 가장 좋은 시간에 맞춰 세 가전을 차례로 돌렸어요.</div>
     <div class="chart" id="chart">
       <svg viewBox="0 0 656 214" id="csv"></svg>
-      <div class="lab w num" id="labW">WELLO 예약 <b>92%</b></div>
-      <div class="lab g num" id="labG">바로 시작했다면 41%</div>
+      <div class="lab w num" id="labW">오늘 예약 <b>89%</b></div>
     </div>
     <div class="stats">
-      <div class="st k"><em>아낀 전기요금</em><div><b class="num" data-to="1240" data-d="0">0</b><span>원</span></div></div>
-      <div class="st"><em>태양광 사용</em><div><b class="num" data-to="1.6" data-d="1">0</b><span>kWh</span></div></div>
-      <div class="st"><em>전력망 사용</em><div><b class="num" data-to="0.1" data-d="1">0</b><span>kWh</span></div></div>
+      <div class="st k"><em>아낀 전기요금</em><div><b class="num" data-to="2860" data-d="0">0</b><span>원</span></div></div>
+      <div class="st"><em>태양광 사용</em><div><b class="num" data-to="4.1" data-d="1">0</b><span>kWh</span></div></div>
+      <div class="st"><em>전력망 사용</em><div><b class="num" data-to="0.5" data-d="1">0</b><span>kWh</span></div></div>
     </div>
   </section>
 
   <section class="panel cmp">
-    <h3>바로 시작했다면</h3>
-    <p>예약 덕분에 태양광을 <b class="num">51%p</b> 더 썼어요</p>
-    <div class="hb a" style="top:84px"><span>WELLO 예약 · 오후 1:20</span><div class="tr"><i id="barA"></i></div><b class="num">92%</b></div>
-    <div class="hb b" style="top:136px"><span>바로 시작 · 오전 11:08</span><div class="tr"><i id="barB"></i></div><b class="num">41%</b></div>
+    <h3>가전별 태양광 사용</h3>
+    <p>바로 시작했을 때보다 <b class="num">평균 46%p</b> 더 썼어요</p>
+    <div class="ar" style="top:82px"><div class="ai"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 9h14M9 6h1"/></svg></div><div class="tx"><b>식기세척기</b><span class="num">11:00 – 12:10</span></div><div class="tr"><i data-w="94"></i></div><b class="num">94%</b></div>
+    <div class="ar" style="top:140px"><div class="ai"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6.5h2"/></svg></div><div class="tx"><b>세탁기</b><span class="num">11:45 – 1:10</span></div><div class="tr"><i data-w="91"></i></div><b class="num">91%</b></div>
+    <div class="ar" style="top:198px"><div class="ai"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M10.5 13a1.5 1.5 0 1 0 3 0"/></svg></div><div class="tx"><b>건조기</b><span class="num">1:20 – 2:50</span></div><div class="tr"><i data-w="83"></i></div><b class="num">83%</b></div>
   </section>
 
   <section class="panel next">
-    <h3><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>다음 추천</h3>
-    <div class="t">건조기도 지금 돌리면<br>좋아요</div>
-    <div class="d">발전이 오후 4시까지 이어져요.<br>지금 시작하면 태양광 <b>88%</b>로 끝낼 수 있어요.</div>
-    <div class="app"><div class="ai"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M10.5 13a1.5 1.5 0 1 0 3 0"/></svg></div><div><b>건조기</b> <span>표준 · 1시간 30분</span></div><em class="num">~ 오후 4:28</em></div>
-    <button class="b1" id="go">지금 시작</button>
-    <button class="b2" id="later">나중에</button>
+    <h3><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>내일 예보</h3>
+    <div class="t">내일도 맑아요</div>
+    <div class="d">오전 10시 ~ 오후 2시 발전이 가장 좋아요.<br>오늘처럼 맞춰 두면 약 <b>2,500원</b>을 더 아낄 수 있어요.</div>
+    <div class="app"><div class="ai"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div><div><b>예상 발전</b> <span class="num">맑음 · 27° / 18°</span></div><em class="num">13.2 kWh</em></div>
   </section>
+  </div>
 
-  <nav class="nav">
-    <span class="n" style="top:14px"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20h-5v-5h-6v5H4z"/></svg></span>
-    <span class="n act" style="top:74px"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
-    <span class="n" style="top:142px"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></span>
-    <span class="n" style="top:206px"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span>
-    <span class="avatar" style="top:294px">지</span>
-    <span class="avatar more" style="top:322px;background:#F1F2F4">+3</span>
-  </nav>
-  <div class="set"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/><circle cx="15" cy="8" r="2.2" fill="#fff"/><circle cx="9" cy="16" r="2.2" fill="#fff"/></svg></div>
-  <div class="toast" id="toast"></div>
   <div class="finger" id="finger" aria-hidden="true"></div>
 </div>
 <script>
@@ -175,86 +187,81 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
   const STATIC = location.search.includes('static');
 
-  /* ---------- 차트: 하루 발전 곡선 + 실행 구간 ---------- */
+  /* ---------- 차트: 하루 발전 곡선 + 오늘 예약 3건 ---------- */
   const NS = 'http://www.w3.org/2000/svg', svg = $('#csv');
   const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  const W = 656, H = 214, B = 186, TOP = 30;              // 그래프 바닥(B)과 위쪽 여백
-  const T0 = 360, T1 = 1200;                              // 6:00 ~ 20:00
+  const W = 656, H = 214, B = 186, TOP = 30;
+  const T0 = 360, T1 = 1200;
   const x = t => (t - T0) / (T1 - T0) * W;
-  const gen = t => Math.max(0, Math.sin(Math.PI * (t - 390) / (1170 - 390))) ** 1.35 * 3.4;   // kW
+  const gen = t => Math.max(0, Math.sin(Math.PI * (t - 390) / (1170 - 390))) ** 1.35 * 3.4;
   const y = v => B - v / 3.6 * (B - TOP);
   const pts = []; for (let t = T0; t <= T1; t += 10) pts.push([x(t), y(gen(t))]);
-  const area = `M0 ${B} ` + pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ') + ` L${W} ${B} Z`;
   for (let i = 0; i < 4; i++) svg.appendChild(mk('line', { x1:0, x2:W, y1:B - i * 52, y2:B - i * 52, stroke:'#ECEDEF' }));
-  svg.appendChild(mk('path', { d:area, fill:'#E9EBEE' }));
+  svg.appendChild(mk('path', { d:`M0 ${B} ` + pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ') + ` L${W} ${B} Z`, fill:'#E9EBEE' }));
   svg.appendChild(mk('path', { d:'M' + pts.map(p => p.join(' ')).join(' L'), fill:'none', stroke:'#C9CDD3', 'stroke-width':1.5 }));
-  // 세탁기 사용 전력 (약 1.0kW)
-  // 세탁 단계별 전력: 물 데우기 → 세탁·헹굼 → 탈수
-  const use = (t, s = 800) => { const m = t - s; const sm = (a, b, k) => 1 / (1 + Math.exp(-(m - a) / k)) - 1 / (1 + Math.exp(-(m - b) / k));
-    return 1.9 * sm(0, 22, 1.5) + 0.55 * sm(22, 80, 1.5) + 1.2 * sm(80, 98, 1.5); };
-  const run = (a, b, fill, id, dash) => {
-    let d = `M${x(a)} ${B}`; for (let t = a; t <= b; t += 1) d += ` L${x(t).toFixed(1)} ${y(use(t, a)).toFixed(1)}`; d += ` L${x(b)} ${B} Z`;
-    const p = mk('path', { d, fill, id }); if (dash){ p.setAttribute('stroke', '#A9AEB6'); p.setAttribute('stroke-dasharray', '4 4'); p.setAttribute('fill', 'none'); }
-    svg.appendChild(p); return p;
-  };
-  const ghost = run(668, 766, 'none', 'ghost', true);
-  const clip = mk('clipPath', { id:'wipe' }); const cr = mk('rect', { x:x(800), y:0, width:0, height:H }); clip.appendChild(cr); svg.appendChild(clip);
-  const real = run(800, 898, '#2B9CFF', 'real'); real.setAttribute('clip-path', 'url(#wipe)'); real.setAttribute('opacity', .9);
-  svg.appendChild(mk('rect', { x:x(800), y:TOP - 10, width:x(898) - x(800), height:B - TOP + 10, fill:'rgba(43,156,255,.08)', rx:6 }));
+  const sm = (m, a, b, k = 1.5) => 1 / (1 + Math.exp(-(m - a) / k)) - 1 / (1 + Math.exp(-(m - b) / k));
+  const JOBS = [ [660, 70, m => 1.6 * sm(m, 0, 25) + 0.3 * sm(m, 25, 55) + 1.2 * sm(m, 55, 70)],     // 식기세척기
+                 [705, 85, m => 1.9 * sm(m, 0, 20) + 0.5 * sm(m, 20, 68) + 1.1 * sm(m, 68, 85)],     // 세탁기
+                 [800, 90, m => 2.2 * sm(m, 0, 80) + 0.4 * sm(m, 80, 90)] ];                          // 건조기
+  const use = t => JOBS.reduce((a, [s, d, f]) => a + (t >= s - 5 && t <= s + d + 5 ? f(t - s) : 0), 0);
+  let d = `M${x(655)} ${B}`; for (let t = 655; t <= 895; t += 1) d += ` L${x(t).toFixed(1)} ${y(use(t)).toFixed(1)}`; d += ` L${x(895)} ${B} Z`;
+  const clip = mk('clipPath', { id:'wipe' }); const cr = mk('rect', { x:x(655), y:0, width:0, height:H }); clip.appendChild(cr); svg.appendChild(clip);
+  const real = mk('path', { d, fill:'#2B9CFF', opacity:.9, 'clip-path':'url(#wipe)' }); svg.appendChild(real);
   [[360,'6AM'],[540,'9AM'],[720,'12PM'],[900,'3PM'],[1080,'6PM']].forEach(([t, s]) => { const e = mk('text', { x:x(t), y:206, 'text-anchor':'middle' }); e.textContent = s; svg.appendChild(e); });
-  $('#labW').style.left = x(849) + 'px'; $('#labW').style.top = (y(gen(849)) - 40) + 'px';
-  $('#labG').style.left = x(717) + 'px'; $('#labG').style.top = (y(1.9) - 40) + 'px';
+  $('#labW').style.left = x(775) + 'px'; $('#labW').style.top = (y(gen(775)) - 44) + 'px';
 
-  /* ---------- 숫자 ---------- */
   function count(el, to, d, dur = 1400, suf = ''){
     const t0 = performance.now();
     const step = () => { const p = Math.max(0, Math.min(1, (performance.now() - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
       el.textContent = (to * e).toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d }) + suf; if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   }
-  function play(){
-    stage.classList.remove('in'); cr.style.transition = 'none'; cr.setAttribute('width', 0);
-    $('#barA').style.width = 0; $('#barB').style.width = 0; $('#go').classList.remove('ok'); $('#go').textContent = '지금 시작';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+
+  /* ---------- 열기 / 닫기 ---------- */
+  const ov = $('#ov'), again = $('#again');
+  let isOpen = false;
+  function open(){
+    isOpen = true; again.classList.remove('on'); ov.classList.add('open'); stage.classList.remove('in');
+    cr.setAttribute('width', 0); document.querySelectorAll('.ar .tr i').forEach(i => i.style.width = 0);
+    setTimeout(() => {
       stage.classList.add('in');
-      const w = x(898) - x(800), t0 = performance.now();
-      const grow = () => { const p = Math.min(1, (performance.now() - t0) / (STATIC ? 1 : 1400)); cr.setAttribute('width', w * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(grow); };
+      const w = x(895) - x(655), t0 = performance.now();
+      const grow = () => { const p = Math.min(1, (performance.now() - t0) / (STATIC ? 1 : 1600)); cr.setAttribute('width', w * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(grow); };
       requestAnimationFrame(grow);
-      count($('#hPct'), 92, 0, 1400, '%');
+      count($('#hPct'), 89, 0, 1400, '%');
       document.querySelectorAll('.st b').forEach(b => count(b, +b.dataset.to, +b.dataset.d, 1600));
-      setTimeout(() => { $('#barA').style.width = '92%'; $('#barB').style.width = '41%'; }, 400);
-    }));
+      setTimeout(() => document.querySelectorAll('.ar .tr i').forEach(i => i.style.width = i.dataset.w + '%'), 300);
+    }, STATIC ? 0 : 350);
   }
+  function close(){ isOpen = false; ov.classList.remove('open'); setTimeout(() => { if (!isOpen) again.classList.add('on'); }, 500); }
+  ov.addEventListener('click', close);
+  again.addEventListener('click', open);
+  open();
 
-  /* ---------- 버튼 ---------- */
-  const toast = $('#toast'); let tT;
-  function say(m){ toast.textContent = m; toast.classList.add('show'); clearTimeout(tT); tT = setTimeout(() => toast.classList.remove('show'), 2400); }
-  $('#go').onclick = () => { const b = $('#go'); if (b.classList.contains('ok')) return; b.classList.add('ok'); b.textContent = '건조기 시작했어요'; say('건조기를 시작했어요 · 오후 4:28에 끝나요'); };
-  $('#later').onclick = () => say('오후 3시 30분에 다시 알려드릴게요');
-  play();
-
-  /* ---------- 자동 시연 ---------- */
+  /* ---------- 자동 시연: 결과 → 닫기 → 홈 → 다시 결과 ---------- */
   const finger = $('#finger');
   let g0 = 0, visible = true, idleT;
   const ABORT = {}, sleep = ms => new Promise(r => setTimeout(r, ms));
   async function wait(ms, g){ await sleep(ms); while (!visible || document.hidden) await sleep(250); if (g !== g0) throw ABORT; }
   function place(el){ const sr = stage.getBoundingClientRect(), k = sr.width / 1280, r = el.getBoundingClientRect();
     finger.style.transform = `translate(${(r.left + r.width/2 - sr.left) / k}px,${(r.top + r.height/2 - sr.top) / k}px)`; }
-  async function tap(el, g, after){ finger.classList.add('show'); place(el); await wait(1200, g); place(el);
+  async function tap(el, g, after){ finger.classList.add('show'); place(el); await wait(1100, g); place(el);
     finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap'); el.click(); await wait(after, g); }
   async function demo(g){
     while (true){
-      await wait(5200, g);
-      await tap($('#go'), g, 3200);
-      finger.classList.remove('show'); await wait(2400, g);
-      play();
+      if (!isOpen) open();
+      await wait(6500, g);
+      await tap($('.main .hero'), g, 600);      // 아무 곳이나 눌러 닫기
+      finger.classList.remove('show');
+      await wait(5000, g);                       // 원래 화면(홈) 보여주기
+      await tap(again, g, 400);
+      finger.classList.remove('show');
     }
   }
   function start(){ const g = ++g0; demo(g).catch(e => { if (e !== ABORT) console.error(e); }); }
-  function interrupt(e){ if (!e.isTrusted) return; g0++; finger.classList.remove('show'); clearTimeout(idleT); idleT = setTimeout(() => { play(); start(); }, 12000); }
+  function interrupt(e){ if (!e.isTrusted) return; g0++; finger.classList.remove('show'); clearTimeout(idleT); idleT = setTimeout(start, 15000); }
   ['pointerdown','keydown'].forEach(t => addEventListener(t, interrupt, true));
-  let first = true;
-  if ('IntersectionObserver' in window) new IntersectionObserver(es => { const v = es[0].isIntersecting; if (v && !visible) play(); visible = v; }, { threshold:.3 }).observe(stage);
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:.3 }).observe(stage);
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !STATIC) start();
 }
 </script>
