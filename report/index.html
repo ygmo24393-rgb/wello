@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>에너지 리포트 — 월패드 인터랙티브</title>
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600;font-display:swap}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Bold.woff2") format("woff2");font-weight:700 800;font-display:swap}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800;font-display:swap}
+</style>
+<style>
+  :root{--bg:#EEEEEF;--panel:#F7F7F8;--card:#FFFFFF;--ink:#1E1F22;--muted:#8A8F98;--blue:#2B9CFF;--ease:cubic-bezier(.22,.8,.2,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#EEEEEF;overflow:hidden}
+  body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center}
+  .num{font-variant-numeric:tabular-nums}
+
+  .date{position:absolute;left:44px;top:50px;font-size:13px;letter-spacing:-.2px;color:#3A3D42}
+  .time{position:absolute;left:42px;top:68px;display:flex;align-items:baseline;gap:8px}
+  .time b{font-weight:400;font-size:50px;letter-spacing:-3px;line-height:1}
+  .time span{font-size:12px;color:#3A3D42}
+  .weather{position:absolute;right:136px;top:72px;text-align:right;font-size:13px;color:#3A3D42}
+  .weather .gen{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px}
+  .dot{width:4px;height:4px;border-radius:50%;background:var(--blue);display:inline-block}
+
+  /* period nav */
+  .pnav{position:absolute;left:26px;top:146px;height:42px;display:flex;align-items:center}
+  .pnav button{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;transition:background .2s,opacity .2s}
+  .pnav button:hover{background:#E4E6E9}
+  .pnav button:disabled{opacity:.3;cursor:default;background:none}
+  .pnav svg{width:16px;height:16px;stroke:var(--ink);stroke-width:1.6;fill:none}
+  .plabel{position:relative;width:262px;height:42px;overflow:hidden}
+  .plabel b{position:absolute;left:27px;top:8px;font-weight:500;font-size:25px;letter-spacing:-1px;white-space:nowrap;transition:transform .45s var(--ease),opacity .35s}
+  .plabel b.out-l{transform:translateY(-14px);opacity:0}
+  .plabel b.in{transform:translateY(14px);opacity:0}
+
+  .seg{position:absolute;left:879px;top:146px;width:267px;height:42px;border-radius:21px;background:var(--panel);box-shadow:inset 0 0 0 1px #C4C8CE}
+  .seg i{position:absolute;left:3px;top:2px;width:87px;height:38px;border-radius:19px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .45s var(--ease)}
+  .seg button{position:absolute;top:0;width:87px;height:42px;font-size:16px;color:var(--muted);letter-spacing:-.3px;transition:color .3s}
+  .seg button.on{color:var(--ink)}
+
+  /* stat cards */
+  .card{position:absolute;border-radius:14px;background:var(--panel)}
+  .card h4{position:absolute;left:20px;top:18px;font-size:16px;font-weight:400;letter-spacing:-.3px}
+  .val{position:absolute;right:20px;bottom:14px;display:flex;align-items:baseline;gap:5px;white-space:nowrap}
+  .val b{font-weight:400;font-size:34px;letter-spacing:-1.4px}
+  .val span{font-size:18px;color:var(--muted)}
+  .rf{position:absolute;right:20px;top:20px;width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s var(--ease)}
+  .card.spin .rf{transform:rotate(-360deg)}
+  .sc-sub{position:absolute;left:20px;top:70px;font-size:14px;color:#6E737C}
+  .sc-bar{position:absolute;left:20px;top:97px;width:140px;height:8px;border-radius:4px;background:#DDE0E5;overflow:hidden}
+  .sc-bar i{display:block;height:100%;width:0;border-radius:4px;background:var(--blue);transition:width .7s var(--ease)}
+  .chip{position:absolute;left:20px;top:78px;height:32px;padding:0 13px;border-radius:16px;background:#E3F1FF;color:#1C78CC;font-size:14px;display:flex;align-items:center;white-space:nowrap}
+
+  /* chart */
+  .chart{left:31px;top:342px;width:705px;height:341px}
+  .chart h4{left:20px;top:17px;font-size:17px}
+  .legend{position:absolute;right:20px;top:20px;display:flex;gap:14px;font-size:13px;color:var(--muted)}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend i{width:6px;height:6px;border-radius:50%}
+  .chart svg{position:absolute;left:0;top:0;width:705px;height:341px;overflow:visible}
+  .chart .grid line{stroke:#ECEDEF;stroke-width:1}
+  .chart text{font-family:"Creato Display","Asta Sans",sans-serif}
+  .ylab text{font-size:13px;fill:var(--muted)}
+  .xlab text{font-size:14px;fill:var(--ink);text-anchor:middle;transition:opacity .3s}
+  .xlab line{stroke:#9CA1A9;stroke-width:1}
+  .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .ln.g{stroke:var(--blue)} .ln.c{stroke:#C9CDD3}
+  .pts circle{transition:opacity .3s,r .3s}
+  .series{transition:opacity .2s}
+  .series.hide{opacity:0}
+  .hover line{stroke:#C9CDD3;stroke-dasharray:3 3}
+  .tipc{position:absolute;padding:8px 10px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);font-size:13px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;transform:translate(-50%,-100%)}
+  .tipc.on{opacity:1}
+  .tipc em{font-style:normal;color:var(--muted);display:block}
+  .tipc b{font-weight:500}
+
+  /* appliances */
+  .apps{left:750px;top:343px;width:396px;height:341px}
+  .apps h4{font-size:17px}
+  .arrow{position:absolute;right:18px;top:18px;width:22px;height:22px;stroke:var(--ink);stroke-width:1.5;fill:none}
+  .row{position:absolute;left:20px;width:356px;height:64px;border-radius:12px;background:#fff;display:flex;align-items:center;padding:0 20px 0 21px;gap:12px}
+  .row .ic{width:34px;height:34px;border-radius:50%;background:#E6E7EA;display:grid;place-items:center;flex:none}
+  .row .ic svg{width:18px;height:18px;stroke:var(--ink);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .row .n{font-size:16px;letter-spacing:-.3px}
+  .row .bar{position:absolute;left:67px;bottom:10px;height:3px;border-radius:2px;background:#E3F1FF;width:0;transition:width .7s var(--ease)}
+  .row .v{margin-left:auto;display:flex;align-items:baseline;gap:4px}
+  .row .v b{font-weight:500;font-size:17px;letter-spacing:-.4px}
+  .row .v span{font-size:13px;color:var(--muted)}
+
+  /* nav */
+  .nav{position:absolute;left:1180px;top:146px;width:68px;height:376px;border-radius:34px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .nav span.n{position:absolute;left:10px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
+  .nav span.n.act{left:6px;width:56px;height:56px;background:var(--blue)}
+  .nav svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .nav .act svg{stroke:#fff}
+  .set{position:absolute;left:1179px;top:540px;width:70px;height:70px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06);display:grid;place-items:center}
+  .set svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round}
+  .avatar{position:absolute;left:18px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:13px;box-shadow:0 0 0 1px #E4E6E9}
+  .avatar.more{color:var(--muted);font-size:12px;box-shadow:0 0 0 2px #fff}
+
+  .finger{position:absolute;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;z-index:60;pointer-events:none;
+          background:rgba(30,31,34,.42);box-shadow:0 2px 10px rgba(0,0,0,.12),0 0 0 5px rgba(30,31,34,.08);
+          opacity:0;transition:transform 1.1s cubic-bezier(.65,0,.35,1),opacity .6s}
+  .finger.show{opacity:1}
+  .finger::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(30,31,34,.45);opacity:0}
+  .finger.tap::after{animation:ripple 1s ease-out}
+  @keyframes ripple{0%{opacity:.6;scale:1}100%{opacity:0;scale:2}}
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="date">2026. 10. 16 (금)</div>
+  <div class="time"><b>11:08</b><span>AM</span></div>
+  <div class="weather"><div>소나기 25° / 19°</div><div class="gen"><span class="dot"></span>발전 중</div></div>
+
+  <div class="pnav">
+    <button id="prev" aria-label="이전"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+    <div class="plabel" id="plabel"><b id="pl">2026년 10월 12일 ~ 18일</b></div>
+    <button id="next" aria-label="다음"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+  </div>
+
+  <div class="seg" id="seg"><i id="segI"></i>
+    <button data-m="day" style="left:3px">Day</button>
+    <button data-m="week" style="left:90px" class="on">Week</button>
+    <button data-m="month" style="left:177px">Month</button>
+  </div>
+
+  <section class="card" id="cGen" style="left:33px;top:201px;width:191px;height:129px">
+    <h4>발전량</h4><svg class="rf" viewBox="0 0 24 24"><path d="M5.5 12a6.5 6.5 0 1 0 2.2-4.9"/><path d="M7.5 3.5v3.8h3.8" transform="translate(-1.6 0)"/></svg>
+    <div class="val"><b class="num" id="vGen">342.9</b><span>kwh</span></div>
+  </section>
+  <section class="card" id="cUse" style="left:237px;top:201px;width:191px;height:129px">
+    <h4>소비량</h4><svg class="rf" viewBox="0 0 24 24"><path d="M5.5 12a6.5 6.5 0 1 0 2.2-4.9"/><path d="M7.5 3.5v3.8h3.8" transform="translate(-1.6 0)"/></svg>
+    <div class="val"><b class="num" id="vUse">298.7</b><span>kwh</span></div>
+  </section>
+  <section class="card" style="left:442px;top:201px;width:295px;height:129px">
+    <h4>자가소비율</h4>
+    <div class="sc-sub">직접 사용 <span class="num" id="vDirect">295</span>kWh</div>
+    <div class="sc-bar"><i id="scBar"></i></div>
+    <div class="val"><b class="num" id="vRate">86</b><span>%</span></div>
+  </section>
+  <section class="card" style="left:751px;top:201px;width:396px;height:129px">
+    <h4>아낀 전기요금</h4>
+    <div class="chip" id="chip"><span id="chipT">지난주보다</span>&nbsp;▲<span class="num" id="vDiff">5,730</span>원</div>
+    <div class="val"><b class="num" id="vSave">49,341</b><span>원</span></div>
+  </section>
+
+  <section class="card chart" id="chart">
+    <h4>발전 소비 현황</h4>
+    <div class="legend"><span><i style="background:#2B9CFF"></i>발전량</span><span><i style="background:#C9CDD3"></i>소비량</span></div>
+    <svg viewBox="0 0 705 341" id="csv">
+      <g class="grid" id="grid"></g><g class="ylab" id="ylab"></g><g class="xlab" id="xlab"></g>
+      <g class="hover" id="hov" style="opacity:0"><line id="hovL" y1="120" y2="280"/></g>
+      <g class="series" id="series">
+        <path class="ln c" id="lnC"/><path class="ln g" id="lnG"/>
+        <g class="pts" id="ptsC" fill="#C9CDD3"></g><g class="pts" id="ptsG" fill="#2B9CFF"></g>
+      </g>
+      <rect id="hit" x="60" y="100" width="640" height="200" fill="transparent"/>
+    </svg>
+    <div class="tipc" id="tipc"></div>
+  </section>
+
+  <section class="card apps">
+    <h4>가전별 전기 사용량</h4>
+    <svg class="arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    <div class="row" style="top:103px"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="8" rx="2"/><path d="M7 18c0-1 1-1 1-2M12 18c0-1 1-1 1-2M17 18c0-1 1-1 1-2"/></svg></div><span class="n">에어컨</span><div class="v"><b class="num" data-a="0">84.1</b><span>kWh</span></div></div>
+    <div class="row" style="top:180px"><div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6.5h2"/></svg></div><span class="n">세탁기</span><div class="v"><b class="num" data-a="1">45.2</b><span>kWh</span></div></div>
+    <div class="row" style="top:257px"><div class="ic"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M6 10h12M9 6v2M9 13v3"/></svg></div><span class="n">냉장고</span><div class="v"><b class="num" data-a="2">108.8</b><span>kWh</span></div></div>
+  </section>
+
+  <nav class="nav">
+    <span class="n" style="top:14px"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20h-5v-5h-6v5H4z"/></svg></span>
+    <span class="n" style="top:78px"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+    <span class="n act" style="top:138px"><svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V6M18 20v-9"/></svg></span>
+    <span class="n" style="top:206px"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span>
+    <span class="avatar" style="top:294px">지</span>
+    <span class="avatar more" style="top:322px;background:#F1F2F4">+3</span>
+  </nav>
+  <div class="set"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/><circle cx="15" cy="8" r="2.2" fill="#fff"/><circle cx="9" cy="16" r="2.2" fill="#fff"/></svg></div>
+  <div class="finger" id="finger" aria-hidden="true"></div>
+</div>
+<script>
+{
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+  function fit(){ const s = Math.min(innerWidth/1280, innerHeight/720); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+  addEventListener('resize', fit); addEventListener('load', fit); fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
+  const EMBED = window.self !== window.top;
+
+  /* ---------- 데이터 ---------- */
+  // 오늘: 2026-10-16(금) 11:08
+  const TODAY = new Date(2026, 9, 16);
+  const DOW = ['일','월','화','수','목','금','토'];
+  const fmt = (v, d) => v.toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
+  function rnd(seed){ let s = seed * 9301 + 49297; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+
+  const BASE = {
+    day:   { gen:[0.1,0.5,1.2,1.9,2.4,2.8,3.0,2.9,2.5,1.9,1.2,0.6,0.2,0,0],
+             use:[0.6,1.1,0.9,0.7,1.3,1.0,0.8,0.9,1.0,1.2,1.6,2.0,1.8,1.4,1.0],
+             upto:6, max:3, unit:'kWh',
+             labels:i => (i % 3 === 0) ? `${6+i}시` : '',
+             tipLabel:i => `${6+i}시`,
+             stats:{ gen:8.9, use:5.6, direct:4.9, save:1640, diff:210, apps:[2.1,1.2,3.6] }, cmp:'어제보다' },
+    week:  { gen:[17,23,14,19,25,21,16], use:[12,16,20,14,18,22,19],
+             upto:5, max:30,
+             labels:i => ['MON','TUE','WED','THU','FRI','SAT','SUN'][i],
+             tipLabel:i => ['월','화','수','목','금','토','일'][i] + '요일',
+             stats:{ gen:342.9, use:298.7, direct:295, save:49341, diff:5730, apps:[84.1,45.2,108.8] }, cmp:'지난주보다' },
+    month: { gen:[], use:[], upto:16, max:30,
+             labels:i => [0,4,9,14,19,24,30].includes(i) ? `${i+1}일` : '',
+             tipLabel:i => `10월 ${i+1}일`,
+             stats:{ gen:1284.6, use:1102.3, direct:1079, save:186420, diff:12480, apps:[312.4,168.9,402.7] }, cmp:'지난달보다' }
+  };
+  { const r = rnd(7); for (let i = 0; i < 31; i++){ BASE.month.gen.push(Math.round((17 + 5*Math.sin(i*.45) + 4*r()) * 10)/10); BASE.month.use.push(Math.round((14 + 3*Math.cos(i*.3) + 3*r()) * 10)/10); } }
+
+  let mode = 'week', off = 0;
+
+  function periodLabel(){
+    if (mode === 'day'){ const d = new Date(TODAY); d.setDate(d.getDate() + off); return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${DOW[d.getDay()]})`; }
+    if (mode === 'week'){
+      const s = new Date(2026, 9, 12 + off*7), e = new Date(s); e.setDate(e.getDate() + 6);
+      return s.getMonth() === e.getMonth() ? `${s.getFullYear()}년 ${s.getMonth()+1}월 ${s.getDate()}일 ~ ${e.getDate()}일`
+                                           : `${s.getFullYear()}년 ${s.getMonth()+1}월 ${s.getDate()}일 ~ ${e.getMonth()+1}월 ${e.getDate()}일`;
+    }
+    const m = new Date(2026, 9 + off, 1); return `${m.getFullYear()}년 ${m.getMonth()+1}월`;
+  }
+  function data(){
+    const b = BASE[mode];
+    if (off === 0) return { ...b, n: b.gen.length };
+    // 지난 기간: 같은 모양에 조금씩 변화를 준 전체 데이터
+    const r = rnd(100 + off * 13 + mode.length * 31);
+    const n = mode === 'month' ? new Date(2026, 10 + off, 0).getDate() : b.gen.length;
+    const jit = (arr, k) => Array.from({ length:n }, (_, i) => Math.max(0, Math.round((arr[i % arr.length] * (0.8 + r() * 0.35)) * k) / k));
+    const k = mode === 'day' ? 10 : 10;
+    const f = 0.85 + r() * 0.25, s = b.stats;
+    const gen = jit(b.gen, k);
+    return { ...b, gen, use: jit(b.use, k), upto: n, n,
+      stats:{ gen:s.gen*f, use:s.use*(0.88 + r()*0.2), direct:s.direct*f*(0.95 + r()*0.05), save:Math.round(s.save*f/10)*10,
+              diff:Math.round(s.diff*(0.4 + r())/10)*10, apps:s.apps.map(a => a*(0.8 + r()*0.4)) } };
+  }
+
+  /* ---------- 숫자 카운트 ---------- */
+  const cur = new Map();
+  function count(el, to, d){
+    const from = cur.has(el) ? cur.get(el) : to; cur.set(el, to);
+    const t0 = performance.now(), dur = 700;
+    cancelAnimationFrame(el._raf);
+    const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * e, d); if (p < 1) el._raf = requestAnimationFrame(step); };
+    el._raf = requestAnimationFrame(step);
+  }
+
+  /* ---------- 차트 ---------- */
+  const X0 = 118, X1 = 638, Y0 = 280, YH = 150;   // 카드 안 좌표 (디자인 기준)
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, at) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); return e; };
+  let D;
+  { const g = $('#grid'); for (let i = 0; i < 4; i++) g.appendChild(mk('line', { x1:69, x2:685, y1:Y0 - i*50, y2:Y0 - i*50 })); }
+  const xAt = i => D.n === 1 ? (X0+X1)/2 : X0 + (X1 - X0) * i / (D.n - 1);
+  const yAt = v => Y0 - v / D.max * YH;
+  function path(arr){ return arr.slice(0, D.upto).map((v, i) => `${i ? 'L' : 'M'}${xAt(i).toFixed(1)} ${yAt(v).toFixed(1)}`).join(''); }
+  function drawChart(anim){
+    const yl = $('#ylab'); yl.innerHTML = '';
+    for (let i = 0; i < 4; i++){ const t = mk('text', { x:20, y:Y0 - i*50 + 4 }); t.textContent = fmt(D.max * i / 3, D.max < 10 ? 0 : 0); yl.appendChild(t); }
+    const xl = $('#xlab'); xl.innerHTML = '';
+    for (let i = 0; i < D.n; i++){ const s = D.labels(i); if (!s) continue;
+      xl.appendChild(mk('line', { x1:xAt(i), x2:xAt(i), y1:294, y2:299 }));
+      const t = mk('text', { x:xAt(i), y:317 }); t.textContent = s; xl.appendChild(t); }
+    const small = D.n > 16;
+    for (const [id, arr] of [['G', D.gen], ['C', D.use]]){
+      const ln = $('#ln' + id); ln.setAttribute('d', path(arr));
+      const L = ln.getTotalLength ? ln.getTotalLength() : 0;
+      ln.style.transition = 'none'; ln.style.strokeDasharray = L; ln.style.strokeDashoffset = anim ? L : 0;
+      const pts = $('#pts' + id); pts.innerHTML = '';
+      arr.slice(0, D.upto).forEach((v, i) => { const c = mk('circle', { cx:xAt(i), cy:yAt(v), r: small ? 2.5 : 4 });
+        c.style.opacity = anim ? 0 : 1; c.style.transition = `opacity .3s ${0.1 + i * (0.7 / D.upto)}s`; pts.appendChild(c); });
+      if (anim) requestAnimationFrame(() => requestAnimationFrame(() => {
+        ln.style.transition = 'stroke-dashoffset .9s cubic-bezier(.22,.8,.2,1)'; ln.style.strokeDashoffset = 0;
+        pts.querySelectorAll('circle').forEach(c => c.style.opacity = 1);
+      }));
+    }
+  }
+  // 호버 툴팁
+  const hit = $('#hit'), hov = $('#hov'), hovL = $('#hovL'), tipc = $('#tipc');
+  hit.addEventListener('pointermove', e => {
+    const r = hit.ownerSVGElement.getBoundingClientRect(), k = r.width / 705, x = (e.clientX - r.left) / k;
+    let i = Math.round((x - X0) / (X1 - X0) * (D.n - 1)); i = Math.max(0, Math.min(D.upto - 1, i));
+    hovL.setAttribute('x1', xAt(i)); hovL.setAttribute('x2', xAt(i)); hov.style.opacity = 1;
+    const u = mode === 'day' ? 'kWh' : 'kWh';
+    tipc.innerHTML = `<em>${D.tipLabel(i)}</em>발전 <b>${fmt(D.gen[i],1)}</b> · 소비 <b>${fmt(D.use[i],1)}</b> ${u}`;
+    tipc.style.left = xAt(i) + 'px'; tipc.style.top = (Math.min(yAt(D.gen[i]), yAt(D.use[i])) - 12) + 'px'; tipc.classList.add('on');
+  });
+  hit.addEventListener('pointerleave', () => { hov.style.opacity = 0; tipc.classList.remove('on'); });
+
+  /* ---------- 렌더 ---------- */
+  const apps = [...document.querySelectorAll('.row .v b')];
+  function render(anim){
+    D = data(); const s = D.stats;
+    const dg = mode === 'day' ? 1 : 1;
+    count($('#vGen'), s.gen, dg); count($('#vUse'), s.use, dg);
+    const rate = Math.round(s.direct / s.gen * 100);
+    count($('#vRate'), rate, 0); count($('#vDirect'), s.direct, mode === 'day' ? 1 : 0);
+    $('#scBar').style.width = (rate / 100 * 140) + 'px';
+    count($('#vSave'), s.save, 0); count($('#vDiff'), s.diff, 0);
+    $('#chipT').textContent = off === 0 ? D.cmp : D.cmp.replace('어제', '전날').replace('지난주', '전주').replace('지난달', '전달');
+    apps.forEach((b, i) => count(b, s.apps[i], 1));
+    $('#next').disabled = off >= 0;
+    if (anim){
+      const sr = $('#series'); sr.classList.add('hide'); $('#xlab').style.opacity = 0;
+      setTimeout(() => { drawChart(true); sr.classList.remove('hide'); $('#xlab').style.opacity = 1; }, 180);
+    } else drawChart(false);
+  }
+  function swapLabel(dir){
+    const box = $('#plabel'), old = $('#pl'), nb = document.createElement('b');
+    nb.textContent = periodLabel(); nb.className = 'in'; nb.style.transform = `translateY(${dir * 14}px)`; box.appendChild(nb);
+    old.removeAttribute('id'); old.style.transform = `translateY(${-dir * 14}px)`; old.style.opacity = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => { nb.className = ''; nb.style.transform = ''; nb.id = 'pl'; }));
+    setTimeout(() => old.remove(), 500);
+  }
+  const segBtns = [...document.querySelectorAll('.seg button')];
+  function setMode(m){
+    if (m === mode && off === 0) return;
+    const dir = ['day','week','month'].indexOf(m) > ['day','week','month'].indexOf(mode) ? 1 : -1;
+    mode = m; off = 0;
+    segBtns.forEach(b => b.classList.toggle('on', b.dataset.m === m));
+    $('#segI').style.transform = `translateX(${['day','week','month'].indexOf(m) * 87}px)`;
+    swapLabel(dir); render(true);
+  }
+  segBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
+  $('#prev').onclick = () => { off--; swapLabel(-1); render(true); };
+  $('#next').onclick = () => { if (off >= 0) return; off++; swapLabel(1); render(true); };
+  document.querySelectorAll('.card .rf').forEach(r => r.parentElement.addEventListener('click', () => {
+    const c = r.parentElement; c.classList.remove('spin'); void c.offsetWidth; c.classList.add('spin'); setTimeout(() => c.classList.remove('spin'), 650);
+  }));
+  $('#segI').style.transform = 'translateX(87px)';
+  $('#scBar').style.transition = 'none'; render(false); requestAnimationFrame(() => $('#scBar').style.transition = '');
+
+  /* ---------- 자동 시연 ---------- */
+  const finger = $('#finger');
+  let gen = 0, visible = true, idleT;
+  const ABORT = {}, sleep = ms => new Promise(r => setTimeout(r, ms));
+  async function wait(ms, g){ await sleep(ms); while (!visible || document.hidden) await sleep(250); if (g !== gen) throw ABORT; }
+  function place(el){
+    const sr = stage.getBoundingClientRect(), k = sr.width / 1280, r = el.getBoundingClientRect();
+    finger.style.transform = `translate(${(r.left + r.width/2 - sr.left) / k}px,${(r.top + r.height/2 - sr.top) / k}px)`;
+  }
+  async function tap(el, g, after){
+    finger.classList.add('show'); place(el);
+    await wait(1200, g); place(el);
+    finger.classList.remove('tap'); void finger.offsetWidth; finger.classList.add('tap');
+    el.click(); await wait(after, g);
+  }
+  const seg = m => segBtns.find(b => b.dataset.m === m);
+  async function demo(g){
+    await wait(1800, g);
+    while (true){
+      await tap(seg('day'), g, 2600);
+      await tap(seg('month'), g, 2600);
+      await tap($('#prev'), g, 2400);
+      await tap(seg('week'), g, 2000);
+      finger.classList.remove('show'); await wait(3000, g);
+    }
+  }
+  function startDemo(){ const g = ++gen; demo(g).catch(e => { if (e !== ABORT) console.error(e); }); }
+  function interrupt(e){ if (!e.isTrusted) return; gen++; finger.classList.remove('show'); clearTimeout(idleT); idleT = setTimeout(startDemo, 12000); }
+  ['pointerdown','keydown'].forEach(t => addEventListener(t, interrupt, true));
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:.3 }).observe(stage);
+  window.__set = (m, o) => { mode = m; off = o || 0; segBtns.forEach(b => b.classList.toggle('on', b.dataset.m === m)); $('#segI').style.transform = `translateX(${['day','week','month'].indexOf(m)*87}px)`; $('#pl').textContent = periodLabel(); cur.clear(); render(false); };
+  const qm = location.search.match(/m=(\w+)(?:&o=(-?\d+))?/); if (qm) window.__set(qm[1], +(qm[2]||0));
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('static')) startDemo();
+}
+</script>
+</body>
+</html>
