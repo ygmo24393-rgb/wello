@@ -144,6 +144,17 @@
   .opts button small{color:#8A8F98;font-size:13px}
   .opts button:hover,.opts button.cur{background:#FFFFFF}
   .opts button.cur::after{content:"";margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--blue2)}
+  .wheel{position:absolute;left:24px;width:348px;height:134px;border-radius:12px;background:#fff;border:1px solid #E4E6E9;z-index:5;overflow:hidden;
+         opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .25s,transform .3s var(--ease);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+  .wheel.show{opacity:1;transform:none;pointer-events:auto}
+  .wheel .wband{position:absolute;left:10px;right:10px;top:48px;height:38px;border-radius:10px;background:rgba(43,156,255,.08);box-shadow:inset 0 0 0 1px rgba(43,156,255,.25);pointer-events:none;z-index:1}
+  .wheel .list{position:absolute;inset:0;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;padding:48px 0;cursor:grab;
+         -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
+  .wheel .list::-webkit-scrollbar{display:none}
+  .wheel .it{position:relative;height:38px;display:flex;align-items:center;justify-content:center;gap:8px;scroll-snap-align:center;font-size:17px;color:#9AA0A8;font-variant-numeric:tabular-nums;transition:color .15s,transform .15s}
+  .wheel .it small{font-size:13px;color:#B4B8BF}
+  .wheel .it.cur{color:#1E1F22;transform:scale(1.06)}
+  .wheel .it.cur small{color:#8A8F98}
   .est{position:absolute;left:24px;top:494px;width:348px;height:56px;border-radius:12px;background:#F1F2F4;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:13px;color:#8A8F98}
   .est svg{width:20px;height:20px}
   .est b{margin-left:auto;font-size:22px;font-weight:400;letter-spacing:-1px;color:#1E1F22;font-variant-numeric:tabular-nums}
@@ -232,6 +243,7 @@
     <div class="q" style="top:322px"><i>3</i>언제까지 끝낼까요?</div>
     <button class="pick" id="sEnd" style="top:356px"></button>
     <div class="opts" id="opts"></div>
+    <div class="wheel" id="wheel" style="top:352px"><div class="list" id="wlist"></div><div class="wband"></div></div>
     <div class="est" id="est"><svg viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" fill="#2B9CFF"/></svg>예상 시작<b id="eStart"></b><span class="e" id="eEnd"></span></div>
     <button class="go" id="go">예약하기</button>
   </aside>
@@ -265,7 +277,7 @@
     styler:{ name:'스타일러',   room:'드레스룸', courses:[['리프레시',40],['살균',60],['미세먼지',30]] },
     robot: { name:'로봇청소기', room:'거실',   courses:[['전체 청소',60],['집중 청소',30]] },
   };
-  const ENDS = [840, 870, 900, 930, 960, 990, 1020];
+  const ENDS = []; for (let t = 780; t <= 1080; t += 10) ENDS.push(t);   // 오후 1:00 ~ 6:00, 10분 단위
   const LANES = [66, 158, 250, 342];
   const START = [
     { id:'b1', app:'dish',   c:0, start:660, end:1080, lane:0 },
@@ -479,10 +491,11 @@
     paintForm(); stage.classList.add('sheet');
   }
   function closeSheet(){ closeOpts(); stage.classList.remove('sheet'); }
-  function closeOpts(){ $('#opts').classList.remove('show'); document.querySelectorAll('.pick').forEach(s => s.classList.remove('open')); openSel = null; }
+  function closeOpts(){ $('#opts').classList.remove('show'); $('#wheel').classList.remove('show'); document.querySelectorAll('.pick').forEach(s => s.classList.remove('open')); openSel = null; }
   function showOpts(which){
     if (openSel === which){ closeOpts(); return; }
     closeOpts(); openSel = which;
+    if (which === 'End'){ openWheel(); return; }
     const btn = $('#s' + which), o = $('#opts');
     let items = [];
     if (which === 'App') items = Object.entries(APPS).map(([k, a]) => [k, `${a.name} <small>${a.room}</small>`, k === form.app]);
@@ -499,6 +512,35 @@
     });
     btn.classList.add('open'); setTimeout(() => o.classList.add('show'), 20);
   }
+  /* ---------- 완료 시간 휠 피커 ---------- */
+  const wheel = $('#wheel'), wlist = $('#wlist'), IH = 38;
+  wlist.innerHTML = ENDS.map(t => `<div class="it" data-v="${t}">${ampm(t)} ${h12(t)} <small>까지</small></div>`).join('');
+  const wItems = [...wlist.children];
+  let wRaf = 0, wIdx = -1;
+  function wSync(){
+    const i = Math.max(0, Math.min(ENDS.length - 1, Math.round(wlist.scrollTop / IH)));
+    if (i === wIdx) return; wIdx = i;
+    wItems.forEach((el, k) => el.classList.toggle('cur', k === i));
+    if (form.end !== ENDS[i]){ form.end = ENDS[i]; paintForm(); }
+  }
+  wlist.addEventListener('scroll', () => { cancelAnimationFrame(wRaf); wRaf = requestAnimationFrame(wSync); });
+  wItems.forEach((el, k) => el.onclick = () => { if (!wlist.dataset.moved) wlist.scrollTo({ top: k * IH, behavior: 'smooth' }); });
+  wlist.addEventListener('pointerdown', e => {        // 마우스로 끌어서 굴리기
+    if (e.pointerType !== 'mouse') return;
+    const sy = e.clientY, s0 = wlist.scrollTop, k = stage.getBoundingClientRect().width / 1280;
+    delete wlist.dataset.moved; wlist.style.scrollSnapType = 'none';
+    const mv = ev => { const dy = (ev.clientY - sy) / k; if (Math.abs(dy) > 3) wlist.dataset.moved = 1; wlist.scrollTop = s0 - dy; };
+    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); wlist.style.scrollSnapType = '';
+      wlist.scrollTo({ top: Math.round(wlist.scrollTop / IH) * IH, behavior: 'smooth' }); setTimeout(() => delete wlist.dataset.moved, 0); };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  });
+  function openWheel(){
+    let i = ENDS.indexOf(form.end); if (i < 0) i = ENDS.findIndex(t => t >= form.end); if (i < 0) i = ENDS.length - 1;
+    wIdx = -1; wheel.classList.add('show'); $('#sEnd').classList.add('open');
+    wlist.scrollTop = i * IH; wSync();
+  }
+  const wheelTo = t => wlist.scrollTo({ top: Math.max(0, ENDS.indexOf(t)) * IH, behavior: 'smooth' });
+
   $('#sApp').onclick = () => showOpts('App');
   $('#sCourse').onclick = () => showOpts('Course');
   $('#sEnd').onclick = () => showOpts('End');
@@ -574,7 +616,9 @@
   async function demo(g){
     await wait(1500, g);
     while (SHEET_MODE){                                    // 새 예약 화면: 완료 시간을 바꾸며 예상 시작 변화 보여주기
-      for (const i of [2, 5, 1, 6, 3]){ await tap($('#sEnd'), g, 900); await tap(opt(i), g, 2400); }
+      await tap($('#sEnd'), g, 900);
+      for (const t of [900, 990, 840, 1020, 930]){ finger.classList.add('show'); place(wheel); wheelTo(t); await wait(2200, g); }
+      await tap($('#sEnd'), g, 900);
       await tap($('#sCourse'), g, 900); await tap(opt(2), g, 2400);
       finger.classList.remove('show'); await wait(2000, g);
       resetAll(); await wait(1200, g);
@@ -585,7 +629,7 @@
       await tap(card('b2'), g, 2400);                       // 세탁기 상세
       await tap($('#add'), g, 1400);                        // 새 예약
       await tap($('#sApp'), g, 900); await tap(opt(3), g, 1000);   // 스타일러
-      await tap($('#sEnd'), g, 900); await tap(opt(2), g, 1600);   // 오후 5시까지
+      await tap($('#sEnd'), g, 900); place(wheel); wheelTo(900); await wait(1600, g); await tap($('#sEnd'), g, 700);   // 오후 3시까지
       await tap($('#go'), g, 3200);                         // 예약하기
       finger.classList.remove('show');
       await wait(2500, g);
