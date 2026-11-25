@@ -139,9 +139,13 @@
   .hint{position:absolute;left:22px;bottom:20px;font-size:12px;color:#5b616c;z-index:6;transition:opacity .4s}
 
   /* 확장 모드 하단 요약 바 */
-  .xbar{position:absolute;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;display:flex;gap:28px;align-items:center;padding:12px 22px;border-radius:16px;
-        background:rgba(25,27,31,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);z-index:6;transition:opacity .4s .2s,transform .6s .2s var(--ease);pointer-events:none;font-size:13px;color:#aeb3bc}
-  .xbar b{color:#fff;font-size:18px;font-weight:500;margin-left:6px;font-variant-numeric:tabular-nums}
+  .xbar{position:absolute;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;display:flex;gap:18px;z-index:6;pointer-events:none;
+        transition:opacity .4s .2s,transform .6s .2s var(--ease)}
+  .xcard{position:relative;width:162px;height:123px;border-radius:16px;background:rgba(28,29,33,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .xcard>span{position:absolute;left:24px;top:22px;font-size:18px;letter-spacing:-.4px}
+  .xcard>div{position:absolute;right:24px;bottom:22px;display:flex;align-items:baseline;gap:6px}
+  .xcard b{font-size:26px;font-weight:400;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
+  .xcard small{font-size:15px;color:#7A808B}
   .stage.expanded .map .xbar{opacity:1;transform:translate(-50%,0)}
   .stage.expanded .map .hint{opacity:0}
   .stage.expanded .map .floor{left:28px;top:28px}
@@ -257,9 +261,9 @@
     </div>
 
     <div class="xbar">
-      <span>발전량<b id="xGen">2.7</b> kw</span>
-      <span>소비량<b id="xUse">2.7</b> kw</span>
-      <span>오늘 예상 발전<b>12.5</b> kwh</span>
+      <div class="xcard"><span>발전량</span><div><b id="xGen">2.7</b><small>kw</small></div></div>
+      <div class="xcard"><span>소비량</span><div><b id="xUse">2.7</b><small>kw</small></div></div>
+      <div class="xcard"><span>예상 발전</span><div><b>12.5</b><small>kw</small></div></div>
     </div>
     <div class="status"><span class="dot"></span><span id="runCount">3대 작동 중</span></div>
   </section>
