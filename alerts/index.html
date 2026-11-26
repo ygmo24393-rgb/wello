@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>알림 — Wello</title>
+<style>
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:transparent;overflow:hidden}
+body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#111}
+.st{position:absolute;left:0;top:0;width:904px;height:1064px;transform-origin:0 0}
+.n{position:absolute;left:148px;top:0;width:607.5px;height:148px;border-radius:31px;background:rgba(246,246,247,.2);
+   -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+   transition:transform .9s cubic-bezier(.22,.8,.2,1),opacity .7s,filter .7s;will-change:transform}
+.n .ic{position:absolute;left:33.4px;top:31.5px;width:86px;height:86px;border-radius:18px;background:#fff;overflow:hidden}
+.n .ic svg{width:100%;height:100%}
+.n b{position:absolute;left:157px;top:36px;font-size:24px;font-weight:600;letter-spacing:-.6px}
+.n p{position:absolute;left:157px;top:76px;width:330px;font-size:16.5px;line-height:1.45;letter-spacing:-.4px}
+.n em{position:absolute;right:32px;top:36px;font-style:normal;font-size:20px;letter-spacing:-.3px;color:rgba(0,0,0,.75)}
+@media (prefers-reduced-motion:reduce){.n{transition:none}}
+</style></head><body>
+<div class="st" id="st"></div>
+<script>
+{
+  const st = document.getElementById('st');
+  const fit = () => st.style.transform = `scale(${innerWidth / 904})`;
+  addEventListener('resize', fit); fit();
+  const LOGO = `<svg viewBox="1156.42 868.47 85.94 85.94"><path d="M1219.03 887.832H1218.3V884.18H1217.08V883.574H1220.25V884.18H1219.03V887.832ZM1225.17 887.832H1224.47V884.36L1223.25 887.832H1222.62L1221.41 884.36V887.832H1220.7V883.574H1221.8L1222.94 886.816L1224.09 883.574H1225.17V887.832Z" fill="#1F65FF"/><path d="M1211.19 883.941H1206.87L1184.02 939.633H1188.33L1211.19 883.941Z" fill="#1F65FF"/><path d="M1188.61 917.913L1180.85 921.301L1179.17 917.689L1190.8 912.587L1188.61 917.914L1188.61 917.913ZM1225.17 901.885L1193.88 915.605L1196.06 910.278L1223.56 898.219L1225.17 901.886V901.885Z" fill="#1F65FF"/><path d="M1219.88 930.846L1217.09 933.706L1195.25 912.275L1196.88 908.284L1219.88 930.845L1219.88 930.846ZM1193.81 905.267L1192.17 909.259L1175.33 892.735L1178.12 889.875L1193.81 905.267Z" fill="#1F65FF"/></svg>`;
+  const N = [
+    ['예상 발전량이 낮아졌어요.', '비 예보로 태양광 발전량이 줄어 세탁이 계획보다 늦게 끝날 수 있어요. WELLO에서 확인해보세요!', '10분 전'],
+    ['세탁 시작 시간을 옮겼어요.', '구름이 걷히는 오후 2시 10분으로 미뤘어요. 6시 전에 끝나요.', '방금'],
+    ['발전 피크가 시작됐어요.', '지금 건조기를 돌리면 태양광으로 88%를 채울 수 있어요.', '방금'],
+    ['세탁이 끝났어요.', '태양광 92% 사용 · 오늘 1,240원을 아꼈어요.', '방금'],
+    ['내일은 맑아요.', '오전 10시 ~ 오후 2시 발전이 가장 좋아요. 미리 예약해 둘까요?', '방금'],
+    ['세탁기 예약을 마쳤어요.', '오후 1:20에 시작해서 3:00 전에 끝나요.', '1시간 전'],
+  ];
+  const GAP = 16, H = 148, TOP = (1064 - (3 * H + 2 * GAP)) / 2;
+  const make = ([t, d, w]) => { const e = document.createElement('div'); e.className = 'n';
+    e.innerHTML = `<div class="ic">${LOGO}</div><b>${t}</b><em>${w}</em><p>${d}</p>`; st.appendChild(e); return e; };
+  let shown = [], k = 0;
+  function place(){
+    shown.forEach((e, j) => {               // j=0 가장 최신(맨 위)
+      e.style.zIndex = 10 - j;
+      e.querySelector('em').textContent = ['방금', '5분 전', '12분 전', '20분 전'][j] || '';
+      e.style.opacity = j > 2 ? 0 : [1, .72, .45][j];
+      e.style.filter = j ? `saturate(${1 - j * .2})` : '';
+      e.style.transform = `translateY(${TOP + j * (H + GAP) + (j > 2 ? 40 : 0)}px) scale(${j > 2 ? .96 : 1})`;
+    });
+  }
+  function push(){
+    const e = make(N[k % N.length]); k++;
+    e.style.transform = `translateY(${TOP - 60}px) scale(.96)`; e.style.opacity = 0;
+    shown.unshift(e); void e.offsetWidth; place();
+    const old = shown.splice(4); old.forEach(o => setTimeout(() => o.remove(), 900));
+  }
+  // 처음엔 3장을 깔고 시작
+  for (let i = 2; i >= 0; i--){ const e = make(N[(i + 0) % N.length]); shown.push(e); }
+  shown.reverse(); k = 3; place();
+  let vis = true;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => vis = es[0].isIntersecting).observe(document.body);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { if (vis && !document.hidden) push(); }, 2800);
+}
+</script></body></html>
