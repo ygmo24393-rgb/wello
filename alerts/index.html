@@ -14,7 +14,7 @@ body{-webkit-font-smoothing:antialiased;color:#000}
 .n p{position:absolute;left:147px;top:72px;width:302px;font-size:16px;line-height:23px;font-weight:500;word-break:keep-all}
 .n em{position:absolute;right:36px;top:33px;font-style:normal;font-size:19.5px;line-height:24px}
 /* v1: 한 장씩 교체 */
-.v1 .n{top:458px;transition:transform .8s cubic-bezier(.22,.8,.2,1),opacity .6s,filter .6s}
+.v1 .n{top:var(--cy,458px);transition:transform .8s cubic-bezier(.22,.8,.2,1),opacity .6s,filter .6s}
 .v1 .n.out{transform:translateY(-28px) scale(.97);opacity:0;filter:blur(6px)}
 .v1 .n.pre{transform:translateY(28px) scale(.97);opacity:0;filter:blur(6px)}
 /* v2: 세로 리스트 흐름 */
@@ -35,6 +35,8 @@ body{-webkit-font-smoothing:antialiased;color:#000}
 <script>
 {
   const st = document.getElementById('st');
+  const QH = +(location.search.match(/h=(\d+)/) || [0, 1064])[1], QY = +(location.search.match(/[?&]y=(\d+)/) || [0, 458])[1];
+  st.style.height = QH + 'px'; document.documentElement.style.setProperty('--cy', QY + 'px');
   const fit = () => st.style.transform = `scale(${innerWidth / 904})`;
   addEventListener('resize', fit); fit();
   const V = (location.search.match(/v=(\d)/) || [0, '1'])[1];
