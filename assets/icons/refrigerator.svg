@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+     fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <title>냉장고</title>
+  <rect x="4.65" y="2.4" width="14.7" height="19.2" rx="1.75"/>
+  <path d="M12 2.4v12.05M4.65 14.45h14.7"/>
+  <path d="M9.25 7.3v3.4m5.5-3.4v3.4M10.25 17.55h3.5"/>
+</svg>

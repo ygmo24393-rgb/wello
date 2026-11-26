@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+     fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="round">
+  <title>전체화면 확장</title>
+  <path d="M3.9 9.4V3.9h5.5m5.2 0h5.5v5.5m0 5.2v5.5h-5.5m-5.2 0H3.9v-5.5"/>
+</svg>

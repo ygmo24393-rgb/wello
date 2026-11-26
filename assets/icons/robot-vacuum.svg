@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+     fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <title>로봇청소기</title>
+  <ellipse cx="12" cy="11.1" rx="9.45" ry="5.95"/>
+  <path d="M2.55 11.1v2.7c0 3.3 4.23 5.95 9.45 5.95s9.45-2.65 9.45-5.95v-2.7"/>
+  <ellipse cx="11.9" cy="9.9" rx="2.45" ry="1.55"/>
+</svg>
