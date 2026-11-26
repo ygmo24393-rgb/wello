@@ -47,3 +47,10 @@
 
 /* 집 부분은 원본 해상도 그대로 한 장 더 겹쳐 선명하게 */
 .world .house.hi{left:0!important;top:0!important;width:100%!important;height:100%!important}
+
+/* 큰 박스 테두리: Stroke #BABBC2 20% inside 0.4 + Drop shadow spread 1 #EDEDED 30% */
+.map,.energy,.forecast,.alert,
+.tl,.fc,.dt,.sheetp,
+.card,
+.panel{border:0!important;box-shadow:inset 0 0 0 .4px rgba(186,187,194,.2),0 0 0 1px rgba(237,237,237,.3)!important}
+.alert.open{box-shadow:inset 0 0 0 .4px rgba(186,187,194,.2),0 0 0 1px rgba(237,237,237,.3),0 12px 28px rgba(0,0,0,.10)!important}
