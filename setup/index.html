@@ -158,7 +158,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       <div class="metric a d3">
         <div class="lbl">찾은 가전</div>
         <div class="big"><b class="num" id="cnt">0</b><span>대</span></div>
-        <div class="mline"><span class="k"><i></i>맞춤 예약 3대</span><span><i></i>상시 사용 5대</span><span>2층 3대 포함</span></div>
+        <div class="mline"><span class="k"><i></i>맞춤 예약 3대</span><span><i></i>상시 사용 4대</span><span>2층 2대 포함</span></div>
       </div>
     </div>
     <div class="st" id="s3">
@@ -239,8 +239,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     clear(); show(2); go.disabled = true; const t = fast ? 0 : 1; $('#sunchip').classList.remove('on');
     $('#t2').innerHTML = '집 안 가전을<br>찾고 있어요'; $('#d2').textContent = '같은 Wi-Fi에 연결된 가전을 확인하는 중이에요.';
     $('#cnt').textContent = '0'; spotEls.forEach(p => p.classList.remove('on'));
-    for (let i = 0; i < 8; i++) later(() => { if (spotEls[i]) spotEls[i].classList.add('on'); $('#cnt').textContent = i + 1; }, (700 + i * 450) * t);
-    later(() => { $('#t2').innerHTML = '가전 8대를<br>찾았어요'; $('#d2').innerHTML = '그중 <b>세탁기, 스타일러, 로봇청소기</b>는<br>햇빛에 맞춰 예약해 드릴 수 있어요.'; go.disabled = false; }, (900 + 8 * 450) * t);
+    for (let i = 0; i < 7; i++) later(() => { if (spotEls[i]) spotEls[i].classList.add('on'); $('#cnt').textContent = i + 1; }, (700 + i * 450) * t);
+    later(() => { $('#t2').innerHTML = '가전 7대를<br>찾았어요'; $('#d2').innerHTML = '그중 <b>세탁기, 스타일러, 로봇청소기</b>는<br>햇빛에 맞춰 예약해 드릴 수 있어요.'; go.disabled = false; }, (900 + 7 * 450) * t);
   }
 
   /* 3. 생활 패턴: 한 번에 한 질문 */
