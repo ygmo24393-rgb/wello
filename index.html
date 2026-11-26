@@ -1958,7 +1958,7 @@ const draw=(first)=>{qs.forEach((q,i)=>{const k=slot(i),pk=prev?prev[i]:k;
  q.style.transform='translate(0px,'+(991+k*62)+'px)';q.classList.toggle('on',k===0);q.style.fill=col(k);q.style.fillOpacity=op(k);
  if(first||Math.abs(k-pk)>1){q.getBoundingClientRect();q.style.transition='';}});
  prev=qs.map((_,i)=>slot(i));};
-const go=(to)=>{cur=((to%n)+n)%n;draw(false);rot+=90;m.style.transform='rotate('+rot+'deg)';};
+const go=(to)=>{cur=((to%n)+n)%n;draw(false);rot+=360;m.style.transform='rotate('+rot+'deg)';};
 const tick=()=>{clearTimeout(tm);tm=setTimeout(()=>{if(!hover)go(cur+1);tick();},2200);};
 qs.forEach((q,i)=>q.addEventListener('click',()=>{go(i);tick();}));
 const box=document.getElementById('ovq');box.addEventListener('mouseenter',()=>hover=true);box.addEventListener('mouseleave',()=>hover=false);
