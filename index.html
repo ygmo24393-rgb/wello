@@ -1941,11 +1941,13 @@
 </script>
 <script>
 (()=>{const b=document.getElementById('bgg'),l=document.getElementById('bggl');if(!b)return;
-const L=l.getTotalLength();l.style.strokeDasharray=L;l.style.strokeDashoffset=L;
-const ease=t=>t*t*(3-2*t);let raf=0;
-const up=()=>{raf=0;const r=b.getBoundingClientRect(),vh=innerHeight;
-let p=(vh*.95-r.top)/(r.height+vh*.1);p=Math.max(0,Math.min(1,p));
-l.style.strokeDashoffset=L*(1-ease(p));b.classList.toggle('on',p>=.985);};
-addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(up)},{passive:true});addEventListener('resize',up);up();})();
+const L=l.getTotalLength();l.style.strokeDasharray=L;l.style.strokeDashoffset=L;let t=0;
+const play=()=>{l.style.transition='stroke-dashoffset 2.6s cubic-bezier(.45,.05,.25,1)';l.style.strokeDashoffset=0;clearTimeout(t);t=setTimeout(()=>b.classList.add('on'),2350);};
+const reset=()=>{clearTimeout(t);l.style.transition='none';l.style.strokeDashoffset=L;b.classList.remove('on');};
+let shown=false;
+const chk=()=>{const r=b.getBoundingClientRect(),vh=innerHeight,vis=Math.min(r.bottom,vh)-Math.max(r.top,0);
+if(!shown&&vis>Math.min(r.height,vh)*.55){shown=true;play();}
+else if(shown&&(r.top>vh||r.bottom<0)){shown=false;reset();}};
+addEventListener('scroll',chk,{passive:true});addEventListener('resize',chk);chk();})();
 </script>
 </body></html>
