@@ -186,7 +186,7 @@ $('o2').addEventListener('click',()=>{pick(2);setTimeout(()=>{if(sel===2&&root.c
 const NS='http://www.w3.org/2000/svg';
 const DAYS=[['오늘','11.27 (금)',.75],['내일','11.28 (토)',1],['11월 29일','11.29 (일)',.55],['11월 30일','11.30 (월)',.85],['12월 1일','12.1 (화)',.95],['12월 2일','12.2 (수)',.7],['12월 3일','12.3 (목)',.9]];
 const TIMES=[];for(let m=9*60;m<=17*60;m+=30){const h=Math.floor(m/60),mm=m%60;TIMES.push({m,l:(h<12?'오전 ':'오후 ')+((h%12)||12)+':'+String(mm).padStart(2,'0')});}
-const kw=(m,f)=>Math.max(0,5.2*f*Math.exp(-Math.pow((m-750)/170,2)));
+const PK=[740,690,790,720,670,810,755];let _pk=750;const kw=(m,f)=>Math.max(0,5.2*f*Math.exp(-Math.pow((m-_pk)/170,2)));
 const best=f=>{let b=0;TIMES.forEach((t,i)=>{if(kw(t.m,f)>kw(TIMES[b].m,f))b=i;});return b;};
 const fmt=m=>{const h=Math.floor(m/60),mm=m%60;return (h<12?'오전 ':'오후 ')+((h%12)||12)+':'+String(mm).padStart(2,'0');};
 const setL=(t,l)=>{const p=String(l).split('|');t.textContent=p[0];if(p[1]){const sp=document.createElementNS(NS,'tspan');sp.setAttribute('dx','7');sp.setAttribute('font-size','13');sp.setAttribute('font-weight','400');sp.setAttribute('fill','#9A9DA3');sp.textContent=p[1];t.appendChild(sp);}};
@@ -213,7 +213,7 @@ const roll=(v)=>{const el=$('rcS');if(el.textContent===v)return;if(!el.textConte
  el.textContent=v;const t0=performance.now();const D=380;
  const st=n=>{const k=Math.min(1,(n-t0)/D),e=1-Math.pow(1-k,3);old.setAttribute('y',y0-14*e*up);old.setAttribute('opacity',1-e);el.setAttribute('y',y0+14*(1-e)*up);el.setAttribute('opacity',e);
   if(k<1)requestAnimationFrame(st);else{old.remove();el.setAttribute('y',y0);el.setAttribute('opacity',1);}};requestAnimationFrame(st);};
-const upd=()=>{try{fv();}catch(e){}const f=DAYS[day][2],st=startFor(DLS[tsel].m,f);const h=Math.floor(st/60),mm=String(st%60).padStart(2,'0');
+const upd=()=>{try{fv();}catch(e){}_pk=PK[day]||750;const f=DAYS[day][2],st=startFor(DLS[tsel].m,f);const h=Math.floor(st/60),mm=String(st%60).padStart(2,'0');
  roll(((h%12)||12)+':'+mm);$('rcE').textContent=fmt(st+DUR)+' 완료';$('rcS').setAttribute('data-l',fmt(st));};
 const WT=Wheel('wt',tLabels(),i=>{tsel=i;upd();});
 const WD=Wheel('wd',DAYS.map(d=>d[1]+(d[0]==='오늘'||d[0]==='내일'?'|'+d[0]:'')),i=>{day=i;upd();});
