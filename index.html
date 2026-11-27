@@ -1969,7 +1969,7 @@
 <div class="devpin" id="devpin" style="top:38.4491%;height:calc(100% * 1620/27314)"><div class="devstick" id="devstick"><div class="devbox" id="devbox"><div class="devst" id="devst"></div><div class="devsh" id="devsh"><div class="devsc" id="devsc"><iframe class="wp" src="wallpad/" title="월패드" loading="lazy" tabindex="-1"></iframe><iframe class="mb" src="adjust/?bare" title="모바일" loading="lazy" tabindex="-1"></iframe></div></div></div>
 <svg class="la" viewBox="0 380 1920 720" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="#wprow"/></svg>
 <svg class="lb" viewBox="0 380 1920 720" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="phtx" style="font-family:'Asta Sans','Creato Display',sans-serif">
-<text x="196" y="441" font-size="37" font-weight="500" letter-spacing="-1.1" fill="#0D0D0D">(2)<tspan dx="14">Smartphone</tspan></text>
+<text x="195" y="441" font-size="36" font-weight="400" letter-spacing="-.4" fill="#0D0D0D">(2)</text><text x="250" y="441" font-size="39" font-weight="600" letter-spacing="-1.6" fill="#0D0D0D">Smartphone</text>
 <text x="199" y="508" font-size="18.5" letter-spacing="-.5" fill="#0D0D0D">외출 중에도 알림을 받고, 상황이 바뀌면</text>
 <text x="199" y="541" font-size="18.5" letter-spacing="-.5" fill="#0D0D0D">가전 일정을 바로 조정하는 개인 기기입니다.</text>
 <text x="199" y="578" font-size="13.5" letter-spacing="-.3" fill="#CCCCCC">A Personal Device That Keeps You Notified On The Go</text>
@@ -2073,7 +2073,7 @@ const s1=Math.max(sw/1280,shh/720);wp.style.transform='translate('+((sw-1280*s1)
 const s2=Math.max(sw/402,shh/874);mb.style.transform='translate('+((sw-402*s2)/2*k)+'px,'+((shh-874*s2)/2*k)+'px) scale('+s2*k+')';
 const f=seg(p,.42,.6);wp.style.opacity=1-f;mb.style.opacity=f;wp.style.pointerEvents=p<.1?'auto':'none';mb.style.pointerEvents=p>.9?'auto':'none';
 const so=1-seg(p,.15,.35);stand.style.opacity=so;stand.style.width=180*k+'px';stand.style.height=46*k*so+'px';stand.style.top=(679/2+cy+H/2)*k+'px';
-const tq=io(seg(p,.38,.62));la.style.transform='translateY('+(-tq*4)+'%)';la.style.opacity=1-tq;lb.style.transform='translateY('+((1-tq)*4)+'%)';lb.style.opacity=tq;};
+const tq=seg(p,.4,.6);la.style.opacity=1-tq;lb.style.opacity=tq;};
 addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(up)},{passive:true});addEventListener('resize',up);up();})();
 </script>
 </body></html>
