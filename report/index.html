@@ -416,5 +416,8 @@
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.search.includes('static')) startDemo();
 }
 </script>
+<script>
+if(/inwp/.test(location.search)&&parent!==window){document.querySelectorAll('.nav span.n').forEach((s,i)=>{s.style.cursor='pointer';s.addEventListener('click',()=>parent.postMessage({wpnav:i},'*'));});}
+</script>
 </body>
 </html>
