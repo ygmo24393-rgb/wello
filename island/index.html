@@ -22,7 +22,7 @@ body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--i
 .box2 svg{display:block;width:100%;height:100%}
 
 /* phone */
-.ph{position:absolute;left:600px;top:84px;transform:scale(1.36);transform-origin:50% 0;width:640px;height:1320px;border-radius:112px;padding:9px;
+.ph{position:absolute;left:600px;top:80px;transform:scale(1.46);transform-origin:50% 0;width:640px;height:1320px;border-radius:112px;padding:9px;
   background:linear-gradient(90deg,#9EA2A8 0%,#E9EBED 1.6%,#F7F8F9 3%,#CFD2D6 6%,#E3E5E8 20%,#EDEFF1 50%,#E1E3E6 80%,#CDD0D4 94%,#F5F6F7 97%,#E6E8EA 98.4%,#999DA3 100%);
   box-shadow:0 0 0 1px rgba(60,66,76,.18),inset 0 0 0 1px rgba(255,255,255,.75),inset 0 0 0 2px rgba(120,126,134,.25),
     0 70px 120px -30px rgba(25,35,55,.28),0 24px 50px -16px rgba(25,35,55,.16)}
@@ -112,9 +112,9 @@ body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--i
   const sl = ms => new Promise(r => setTimeout(r, ms));
   let p = .38, raf = 0;
   const setP = v => { p = v; bf.style.width = (v * 100).toFixed(2) + '%'; ring.setAttribute('stroke-dashoffset', (81.68 * (1 - v)).toFixed(2)); mn.textContent = Math.max(1, Math.round(62 * (1 - v))); };
-  const tween = (to, d) => new Promise(res => { cancelAnimationFrame(raf); const f = p, t0 = performance.now();
-    const st = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; setP(f + (to - f) * e); if (k < 1) raf = requestAnimationFrame(st); else res(); };
-    raf = requestAnimationFrame(st); });
+  const tween = (to, d) => new Promise(res => { clearTimeout(raf); const f = p, t0 = performance.now();
+    const st = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; setP(f + (to - f) * e); if (k < 1) raf = setTimeout(() => st(performance.now()), 16); else res(); };
+    raf = setTimeout(() => st(performance.now()), 16); });
   (async () => {
     for (;;) {
       setP(.38); pv.textContent = 92;
