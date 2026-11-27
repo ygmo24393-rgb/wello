@@ -38,9 +38,9 @@
 .rvo.in{opacity:1}
 .rv.in,.rvb.in,.pop.in,.rvh.in{opacity:1;transform:none;filter:none}
 .wipe.in{clip-path:inset(0 0 0 0)}
-@media (prefers-reduced-motion:reduce){.rv,.rvb,.wipe,.pop,.rvh,.rvo{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}}.sw{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
-.sw:not(.on){opacity:0;transform:translateY(8px)}
-.sw.off{transition:opacity .5s ease;opacity:0;transform:none}
+@media (prefers-reduced-motion:reduce){.rv,.rvb,.wipe,.pop,.rvh,.rvo{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}}.sw{transform-box:fill-box;transform-origin:0% 100%;transition:opacity .28s ease-out,transform .7s cubic-bezier(.3,1.75,.5,1)}
+.sw:not(.on){opacity:0;transform:translateY(22px) scale(.86,.8) skewX(-6deg)}
+.sw.off{transition:opacity .35s ease,transform .45s cubic-bezier(.5,0,.75,0);opacity:0;transform:translateY(-10px)}
 </style>
 </head><body>
 <div class="wrap">
@@ -2083,7 +2083,7 @@ addEventListener('scroll',up,{passive:true});addEventListener('resize',up);up();
 (()=>{const w=[...document.querySelectorAll('.sw')].sort((a,b)=>a.style.getPropertyValue('--i')-b.style.getPropertyValue('--i'));if(!w.length)return;
 const T=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{for(;;){w.forEach(e=>e.classList.remove('on','off'));await T(500);
-for(const e of w){e.classList.add('on');await T(240);}
+for(const e of w){e.classList.add('on');await T(170);}
 await T(2400);w.forEach(e=>e.classList.add('off'));await T(550);}})();})();
 </script>
 </body></html>
