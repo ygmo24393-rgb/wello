@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wello — Design Result</title>
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800}
+:root{--ink:#1E1F22;--muted:#8A8F98;--blue:#2B9CFF;--spring:cubic-bezier(.3,1.15,.4,1);--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:"Asta Sans","Creato Display",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.cv{position:absolute;left:0;top:0;width:1920px;height:1642px;transform-origin:0 0}
+.bx{position:absolute;border-radius:24px;overflow:hidden;background:#F6F6F7;
+  opacity:0;transform:translateY(60px) scale(.98);transition:opacity .9s var(--ease),transform 1.1s var(--ease),box-shadow .5s ease}
+.on .bx{opacity:1;transform:none}
+.bx:hover{transform:translateY(-6px);box-shadow:0 30px 60px -28px rgba(20,40,80,.28)}
+.cap{position:absolute;left:28px;bottom:24px;font-family:"Creato Display",sans-serif;font-size:14px;font-weight:500;letter-spacing:.2px;color:#8A8F98;text-transform:uppercase;z-index:3}
+.cap.w{color:rgba(255,255,255,.7)}
+.img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 1.4s var(--ease)}
+.bx:hover .img{transform:scale(1.05)}
+/* 1 house */
+.b1 .img{background-image:url(img/house.webp)}
+.pulse{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 rgba(43,156,255,.5);animation:pl 2.2s ease-out infinite;z-index:2}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(43,156,255,.55)}100%{box-shadow:0 0 0 22px rgba(43,156,255,0)}}
+/* 2 notifications */
+.b2{background:linear-gradient(160deg,#EAF4FF 0%,#F6F9FF 55%,#FFFFFF 100%)}
+.nt{position:absolute;left:44px;right:44px;height:104px;border-radius:26px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 18px 40px -22px rgba(30,60,110,.35),inset 0 0 0 1px rgba(255,255,255,.9);display:flex;align-items:center;gap:16px;padding:0 22px;
+  transition:transform .9s var(--spring),opacity .6s ease}
+.nt .ic{width:56px;height:56px;border-radius:14px;flex:none;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;color:var(--blue)}
+.nt .ic svg{width:34px;height:34px}
+.nt h4{font-size:17px;font-weight:600;letter-spacing:-.3px}
+.nt p{font-size:14px;color:#5B616B;margin-top:4px;letter-spacing:-.2px;line-height:1.35}
+.nt time{position:absolute;right:22px;top:20px;font-size:12.5px;color:#9A9EA6}
+/* 3 phone */
+.b3{background:linear-gradient(180deg,#F6F6F7 0%,#EAF2FC 100%)}
+.b3 iframe{position:absolute;left:50%;top:48px;width:520px;height:1013px;margin-left:-260px;border:0;pointer-events:none}
+/* 4 app */
+.b4{background:linear-gradient(165deg,#5CB5FF 0%,#2B9CFF 45%,#0E7DFB 100%);color:#fff}
+.app{position:absolute;left:50%;top:44%;width:132px;height:132px;margin:-66px 0 0 -66px;border-radius:30px;background:#fff;box-shadow:0 24px 50px -18px rgba(0,40,120,.45);display:flex;align-items:center;justify-content:center;color:var(--blue);transition:transform .8s var(--spring)}
+.app svg{width:84px;height:84px}
+.app g{transform-box:fill-box;transform-origin:50% 50%;transition:transform 1.2s cubic-bezier(.65,0,.35,1)}
+.b4:hover .app{transform:translateY(-8px) rotate(-4deg)}
+.b4:hover .app g{transform:rotate(360deg)}
+.b4 .nm{position:absolute;left:0;right:0;top:calc(44% + 92px);text-align:center;font-family:"Creato Display",sans-serif;font-size:26px;font-weight:500;letter-spacing:-.5px}
+.b4 .sub{position:absolute;left:0;right:0;top:calc(44% + 128px);text-align:center;font-size:14px;opacity:.75}
+/* 5 forecast */
+.b5{padding:26px 26px}
+.b5 .lb{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:#3A3D42}
+.b5 .lb svg{width:18px;height:18px}
+.b5 .v{position:absolute;left:26px;bottom:62px;font-family:"Creato Display",sans-serif;font-size:58px;font-weight:500;letter-spacing:-2.5px;font-variant-numeric:tabular-nums}
+.b5 .v small{font-size:20px;color:var(--muted);letter-spacing:0;margin-left:6px}
+.bars{position:absolute;left:26px;right:26px;bottom:26px;height:26px;display:flex;align-items:flex-end;gap:5px}
+.bars i{flex:1;border-radius:3px;background:#DCE9F8;height:20%;transition:height 1s var(--spring)}
+.bars i.hi{background:var(--blue)}
+/* 6 island */
+.b6{background:#0D0D0D}
+.pill{position:absolute;left:50%;top:50%;width:200px;height:56px;margin:-28px 0 0 -100px;border-radius:28px;background:#000;box-shadow:inset 0 0 0 1px #1A1B1D;transition:width .7s var(--spring),margin .7s var(--spring)}
+.b6:hover .pill{width:236px;margin-left:-118px}
+.pill .mk{position:absolute;left:14px;top:10px;width:36px;height:36px;color:#fff}
+.pill .mk g{transform-box:fill-box;transform-origin:50% 50%;animation:sp 2.4s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.pill .rg{position:absolute;right:12px;top:10px;width:36px;height:36px}
+/* 7 schedule */
+.b7 .img{background-image:url(img/schedule.webp)}
+.now{position:absolute;top:13%;bottom:0;width:2px;background:var(--blue);left:8%;z-index:2;animation:nw 9s linear infinite;opacity:.85}
+.now::before{content:"";position:absolute;left:-5px;top:-6px;width:12px;height:12px;border-radius:50%;background:var(--blue)}
+@keyframes nw{from{left:8%}to{left:92%}}
+/* 8 report */
+.b8 .img{background-image:url(img/report.webp);background-size:100% auto;background-position:center top}
+/* 9 live activity */
+.b9{background:radial-gradient(120% 90% at 20% 0%,#24344F 0%,#0D0D0D 60%)}
+.la{position:absolute;left:44px;right:44px;top:50%;transform:translateY(-50%);border-radius:44px;background:#000;padding:26px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 0 0 1px #1A1B1D;color:#fff}
+.la .r1{display:flex;align-items:center;gap:14px}
+.la .r1 svg{width:44px;height:44px;color:#fff}
+.la .r1 g{transform-box:fill-box;transform-origin:50% 50%;animation:sp 2.4s cubic-bezier(.65,0,.35,1) infinite}
+.la .k{font-size:12px;color:#8E8E93;font-family:"Creato Display",sans-serif}
+.la .t{font-size:19px;font-weight:600;letter-spacing:-.4px}
+.la .r2{position:relative;margin-top:18px;height:96px;border-radius:24px;background:#141517;display:flex;align-items:center;gap:20px;padding:0 24px}
+.la .th{width:62px;height:62px;border-radius:50%;background:#1F2329;display:flex;align-items:center;justify-content:center;flex:none}
+.la .th img{width:84%;height:84%}
+.la .nm{font-size:17px;font-weight:600}
+.la .ds{font-size:14px;color:#8E8E93;margin-top:3px}
+.la .ch{position:absolute;right:24px;top:22px;height:24px;padding:0 10px;border-radius:12px;background:#1F2329;font-size:12px;line-height:24px;color:#E5E5EA;font-variant-numeric:tabular-nums}
+.la .bar{position:absolute;left:106px;right:24px;bottom:18px;height:5px;border-radius:3px;background:#282D35;overflow:hidden}
+.la .bar i{position:absolute;left:0;top:0;bottom:0;width:40%;border-radius:3px;background:linear-gradient(90deg,#4DBCFF,#0E7DFB)}
+</style></head><body>
+<div class="cv" id="cv">
+ <div class="bx b1" style="left:45.5px;top:0;width:602px;height:540px;transition-delay:0s"><div class="img"></div><i class="pulse" style="left:34%;top:62%"></i><i class="pulse" style="left:16%;top:30%;animation-delay:.8s"></i><span class="cap">Home · 3D</span></div>
+ <div class="bx b2" style="left:663.5px;top:0;width:601px;height:542px;transition-delay:.08s" id="b2"><span class="cap">Alert</span></div>
+ <div class="bx b3" style="left:1279.5px;top:0;width:602px;height:1096px;transition-delay:.16s"><iframe src="../mock/?src=..%2Fadjust%2F%3Fbare%26auto%26v%3D791200" title="모바일 자동 시연" loading="lazy" tabindex="-1"></iframe><span class="cap">Adjust · Mobile</span></div>
+ <div class="bx b4" style="left:46.5px;top:556px;width:293px;height:542px;transition-delay:.12s"><div class="app"><svg viewBox="9 9 68 68"><g><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g></svg></div><div class="nm">Wello</div><div class="sub">Solar appliance planner</div></div>
+ <div class="bx b5" style="left:355.5px;top:556px;width:293px;height:263px;transition-delay:.2s" id="b5"><div class="lb"><svg viewBox="0 0 16 16"><path d="M8 0c.5 0 .9.4 1 .9.2 1.4.2 2.6.9 3.7.5.9 1.6 1.8 4.5 1.8.7 0 1.3.6 1.3 1.3v0c0 .8-.6 1.4-1.3 1.4-2.9 0-4 .9-4.5 1.8-.7 1.1-.7 2.3-.9 3.7-.1.5-.5.9-1 .9s-.9-.4-1-.9c-.2-1.4-.2-2.6-.9-3.7C5.6 10 4.5 9.1 1.3 9.1.6 9.1 0 8.5 0 7.8s.6-1.4 1.3-1.4c3.2 0 4.3-.9 4.8-1.8.7-1.1.7-2.3.9-3.7.1-.5.5-.9 1-.9Z" fill="#0E7DFB"/></svg>오늘 예상 발전량</div><div class="v"><span id="kw">0.0</span><small>kWh</small></div><div class="bars" id="bars"></div></div>
+ <div class="bx b6" style="left:355.5px;top:835px;width:293px;height:263px;transition-delay:.28s"><div class="pill"><svg class="mk" viewBox="9 9 68 68"><g><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#fff"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#fff"/></g></svg><svg class="rg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="4"/><circle id="rg" cx="18" cy="18" r="13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="81.68" stroke-dashoffset="60" transform="rotate(-90 18 18)"/></svg></div><span class="cap w">Dynamic Island</span></div>
+ <div class="bx b7" style="left:663.5px;top:558px;width:601px;height:542px;transition-delay:.24s"><div class="img"></div><i class="now"></i><span class="cap">Schedule</span></div>
+ <div class="bx b8" style="left:38.5px;top:1112px;width:1219px;height:530px;transition-delay:.32s"><div class="img"></div><span class="cap">Energy Report</span></div>
+ <div class="bx b9" style="left:1279.5px;top:1112px;width:601px;height:530px;transition-delay:.4s"><div class="la"><div class="r1"><svg viewBox="9 9 68 68"><g><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#fff"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#fff"/></g></svg><div><div class="k">Wello</div><div class="t">세탁기가 작동 중이에요</div></div></div><div class="r2"><div class="th"><img src="data:image/webp;base64,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" alt=""></div><div><div class="nm">세탁기</div><div class="ds">오전 11:40 – 오후 1:20</div></div><div class="ch"><span id="mn">38</span>분 남음</div><div class="bar"><i id="bf"></i></div></div></div><span class="cap w">Live Activity</span></div>
+</div>
+<script>
+const cv=document.getElementById('cv');const fit=()=>cv.style.transform=`scale(${innerWidth/1920})`;fit();addEventListener('resize',fit);
+const T=ms=>new Promise(r=>setTimeout(r,ms));
+// reveal
+setTimeout(()=>document.body.classList.add('on'),60);
+// 2 notifications
+const N=[['예상 발전량이 낮아졌어요.','비 예보로 세탁이 계획보다 늦게 끝날 수 있어요.','10분 전'],['세탁기를 오후 12:20로 옮겼어요','태양광 발전이 가장 많은 시간이에요.','지금'],['건조기 작동이 끝났어요','오늘 태양광으로 1.3kWh를 썼어요.','방금']];
+const b2=document.getElementById('b2');const ICON='<svg viewBox="9 9 68 68"><g><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g></svg>';
+const cards=N.map(([h,p,t])=>{const d=document.createElement('div');d.className='nt';d.innerHTML=`<div class="ic">${ICON}</div><div><h4>${h}</h4><p>${p}</p></div><time>${t}</time>`;d.style.opacity=0;d.style.transform='translateY(120px) scale(.96)';b2.appendChild(d);return d;});
+(async()=>{await T(900);for(;;){for(let k=0;k<cards.length;k++){cards.forEach((c,i)=>{const d=k-i;if(d<0){c.style.opacity=0;c.style.transform='translateY(140px) scale(.96)';c.style.top='60%'}else{c.style.opacity=d>2?0:1-d*.22;c.style.top='50%';c.style.transform=`translateY(${-52-d*20}px) scale(${1-d*.06})`;c.style.zIndex=10-d;}});await T(2600);}
+ cards.forEach(c=>{c.style.opacity=0;c.style.transform='translateY(-160px) scale(.9)'});await T(900);}})();
+// 5 count + bars
+const kw=document.getElementById('kw'),bars=document.getElementById('bars');const H=[18,26,40,62,84,100,88,66,44,28,18,12];
+const bi=H.map((h,i)=>{const e=document.createElement('i');if(i===5)e.className='hi';bars.appendChild(e);return e;});
+(async()=>{await T(700);for(;;){const t0=performance.now();bi.forEach((e,i)=>setTimeout(()=>e.style.height=H[i]+'%',i*60));
+ await new Promise(r=>{const st=()=>{const k=Math.min(1,(performance.now()-t0)/1400),e=1-Math.pow(1-k,3);kw.textContent=(12.5*e).toFixed(1);k<1?setTimeout(st,16):r();};st();});
+ await T(4200);bi.forEach(e=>e.style.height='20%');await T(800);}})();
+// 6 ring
+const rg=document.getElementById('rg');let rp=.25;setInterval(()=>{rp=rp>=.95?.25:rp+.01;rg.setAttribute('stroke-dashoffset',(81.68*(1-rp)).toFixed(2));},90);
+// 9 progress
+const bf=document.getElementById('bf'),mn=document.getElementById('mn');let p=.38;setInterval(()=>{p=p>=.9?.38:p+.004;bf.style.width=(p*100).toFixed(1)+'%';mn.textContent=Math.max(1,Math.round(62*(1-p)));},80);
+</script>
+</body></html>
