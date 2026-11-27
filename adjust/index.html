@@ -162,7 +162,7 @@ const close=()=>root.classList.remove('open','s2');
 $('c1').addEventListener('click',()=>open(1));$('c2').addEventListener('click',()=>open(2));
 $('dim').addEventListener('click',close);
 $('o1').addEventListener('click',()=>pick(1));
-$('o2').addEventListener('click',()=>pick(2));
+$('o2').addEventListener('click',()=>{pick(2);setTimeout(()=>{if(sel===2&&root.classList.contains('open')){day=0;slot=0;render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}},260);});
 
 const D=[{c:'11.28 토 · 맑음',l:'내일',s:[['오전 11:00','예상 발전 4.6kW · 12:40 완료'],['오후 1:00','예상 발전 4.1kW · 14:40 완료'],['오후 3:30','예상 발전 1.9kW · 17:10 완료']]},
 {c:'11.29 일 · 흐림',l:'11월 29일',s:[['오전 11:30','예상 발전 2.4kW · 13:10 완료'],['오후 1:00','예상 발전 2.1kW · 14:40 완료'],['오전 9:00','예상 발전 1.2kW · 10:40 완료']]},
