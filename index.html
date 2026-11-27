@@ -2071,7 +2071,7 @@ sh.style.boxShadow='0 0 0 '+(4*m*k)+'px #D3D5D8,0 0 0 '+(5*m*k)+'px #B9BCC1,0 '+
 const sw=W-2*B,shh=H-2*B;sc.style.left=sc.style.top=B*k+'px';sc.style.width=sw*k+'px';sc.style.height=shh*k+'px';sc.style.borderRadius=Math.max(2,R-B)*k+'px';
 const s1=Math.max(sw/1280,shh/720);wp.style.transform='translate('+((sw-1280*s1)/2*k)+'px,'+((shh-720*s1)/2*k)+'px) scale('+s1*k+')';
 const s2=Math.max(sw/402,shh/874);mb.style.transform='translate('+((sw-402*s2)/2*k)+'px,'+((shh-874*s2)/2*k)+'px) scale('+s2*k+')';
-wp.style.opacity=1-seg(p,.12,.3);mb.style.opacity=seg(p,.7,.88);wp.style.pointerEvents=p<.1?'auto':'none';mb.style.pointerEvents=p>.9?'auto':'none';
+wp.style.opacity=1-seg(p,.12,.3);mb.style.opacity=seg(p,.7,.88);wp.style.pointerEvents=p<.15?'auto':'none';mb.style.pointerEvents=p>.75?'auto':'none';
 const so=1-seg(p,.15,.35);stand.style.opacity=so;stand.style.width=180*k+'px';stand.style.height=46*k*so+'px';stand.style.top=(679/2+cy+H/2)*k+'px';
 la.style.opacity=1-seg(p,.3,.45);lb.style.opacity=seg(p,.55,.7);};
 addEventListener('scroll',up,{passive:true});addEventListener('resize',up);up();})();
