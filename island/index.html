@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic Island — Wello</title>
+<style>
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Creato Display";src:url("../fonts/CreatoDisplay-Medium.woff2") format("woff2");font-weight:500 600}
+@font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800}
+:root{--ink:#0D0D0D;--sub:#3A3D42;--blue:#2B9CFF;--ease:cubic-bezier(.22,.8,.2,1);--spring:cubic-bezier(.3,1.18,.4,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F5F5F5;overflow:hidden}
+body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.cv{position:absolute;left:0;top:0;width:1920px;height:1525px;transform-origin:0 0}
+.hd{position:absolute;left:0;top:248px;width:1920px}
+.hd .no,.hd .tt{position:absolute;top:-8px;font-size:27px;font-weight:500;letter-spacing:-1px}
+.hd .no{left:195px}.hd .tt{left:303px}
+.hd p{position:absolute;left:1121px;top:-14px;font-family:"Asta Sans",sans-serif;font-size:18.5px;line-height:34px;color:var(--ink);letter-spacing:-.5px}
+.box{position:absolute;left:40px;top:452px;width:1840px;height:913px;background:#fff;border-radius:24px;overflow:hidden}
+
+/* phone */
+.ph{position:absolute;left:600px;top:110px;width:640px;height:1320px;border-radius:118px;padding:11px;
+  background:linear-gradient(90deg,#B9BCC1 0%,#ECEDEF 4%,#D9DBDF 12%,#E6E7EA 50%,#D9DBDF 88%,#ECEDEF 96%,#B4B7BC 100%);
+  box-shadow:0 40px 90px rgba(20,30,50,.10),inset 0 0 0 1px rgba(0,0,0,.08)}
+.ph::before{content:"";position:absolute;left:-5px;top:250px;width:5px;height:64px;border-radius:3px 0 0 3px;background:#C9CBCF;box-shadow:0 110px 0 #C9CBCF,0 200px 0 #C9CBCF}
+.ph::after{content:"";position:absolute;right:-5px;top:330px;width:5px;height:120px;border-radius:0 3px 3px 0;background:#C9CBCF}
+.bz{position:relative;width:100%;height:100%;border-radius:107px;background:#050506;padding:11px}
+.sc{position:relative;width:100%;height:100%;border-radius:96px;overflow:hidden;
+  background:
+   radial-gradient(60% 40% at 20% 8%,rgba(255,255,255,.75),rgba(255,255,255,0) 70%),
+   radial-gradient(70% 45% at 85% 30%,#9FB6D4 0%,rgba(159,182,212,0) 70%),
+   radial-gradient(80% 50% at 30% 60%,#6F7C8F 0%,rgba(111,124,143,0) 70%),
+   linear-gradient(160deg,#C9D2DE 0%,#8D99AA 45%,#5D6676 100%)}
+.sc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,0) 30%)}
+.sb{position:absolute;left:0;right:0;top:0;height:90px;color:#fff;font-family:"Asta Sans",sans-serif;z-index:1}
+.sb .tm{position:absolute;left:82px;top:30px;font-size:26px;font-weight:600;letter-spacing:-.3px}
+.sb .ic{position:absolute;right:54px;top:34px;display:flex;gap:8px;align-items:center;transform:scale(.9);transform-origin:100% 50%}
+
+/* island */
+.di{position:absolute;left:50%;top:17px;width:190px;height:56px;margin-left:-95px;border-radius:28px;background:#000;z-index:3;overflow:hidden;
+  transition:width .62s var(--spring),height .62s var(--spring),margin-left .62s var(--spring),border-radius .62s var(--spring),top .62s var(--spring)}
+.di.cp{width:236px;margin-left:-118px}
+.di.ex{width:572px;height:206px;margin-left:-286px;top:11px;border-radius:58px}
+.cpl,.cpr{position:absolute;top:10px;opacity:0;transition:opacity .25s ease}
+.cpl{left:16px}.cpr{right:14px}
+.di.cp .cpl,.di.cp .cpr{opacity:1;transition-delay:.25s}
+.xc{position:absolute;left:0;top:0;width:572px;height:206px;padding:26px 28px 0;opacity:0;filter:blur(6px);transform:scale(.96);transform-origin:50% 0;
+  transition:opacity .22s ease,filter .22s ease,transform .3s ease;font-family:"Asta Sans",sans-serif}
+.di.ex.on .xc{opacity:1;filter:none;transform:none;transition:opacity .45s ease .05s,filter .45s ease .05s,transform .6s var(--spring)}
+.r1{display:flex;align-items:center;gap:14px}
+.r1 img{width:46px;height:46px;border-radius:11px;display:block}
+.r1 .k{font-size:13px;color:#8E8E93;letter-spacing:.2px;font-family:"Creato Display",sans-serif;font-weight:500}
+.r1 .t{font-size:21px;color:#fff;font-weight:600;letter-spacing:-.4px;margin-top:1px}
+.r2{position:relative;margin-top:16px;height:94px;border-radius:26px;background:#1C1C1E;padding:15px 18px 0 16px;display:flex;gap:14px}
+.th{width:54px;height:54px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.th img{width:32px;height:32px}
+.nm{font-size:16px;color:#fff;font-weight:600;letter-spacing:-.3px;margin-top:4px}
+.ds{font-size:13px;color:#8E8E93;letter-spacing:-.2px;margin-top:3px}
+.ch{position:absolute;right:16px;top:14px;height:26px;padding:0 11px;border-radius:13px;background:#2C2C2E;color:#E5E5EA;font-size:12.5px;line-height:26px;letter-spacing:-.2px;font-variant-numeric:tabular-nums}
+.bar{position:absolute;left:86px;right:18px;bottom:15px;height:5px;border-radius:3px;background:#3A3A3C;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:linear-gradient(90deg,#4DBCFF,#0E7DFB)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="cv" id="cv">
+  <div class="hd">
+    <span class="no">/06</span><span class="tt">DYNAMIC ISLAND</span>
+    <p>가전이 작동하는 동안 다이나믹 아일랜드에서 진행 상황을 확인할 수 있습니다.<br>앱을 열지 않아도 남은 시간과 태양광 사용 비율을 바로 볼 수 있습니다.</p>
+  </div>
+  <div class="box">
+    <div class="ph"><div class="bz"><div class="sc">
+      <div class="sb"><span class="tm">9:41</span>
+        <span class="ic">
+          <svg width="30" height="20" viewBox="0 0 30 20" fill="#fff"><rect x="0" y="13" width="5" height="7" rx="1.4"/><rect x="8" y="9" width="5" height="11" rx="1.4"/><rect x="16" y="5" width="5" height="15" rx="1.4"/><rect x="24" y="0" width="5" height="20" rx="1.4"/></svg>
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="#fff"><path d="M14 4.2c3.9 0 7.4 1.5 10 4l2-2.1C23 3 18.7 1.2 14 1.2S5 3 2 6.1l2 2.1c2.6-2.5 6.1-4 10-4Zm0 5.6c2.4 0 4.5.9 6.1 2.4l2-2.1C20 8 17.2 6.8 14 6.8S8 8 5.9 10.1l2 2.1c1.6-1.5 3.7-2.4 6.1-2.4Zm0 5.6c.9 0 1.7.3 2.3.9L14 18.8l-2.3-2.5c.6-.6 1.4-.9 2.3-.9Z"/></svg>
+          <svg width="44" height="22" viewBox="0 0 44 22"><rect x="1" y="1" width="37" height="20" rx="6.5" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.6"/><rect x="4" y="4" width="29" height="14" rx="4" fill="#fff"/><path d="M40.5 8v6c1.4-.5 2.2-1.6 2.2-3s-.8-2.5-2.2-3Z" fill="#fff" fill-opacity=".45"/></svg>
+        </span></div>
+      <div class="di" id="di">
+        <svg class="cpl" width="36" height="36" viewBox="9 9 68 68"><g><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g></svg>
+        <svg class="cpr" width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="none" stroke="#2C2C2E" stroke-width="4"/><circle id="ring" cx="18" cy="18" r="13" fill="none" stroke="#2B9CFF" stroke-width="4" stroke-linecap="round" stroke-dasharray="81.68" stroke-dashoffset="50" transform="rotate(-90 18 18)"/></svg>
+        <div class="xc">
+          <div class="r1"><img src="../assets/wello-appicon.svg" alt=""><div><div class="k">WELLO</div><div class="t">세탁기가 작동 중이에요</div></div></div>
+          <div class="r2">
+            <div class="th"><img src="../assets/icons/washer.svg" alt=""></div>
+            <div><div class="nm">세탁기</div><div class="ds">표준 세탁 · 태양광 <span id="pv">92</span>%</div></div>
+            <div class="ch"><span id="mn">38</span>분 남음</div>
+            <div class="bar"><i id="bf"></i></div>
+          </div>
+        </div>
+      </div>
+    </div></div></div>
+  </div>
+</div>
+<script>
+(() => {
+  const cv = document.getElementById('cv'), di = document.getElementById('di');
+  const bf = document.getElementById('bf'), mn = document.getElementById('mn'), ring = document.getElementById('ring'), pv = document.getElementById('pv');
+  const fit = () => cv.style.transform = `scale(${innerWidth / 1920})`;
+  fit(); addEventListener('resize', fit);
+  const sl = ms => new Promise(r => setTimeout(r, ms));
+  let p = .38, raf = 0;
+  const setP = v => { p = v; bf.style.width = (v * 100).toFixed(2) + '%'; ring.setAttribute('stroke-dashoffset', (81.68 * (1 - v)).toFixed(2)); mn.textContent = Math.max(1, Math.round(62 * (1 - v))); };
+  const tween = (to, d) => new Promise(res => { cancelAnimationFrame(raf); const f = p, t0 = performance.now();
+    const st = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; setP(f + (to - f) * e); if (k < 1) raf = requestAnimationFrame(st); else res(); };
+    raf = requestAnimationFrame(st); });
+  (async () => {
+    for (;;) {
+      setP(.38); pv.textContent = 92;
+      di.className = 'di'; await sl(1200);
+      di.className = 'di cp'; await sl(1500);
+      di.className = 'di ex'; await sl(380);
+      di.classList.add('on'); await sl(700);
+      await tween(.56, 2600); pv.textContent = 94;
+      await tween(.66, 1600); await sl(900);
+      di.classList.remove('on'); await sl(200);
+      di.className = 'di cp'; await sl(1700);
+    }
+  })();
+})();
+</script>
+</body>
+</html>
