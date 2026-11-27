@@ -229,11 +229,7 @@ $('f2').addEventListener('click',()=>{open2=!open2;if(open2)open1=false;lay2();}
 const fv=()=>{const d=DAYS[day];$('f1v').textContent=d[1]+(d[0]==='오늘'||d[0]==='내일'?'  '+d[0]:'');$('f2v').textContent=DLS[tsel].l+'  까지';};
 
 const toast=t=>{$('tt').textContent=t;try{const w=$('tt').getComputedTextLength()+36;$('tr').setAttribute('width',w);$('tr').setAttribute('x',359-w/2);}catch(e){}$('toast').classList.add('on');clearTimeout(tm);tm=setTimeout(()=>$('toast').classList.remove('on'),2600);};
-const setSub=t=>{const o=$('c'+ap+'sub'),n=$('c'+ap+'new');const fromNew=n.textContent&&+getComputedStyle(n).opacity>0;
- const out=fromNew?n.cloneNode(true):o;if(fromNew){out.removeAttribute('id');n.parentNode.appendChild(out);}
- n.textContent=t;o.style.transition=n.style.transition='none';const t0=performance.now(),D=420;
- const st=k0=>{const k=Math.min(1,(k0-t0)/D),e=1-Math.pow(1-k,3);out.setAttribute('transform','translate(0 '+(-9*e)+')');out.style.opacity=1-e;n.setAttribute('transform','translate(0 '+(9*(1-e))+')');n.style.opacity=e;
-  if(k<1)requestAnimationFrame(st);else{if(fromNew)out.remove();else o.style.opacity=0;n.removeAttribute('transform');n.style.opacity=1;}};requestAnimationFrame(st);};
+const setSub=t=>{const o=$('c'+ap+'sub'),n=$('c'+ap+'new');n.removeAttribute('transform');o.style.transition=n.style.transition='opacity .22s ease';o.style.opacity=0;n.style.opacity=0;setTimeout(()=>{n.textContent=t;n.style.opacity=1;},120);};
 const closeAll=()=>root.classList.remove('open','s2');
 $('go').addEventListener('click',e=>{if(sel===2){day=1;open1=false;open2=false;lay2();render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}else{closeAll();setTimeout(()=>{setSub('지금 작동 중 · 일반 전기 사용');toast(AP[ap]+'를 지금 시작했어요');},350);}});
 $('go2').addEventListener('click',()=>{const d=DAYS[day][0],t=$('rcS').getAttribute('data-l');closeAll();setTimeout(()=>{setSub(d+' '+t+' 시작 · '+DLS[tsel].l+'까지');toast(AP[ap]+'를 '+d+' '+t+'로 옮겼어요');},350);});
