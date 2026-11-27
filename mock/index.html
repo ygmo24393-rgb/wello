@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wello mock</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+.cv{position:absolute;left:0;top:0;width:760px;height:1480px;transform-origin:0 0}
+.ph{position:absolute;left:60px;top:50px;width:640px;height:1340px;border-radius:112px;padding:9px;
+  background:linear-gradient(90deg,#9EA2A8 0%,#E9EBED 1.6%,#F7F8F9 3%,#CFD2D6 6%,#E3E5E8 20%,#EDEFF1 50%,#E1E3E6 80%,#CDD0D4 94%,#F5F6F7 97%,#E6E8EA 98.4%,#999DA3 100%);
+  box-shadow:0 0 0 1px rgba(60,66,76,.18),inset 0 0 0 1px rgba(255,255,255,.75),inset 0 0 0 2px rgba(120,126,134,.25),
+    0 50px 90px -30px rgba(25,35,55,.26),0 18px 40px -16px rgba(25,35,55,.14)}
+.ph i.btn{position:absolute;width:6px;border-radius:2px;background:linear-gradient(90deg,#A9ADB3,#EEF0F2 45%,#C3C6CB);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.12)}
+.ph i.l{left:-5px;border-radius:3px 0 0 3px}.ph i.r{right:-5px;border-radius:0 3px 3px 0;background:linear-gradient(90deg,#C3C6CB,#EEF0F2 55%,#A9ADB3)}
+.ph i.ant{position:absolute;width:9px;height:4px;background:#C2C5CA;box-shadow:inset 0 1px 0 rgba(0,0,0,.08)}
+.ph i.ant.b{top:auto}
+.bz{position:relative;width:100%;height:100%;border-radius:103px;background:#000;padding:13px;box-shadow:inset 0 0 0 1.5px #1A1B1D}
+.sc{position:relative;width:100%;height:100%;border-radius:90px;overflow:hidden;background:#EEEEEF}
+.sc iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.sc::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;border-radius:inherit;
+  background:linear-gradient(118deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 26%,rgba(255,255,255,0) 40%)}
+</style></head><body>
+<div class="cv" id="cv">
+ <div class="ph"><i class="btn l" style="top:236px;height:44px"></i><i class="btn l" style="top:330px;height:88px"></i><i class="btn l" style="top:440px;height:88px"></i><i class="btn r" style="top:380px;height:140px"></i><i class="btn r" style="top:760px;height:96px"></i><i class="ant" style="left:-2px;top:150px"></i><i class="ant" style="right:-2px;top:150px"></i><i class="ant" style="left:-2px;top:1190px"></i><i class="ant" style="right:-2px;top:1190px"></i>
+  <div class="bz"><div class="sc"><iframe id="scr" title="Wello 화면" tabindex="-1"></iframe></div></div></div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);document.getElementById('scr').src=q.get('src')||'../adjust/?bare&auto';
+const cv=document.getElementById('cv');const fit=()=>cv.style.transform=`scale(${innerWidth/760})`;fit();addEventListener('resize',fit);
+</script>
+</body></html>
