@@ -38,9 +38,7 @@
 .rvo.in{opacity:1}
 .rv.in,.rvb.in,.pop.in,.rvh.in{opacity:1;transform:none;filter:none}
 .wipe.in{clip-path:inset(0 0 0 0)}
-@media (prefers-reduced-motion:reduce){.rv,.rvb,.wipe,.pop,.rvh,.rvo{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}}.sw{transform-box:fill-box;transform-origin:0% 100%;transition:opacity .28s ease-out,transform .7s cubic-bezier(.3,1.75,.5,1)}
-.sw:not(.on){opacity:0;transform:translateY(22px) scale(.86,.8) skewX(-6deg)}
-.sw.off{transition:opacity .35s ease,transform .45s cubic-bezier(.5,0,.75,0);opacity:0;transform:translateY(-10px)}
+@media (prefers-reduced-motion:reduce){.rv,.rvb,.wipe,.pop,.rvh,.rvo{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}}.sw{opacity:0}
 </style>
 </head><body>
 <div class="wrap">
@@ -2081,9 +2079,15 @@ addEventListener('scroll',up,{passive:true});addEventListener('resize',up);up();
 </script>
 <script>
 (()=>{const w=[...document.querySelectorAll('.sw')].sort((a,b)=>a.style.getPropertyValue('--i')-b.style.getPropertyValue('--i'));if(!w.length)return;
+const NS='http://www.w3.org/2000/svg',svg=w[0].ownerSVGElement;let defs=svg.querySelector('defs');if(!defs){defs=document.createElementNS(NS,'defs');svg.prepend(defs);}
+const bl=w.map((e,i)=>{const f=document.createElementNS(NS,'filter');f.id='swb'+i;['x','y','width','height'].forEach((k,j)=>f.setAttribute(k,['-30%','-80%','160%','260%'][j]));const g=document.createElementNS(NS,'feGaussianBlur');f.appendChild(g);defs.appendChild(f);e.setAttribute('filter','url(#swb'+i+')');return g;});
+const eo=t=>1-Math.pow(1-t,4),st=w.map(()=>({p:0,from:0,to:0,t0:0,d:1}));
+const set=(i,p,out)=>{const e=w[i];e.style.opacity=p;const b=(1-p)*(out?5:8);bl[i].setAttribute('stdDeviation',b<.05?0:b);e.setAttribute('transform',out?'':'translate(0 '+((1-p)*16).toFixed(2)+')');};
+let out=false;
+const go=(i,to,d)=>{const s=st[i];s.from=s.p;s.to=to;s.t0=performance.now();s.d=d;};
+(function loop(n){st.forEach((s,i)=>{const k=Math.min(1,(n-s.t0)/s.d);s.p=s.from+(s.to-s.from)*eo(k);set(i,s.p,out);});requestAnimationFrame(loop);})(performance.now());
 const T=ms=>new Promise(r=>setTimeout(r,ms));
-(async()=>{for(;;){w.forEach(e=>e.classList.remove('on','off'));await T(500);
-for(const e of w){e.classList.add('on');await T(170);}
-await T(2400);w.forEach(e=>e.classList.add('off'));await T(550);}})();})();
+(async()=>{for(;;){out=false;await T(400);for(let i=0;i<w.length;i++){go(i,1,900);await T(150);}
+await T(2400);out=true;w.forEach((e,i)=>go(i,0,650));await T(800);}})();})();
 </script>
 </body></html>
