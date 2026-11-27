@@ -126,10 +126,14 @@ text{font-family:"Asta Sans",sans-serif}
 <rect x="339" y="29710" width="40" height="5" rx="2.5" fill="#DADCE0"/>
 <text x="178" y="29740" font-size="1" font-weight="400" fill="#fff" text-anchor="start" letter-spacing="-.3" id="s2sub" opacity="0"></text>
 <circle cx="190" cy="29752" r="11" fill="#E8F3FF"/><text x="190" y="29756.5" font-size="12.5" font-weight="700" fill="#2B9CFF" text-anchor="middle" letter-spacing="-.3" >1</text><text x="210" y="29758" font-size="17" font-weight="600" fill="#1E1F22" text-anchor="start" letter-spacing="-.3" >언제로 미룰까요?</text>
-<g id="wd" class="wh"><rect x="178" y="29774" width="362" height="124" rx="14" fill="#F7F7F8"/><rect x="186" y="29816" width="346" height="40" rx="10" fill="#FFFFFF" stroke="#E6E8EC"/><clipPath id="wdc"><rect x="178" y="29774" width="362" height="124" rx="14"/></clipPath><g clip-path="url(#wdc)"><g class="wl" data-cy="29836"></g></g></g>
-<circle cx="190" cy="29930" r="11" fill="#E8F3FF"/><text x="190" y="29934.5" font-size="12.5" font-weight="700" fill="#2B9CFF" text-anchor="middle" letter-spacing="-.3" >2</text><text x="210" y="29936" font-size="17" font-weight="600" fill="#1E1F22" text-anchor="start" letter-spacing="-.3" >몇 시에 시작할까요?</text>
-<g id="wt" class="wh"><rect x="178" y="29952" width="362" height="124" rx="14" fill="#F7F7F8"/><rect x="186" y="29994" width="346" height="40" rx="10" fill="#FFFFFF" stroke="#E6E8EC"/><clipPath id="wtc"><rect x="178" y="29952" width="362" height="124" rx="14"/></clipPath><g clip-path="url(#wtc)"><g class="wl" data-cy="30014"></g></g></g>
-<g id="reco"><circle cx="186" cy="30104" r="4" fill="#2B9CFF"/><text x="198" y="30109" font-size="13" font-weight="500" fill="#2B9CFF" text-anchor="start" letter-spacing="-.3" id="recoT"></text></g>
+<g id="f1" class="tap fld"><rect x="178" y="29774" width="362" height="56" rx="14" fill="#F7F7F8"/><text x="198" y="29808" font-size="16" font-weight="600" fill="#1E1F22" text-anchor="start" letter-spacing="-.3" id="f1v"></text><g class="chev" style="transform-box:fill-box;transform-origin:center;transition:transform .3s"><path d="M506 29798l8 8 8-8" stroke="#1E1F22" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></g>
+<clipPath id="wdr"><rect id="wdrr" x="170" y="29838" width="378" height="0"/></clipPath><g clip-path="url(#wdr)"><g id="wd" class="wh"><rect x="178" y="29838" width="362" height="124" rx="14" fill="#F7F7F8"/><rect x="186" y="29880" width="346" height="40" rx="10" fill="#FFFFFF" stroke="#E6E8EC"/><clipPath id="wdc"><rect x="178" y="29838" width="362" height="124" rx="14"/></clipPath><g clip-path="url(#wdc)"><g class="wl" data-cy="29900"></g></g></g></g>
+<g id="b2" style="transition:transform .38s cubic-bezier(.22,.8,.2,1)">
+<circle cx="190" cy="29864" r="11" fill="#E8F3FF"/><text x="190" y="29868.5" font-size="12.5" font-weight="700" fill="#2B9CFF" text-anchor="middle" letter-spacing="-.3" >2</text><text x="210" y="29870" font-size="17" font-weight="600" fill="#1E1F22" text-anchor="start" letter-spacing="-.3" >몇 시에 시작할까요?</text>
+<g id="f2" class="tap fld"><rect x="178" y="29886" width="362" height="56" rx="14" fill="#F7F7F8"/><text x="198" y="29920" font-size="16" font-weight="600" fill="#1E1F22" text-anchor="start" letter-spacing="-.3" id="f2v"></text><g class="chev" style="transform-box:fill-box;transform-origin:center;transition:transform .3s"><path d="M506 29910l8 8 8-8" stroke="#1E1F22" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></g>
+<clipPath id="wtr"><rect id="wtrr" x="170" y="29950" width="378" height="0"/></clipPath><g clip-path="url(#wtr)"><g id="wt" class="wh"><rect x="178" y="29950" width="362" height="124" rx="14" fill="#F7F7F8"/><rect x="186" y="29992" width="346" height="40" rx="10" fill="#FFFFFF" stroke="#E6E8EC"/><clipPath id="wtc"><rect x="178" y="29950" width="362" height="124" rx="14"/></clipPath><g clip-path="url(#wtc)"><g class="wl" data-cy="30012"></g></g></g></g>
+</g>
+<g id="reco" style="transition:transform .38s cubic-bezier(.22,.8,.2,1)"><circle cx="186" cy="29968" r="4" fill="#2B9CFF"/><text x="198" y="29973" font-size="13" font-weight="500" fill="#2B9CFF" text-anchor="start" letter-spacing="-.3" id="recoT"></text></g>
 <rect id="go2" class="tap" x="175.66" y="30268" width="368" height="64" rx="15" fill="#2B9CFF"/>
 <text x="359.66" y="30306" font-size="17" font-weight="600" fill="#FFFFFF" text-anchor="middle" letter-spacing="-.3" pointer-events="none">변경하기</text>
 </g>
@@ -176,7 +180,7 @@ const close=()=>root.classList.remove('open','s2');
 $('c1').addEventListener('click',()=>open(1));$('c2').addEventListener('click',()=>open(2));
 $('dim').addEventListener('click',close);
 $('o1').addEventListener('click',()=>pick(1));
-$('o2').addEventListener('click',()=>{pick(2);setTimeout(()=>{if(sel===2&&root.classList.contains('open')){day=1;render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}},260);});
+$('o2').addEventListener('click',()=>{pick(2);setTimeout(()=>{if(sel===2&&root.classList.contains('open')){day=1;open1=false;open2=false;lay2();render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}},260);});
 
 const NS='http://www.w3.org/2000/svg';
 const DAYS=[['오늘','11.27 (금)',.75],['내일','11.28 (토)',1],['11월 29일','11.29 (일)',.55],['11월 30일','11.30 (월)',.85],['12월 1일','12.1 (화)',.95],['12월 2일','12.2 (수)',.7],['12월 3일','12.3 (목)',.9]];
@@ -198,15 +202,23 @@ function Wheel(id,labels,onSel){const g=document.querySelector('#'+id+' .wl'),cy
  draw();return{set:(i,anim)=>anim?snapTo(i):(pos=i,draw()),get:()=>Math.round(pos),relabel:ls=>{ls.forEach((l,i)=>els[i].textContent=l);}};}
 let day=1,tsel=0,tm=0;
 const tLabels=f=>{const b=best(f);return TIMES.map((t,i)=>i===b?t.l+'  · 추천':t.l);};
-const upd=()=>{const t=TIMES[tsel],f=DAYS[day][2];$('recoT').textContent='예상 발전 '+kw(t.m,f).toFixed(1)+'kW · '+fmt(t.m+100)+' 완료';};
+const upd=()=>{try{fv();}catch(e){}const t=TIMES[tsel],f=DAYS[day][2];$('recoT').textContent='예상 발전 '+kw(t.m,f).toFixed(1)+'kW · '+fmt(t.m+100)+' 완료';};
 const WT=Wheel('wt',tLabels(DAYS[1][2]),i=>{tsel=i;upd();});
-const WD=Wheel('wd',DAYS.map(d=>d[1]+(d[0]==='오늘'||d[0]==='내일'?'  '+d[0]:'')),i=>{day=i;WT.relabel(tLabels(DAYS[i][2]));const b=best(DAYS[i][2]);WT.set(b,true);});
+const WD=Wheel('wd',DAYS.map(d=>d[1]+(d[0]==='오늘'||d[0]==='내일'?'  '+d[0]:'')),i=>{day=i;WT.relabel(tLabels(DAYS[i][2]));const b=best(DAYS[i][2]);WT.set(b,true);upd();});
 const render=()=>{WD.set(day);const b=best(DAYS[day][2]);tsel=b;WT.relabel(tLabels(DAYS[day][2]));WT.set(b);upd();};
 const row={setAttribute(){}};let dli=0,dx=0;
+let open1=false,open2=false;
+const rr=(id,to)=>{const r=$(id+'rr');const from=+r.getAttribute('height'),t0=performance.now();const st=n=>{const k=Math.min(1,(n-t0)/360),e=1-Math.pow(1-k,3);r.setAttribute('height',from+(to-from)*e);if(k<1)requestAnimationFrame(st);};requestAnimationFrame(st);};
+const lay2=()=>{rr('wd',open1?124:0);rr('wt',open2?124:0);$('b2').style.transform='translateY('+(open1?132:0)+'px)';$('reco').style.transform='translateY('+((open1?132:0)+(open2?132:0))+'px)';
+ document.querySelector('#f1 .chev').style.transform=open1?'rotate(180deg)':'';document.querySelector('#f2 .chev').style.transform=open2?'rotate(180deg)':'';};
+$('f1').addEventListener('click',()=>{open1=!open1;if(open1)open2=false;lay2();});
+$('f2').addEventListener('click',()=>{open2=!open2;if(open2)open1=false;lay2();});
+const fv=()=>{const d=DAYS[day];$('f1v').textContent=d[1]+(d[0]==='오늘'||d[0]==='내일'?'  '+d[0]:'');const b=best(d[2]);$('f2v').textContent=TIMES[tsel].l+(tsel===b?'  · 추천':'');};
+
 const toast=t=>{$('tt').textContent=t;try{const w=$('tt').getComputedTextLength()+36;$('tr').setAttribute('width',w);$('tr').setAttribute('x',359-w/2);}catch(e){}$('toast').classList.add('on');clearTimeout(tm);tm=setTimeout(()=>$('toast').classList.remove('on'),2600);};
 const setSub=t=>{$('c'+ap+'new').textContent=t;$('c'+ap+'sub').style.opacity=0;$('c'+ap+'new').style.opacity=1;};
 const closeAll=()=>root.classList.remove('open','s2');
-$('go').addEventListener('click',e=>{if(sel===2){day=1;render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}else{closeAll();setTimeout(()=>{setSub('지금 작동 중 · 일반 전기 사용');toast(AP[ap]+'를 지금 시작했어요');},350);}});
+$('go').addEventListener('click',e=>{if(sel===2){day=1;open1=false;open2=false;lay2();render();$('s2sub').textContent='발전 예보로 '+(ap===2?'건조':'세탁')+'하기 좋은 시간을 골랐어요';root.classList.add('s2');}else{closeAll();setTimeout(()=>{setSub('지금 작동 중 · 일반 전기 사용');toast(AP[ap]+'를 지금 시작했어요');},350);}});
 $('go2').addEventListener('click',()=>{const d=DAYS[day][0],t=TIMES[tsel].l;closeAll();setTimeout(()=>{setSub(d+' '+t+' 시작 예정');toast(AP[ap]+'를 '+d+' '+t+'로 옮겼어요');},350);});
 $('dim').addEventListener('click',closeAll);
 render();
