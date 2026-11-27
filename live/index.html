@@ -5,75 +5,81 @@
 @font-face{font-family:"Asta Sans";src:url("../fonts/AstaSans-Variable.woff2") format("woff2");font-weight:300 800}
 html,body{margin:0;height:100%;background:transparent;overflow:hidden}
 svg{display:block;width:100%;height:100%}
-text{font-family:"Asta Sans",sans-serif}
-#laX,#laC{transition:opacity .28s ease}
-#la{cursor:pointer}
+text{font-family:"Asta Sans",sans-serif;letter-spacing:-.3px}
+.fx{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.86);transition:opacity .42s ease,transform .6s cubic-bezier(.2,1.25,.3,1)}
+.fx.on{opacity:1;transform:none}
+.sw{transition:opacity .32s ease}
 </style></head><body>
 <svg viewBox="0 0 911 940" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>
 <clipPath id="box"><rect width="911" height="940" rx="24"/></clipPath>
-<linearGradient id="silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F5F6"/><stop offset=".22" stop-color="#D9DBDE"/><stop offset=".5" stop-color="#EEEFF1"/><stop offset=".78" stop-color="#C8CBCF"/><stop offset="1" stop-color="#E9EAEC"/></linearGradient>
-<linearGradient id="btn" x1="0" x2="1"><stop offset="0" stop-color="#B7BABE"/><stop offset=".5" stop-color="#ECEDEF"/><stop offset="1" stop-color="#C9CCD0"/></linearGradient>
-<filter id="sh" x="-20%" y="-10%" width="140%" height="130%"><feDropShadow dx="0" dy="30" stdDeviation="34" flood-color="#1E2430" flood-opacity=".16"/></filter>
+<radialGradient id="spot" cx=".5" cy=".18" r=".8"><stop offset="0" stop-color="#2A2C31"/><stop offset="1" stop-color="#0D0E10"/></radialGradient>
+<linearGradient id="frame" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFC9BC"/><stop offset=".08" stop-color="#F3EFE6"/><stop offset=".5" stop-color="#E7E2D7"/><stop offset=".92" stop-color="#F3EFE6"/><stop offset="1" stop-color="#C9C3B6"/></linearGradient>
+<linearGradient id="btn" x1="0" x2="1"><stop offset="0" stop-color="#BDB7AA"/><stop offset=".5" stop-color="#F1EDE4"/><stop offset="1" stop-color="#CBC5B8"/></linearGradient>
+<clipPath id="scr"><rect width="402" height="874" rx="52"/></clipPath>
 <clipPath id="iclip"><rect id="iclipR" x="139" y="11" width="124" height="36" rx="18"/></clipPath>
-<clipPath id="scr"><rect width="402" height="874" rx="50"/></clipPath>
+<clipPath id="th"><rect x="20" y="20" width="76" height="76" rx="20"/></clipPath>
 </defs>
 <g clip-path="url(#box)">
-<rect width="911" height="940" fill="#FAFAFA"/>
-<g transform="translate(23.35 96) scale(2.15)">
-<rect x="-14" y="-14" width="430" height="902" rx="64" fill="url(#silver)" filter="url(#sh)"/>
-<rect x="-17" y="140" width="4" height="34" rx="2" fill="url(#btn)"/><rect x="-17" y="206" width="4" height="64" rx="2" fill="url(#btn)"/><rect x="-17" y="284" width="4" height="64" rx="2" fill="url(#btn)"/><rect x="415" y="236" width="4" height="100" rx="2" fill="url(#btn)"/>
-<rect x="-14" y="-14" width="430" height="902" rx="64" fill="none" stroke="#A9ACB1" stroke-width=".8"/>
-<rect x="-12.7" y="-12.7" width="427.4" height="899.4" rx="62.7" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.1"/>
-<rect x="-9" y="-9" width="420" height="892" rx="59" fill="#0B0B0C"/>
+<rect width="911" height="940" fill="url(#spot)"/>
+<g transform="translate(83.65 64) scale(1.85)">
+<rect x="-16" y="146" width="4" height="34" rx="2" fill="url(#btn)"/><rect x="-16" y="210" width="4" height="62" rx="2" fill="url(#btn)"/><rect x="-16" y="286" width="4" height="62" rx="2" fill="url(#btn)"/><rect x="414" y="240" width="4" height="98" rx="2" fill="url(#btn)"/>
+<rect x="-13" y="-13" width="428" height="900" rx="65" fill="url(#frame)"/>
+<rect x="-12.4" y="-12.4" width="426.8" height="898.8" rx="64.4" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".9"/>
+<rect x="-8.5" y="-8.5" width="419" height="891" rx="60.5" fill="#050506"/>
 <g clip-path="url(#scr)">
-<image href="../assets/alert-blue2.webp" x="-60" y="-40" width="522" height="954" preserveAspectRatio="xMidYMid slice"/>
-<rect width="402" height="874" fill="#0B2A55" opacity=".08"/>
-<text x="36" y="32" font-size="16" font-weight="600" fill="#FFFFFF" text-anchor="start" letter-spacing="-.3" >14:43</text>
-<g fill="#fff"><rect x="318" y="22" width="3" height="6" rx="1"/><rect x="323" y="20" width="3" height="8" rx="1"/><rect x="328" y="18" width="3" height="10" rx="1"/><rect x="333" y="16" width="3" height="12" rx="1"/>
-<rect x="346" y="17" width="22" height="11" rx="3.2" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="348" y="19" width="16" height="7" rx="1.8"/><rect x="369.5" y="20.5" width="1.6" height="4" rx=".8" fill-opacity=".5"/></g>
-<text x="201" y="128" font-size="19" font-weight="500" fill="#FFFFFF" text-anchor="middle" letter-spacing="-.3" opacity=".92">11월 27일 금요일</text>
-<text x="201" y="214" font-size="92" font-weight="600" fill="#FFFFFF" text-anchor="middle" letter-spacing="-.3" letter-spacing="-3">14:43</text>
+<rect width="402" height="874" fill="#F7F4EC"/>
+<text x="52" y="33" font-size="16" font-weight="600" fill="#1E1F22" text-anchor="middle" >14:43</text>
+<g fill="#1E1F22"><rect x="318" y="22" width="3" height="6" rx="1"/><rect x="323" y="20" width="3" height="8" rx="1"/><rect x="328" y="18" width="3" height="10" rx="1"/><rect x="333" y="16" width="3" height="12" rx="1"/>
+<rect x="346" y="17" width="22" height="11" rx="3.2" fill="none" stroke="#1E1F22" stroke-opacity=".45"/><rect x="348" y="19" width="16" height="7" rx="1.8"/></g>
+<g transform="translate(28 92) scale(0.6982)"><rect width="85.9355" height="85.9355" rx="19.5" fill="white"/><path d="M63.0097 16.8935H62.2142V12.8874H60.8706V12.2227H64.3533V12.8874H63.0097V16.8935ZM69.7452 16.8935H68.985V13.085L67.6415 16.8935H66.952L65.6261 13.085V16.8935H64.8483V12.2227H66.0504L67.3056 15.7797L68.5607 12.2227H69.7452V16.8935Z" fill="#2B9CFF"/><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g><g transform="translate(100 92)"><rect width="60" height="60" rx="14" fill="#fff"/><text x="30" y="19" font-size="10.5" font-weight="600" fill="#FF5A36" text-anchor="middle" >금</text><text x="30" y="49" font-size="28" font-weight="400" fill="#1E1F22" text-anchor="middle"  letter-spacing="-1">27</text></g><g transform="translate(172 92)"><rect width="60" height="60" rx="14" fill="#fff"/><circle cx="30" cy="30" r="26" fill="#fff" stroke="#E6E6E6" stroke-width=".6"/><line x1="30.00" y1="8.00" x2="30.00" y2="5.00" stroke="#1E1F22" stroke-width="1.6"/><line x1="41.00" y1="10.95" x2="42.50" y2="8.35" stroke="#1E1F22" stroke-width="0.8"/><line x1="49.05" y1="19.00" x2="51.65" y2="17.50" stroke="#1E1F22" stroke-width="0.8"/><line x1="52.00" y1="30.00" x2="55.00" y2="30.00" stroke="#1E1F22" stroke-width="1.6"/><line x1="49.05" y1="41.00" x2="51.65" y2="42.50" stroke="#1E1F22" stroke-width="0.8"/><line x1="41.00" y1="49.05" x2="42.50" y2="51.65" stroke="#1E1F22" stroke-width="0.8"/><line x1="30.00" y1="52.00" x2="30.00" y2="55.00" stroke="#1E1F22" stroke-width="1.6"/><line x1="19.00" y1="49.05" x2="17.50" y2="51.65" stroke="#1E1F22" stroke-width="0.8"/><line x1="10.95" y1="41.00" x2="8.35" y2="42.50" stroke="#1E1F22" stroke-width="0.8"/><line x1="8.00" y1="30.00" x2="5.00" y2="30.00" stroke="#1E1F22" stroke-width="1.6"/><line x1="10.95" y1="19.00" x2="8.35" y2="17.50" stroke="#1E1F22" stroke-width="0.8"/><line x1="19.00" y1="10.95" x2="17.50" y2="8.35" stroke="#1E1F22" stroke-width="0.8"/>
+<line id="hh" x1="30" y1="30" x2="30" y2="17" stroke="#1E1F22" stroke-width="2.2" stroke-linecap="round"/><line id="mh" x1="30" y1="30" x2="30" y2="10" stroke="#1E1F22" stroke-width="1.6" stroke-linecap="round"/><line id="sh" x1="30" y1="34" x2="30" y2="8" stroke="#FF7A2F" stroke-width=".9" stroke-linecap="round"/><circle cx="30" cy="30" r="1.8" fill="#FF7A2F"/></g>
+<text x="58" y="170" font-size="11" font-weight="500" fill="#3A3B40" text-anchor="middle" >Wello</text><text x="130" y="170" font-size="11" font-weight="500" fill="#3A3B40" text-anchor="middle" >캘린더</text><text x="202" y="170" font-size="11" font-weight="500" fill="#3A3B40" text-anchor="middle" >시계</text>
 <rect id="island" x="139" y="11" width="124" height="36" rx="18" fill="#000"/>
-<g id="la" clip-path="url(#iclip)">
-<g id="laX" opacity="0"><g transform="translate(25 23) scale(0.4422)"><rect width="85.9355" height="85.9355" rx="19" fill="white"/><path d="M63.0097 16.8935H62.2142V12.8874H60.8706V12.2227H64.3533V12.8874H63.0097V16.8935ZM69.7452 16.8935H68.985V13.085L67.6415 16.8935H66.952L65.6261 13.085V16.8935H64.8483V12.2227H66.0504L67.3056 15.7797L68.5607 12.2227H69.7452V16.8935Z" fill="#2B9CFF"/><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g>
-<text x="75" y="39" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="start" letter-spacing="-.3" id="laT">세탁기 · 세탁 중</text>
-<text x="75" y="57" font-size="11.5" font-weight="400" fill="#9A9BA0" text-anchor="start" letter-spacing="-.3" id="laS">태양광 전력으로 작동 중</text>
-<text x="377" y="39" font-size="16" font-weight="600" fill="#FFFFFF" text-anchor="end" letter-spacing="-.3" id="laM">98분</text>
-<text x="377" y="57" font-size="11.5" font-weight="400" fill="#9A9BA0" text-anchor="end" letter-spacing="-.3" id="laE">오후 3:28 완료</text>
-<rect x="25" y="73" width="352" height="5" rx="2.5" fill="#3A3B40"/>
-<rect id="laP" x="25" y="73" width="0" height="5" rx="2.5" fill="#2B9CFF"/>
+<g clip-path="url(#iclip)">
+<g id="cA" class="fx"><g clip-path="url(#th)"><image href="thumb.webp" x="20" y="20" width="76" height="76" preserveAspectRatio="xMidYMid slice"/></g><rect x="20.5" y="20.5" width="75" height="75" rx="19.5" fill="none" stroke="#fff" stroke-opacity=".12"/></g>
+<g id="cB" class="fx">
+<g class="sw" id="t1"><text x="112" y="56" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="start" >최적 시간 찾는 중…</text><text x="112" y="78" font-size="12.5" font-weight="400" fill="#8E8F95" text-anchor="start" >오늘 발전 예보를 확인하고 있어요</text></g>
+<g class="sw" id="t2" opacity="0"><text x="112" y="56" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="start" id="t2a">세탁 중</text><text x="112" y="78" font-size="12.5" font-weight="400" fill="#8E8F95" text-anchor="start" id="t2b">태양광 92% · 32분 남음</text></g>
+<g class="sw" id="t3" opacity="0"><text x="112" y="56" font-size="19" font-weight="600" fill="#FFFFFF" text-anchor="start" >세탁 완료!</text><text x="112" y="78" font-size="12.5" font-weight="400" fill="#8E8F95" text-anchor="start" >태양광으로 1,240원 아꼈어요</text></g>
 </g>
-<g id="laC" opacity="0"><g transform="translate(121 18) scale(0.2560)"><rect width="85.9355" height="85.9355" rx="19" fill="white"/><path d="M63.0097 16.8935H62.2142V12.8874H60.8706V12.2227H64.3533V12.8874H63.0097V16.8935ZM69.7452 16.8935H68.985V13.085L67.6415 16.8935H66.952L65.6261 13.085V16.8935H64.8483V12.2227H66.0504L67.3056 15.7797L68.5607 12.2227H69.7452V16.8935Z" fill="#2B9CFF"/><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g><text x="280" y="34" font-size="13.5" font-weight="600" fill="#2B9CFF" text-anchor="end" letter-spacing="-.3" id="laCm">98분</text></g>
+<g id="cC" class="fx"><circle cx="352" cy="58" r="23" fill="none" stroke="#2C2D31" stroke-width="4"/>
+<circle id="ring" cx="352" cy="58" r="23" fill="none" stroke="#2B9CFF" stroke-width="4" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="144.5" transform="rotate(-90 352 58)"/>
+<g transform="translate(339 45) scale(.3)" fill="#2B9CFF"><path d="M11.8096 44.3311C11.5062 43.186 11.5103 42.0077 11.784 40.8882C12.1573 39.3667 13.7023 39.0288 15.172 39.2372L18.2438 39.6729L22.4241 40.3426C26.2997 40.9631 32.7615 41.628 36.5341 41.3117C38.1746 41.1735 39.7351 40.5921 40.6075 39.1671C41.1328 38.3079 41.3722 37.3219 41.3884 36.3028C41.4355 33.2484 40.5779 27.1435 39.982 23.9508L38.6677 16.9092C38.5083 16.0547 38.3771 15.2448 38.369 14.3849C38.3549 12.8256 39.4466 11.8888 40.9384 11.6548C42.0368 11.4828 43.1305 11.4855 44.2282 11.6589C45.7341 11.8976 46.6617 12.8249 46.6442 14.3855C46.6348 15.2771 46.4969 16.1053 46.3153 16.9895C44.9317 23.7377 43.9107 29.6591 44.2403 36.6272L44.2154 38.3288C44.1932 39.824 43.5589 41.2187 42.5002 42.2876C41.4812 43.3161 40.136 43.9042 38.6845 44.0344C37.6715 44.1254 36.6996 44.056 35.6887 44.0189C30.5862 43.8287 25.4044 44.3938 20.3666 45.166L15.8177 45.8634C15.1363 45.9679 14.4704 46.0023 13.7978 45.9578C12.8353 45.8944 12.0679 45.3057 11.8096 44.3311Z" fill="#2B9CFF"/><path d="M46.5701 70.7619C46.7651 72.0433 45.9957 73.034 44.6686 73.3226C43.5016 73.5762 42.3239 73.5708 41.1374 73.4245C39.9173 73.2741 38.8203 72.63 38.7005 71.3554C38.64 70.7059 38.6918 70.0504 38.8088 69.3942L39.6832 64.4702C40.1709 61.7287 40.5273 59.0438 40.7816 56.2612C41.0318 53.5143 41.1078 50.8503 40.8737 48.1095C40.5724 44.5796 42.8115 41.7962 46.3044 41.3875L48.5099 41.3471C50.4188 41.4172 52.2456 41.4031 54.1646 41.2823C57.2492 41.0881 60.2443 40.7644 63.2919 40.268L68.1495 39.4769L70.9718 39.2004C71.487 39.1498 72.0406 39.3171 72.467 39.5895C73.7739 40.4251 73.7463 43.0756 73.3165 44.5013C73.0441 45.4057 72.2894 45.919 71.3801 45.9601C70.4976 46.0006 69.6508 45.9217 68.7683 45.7848L63.3524 44.9451C59.117 44.2882 52.4333 43.6745 48.3054 44.1082C46.0629 44.3442 44.4628 45.4361 43.887 47.6569C43.6301 48.647 43.6429 49.6242 43.7209 50.677C44.1554 56.5323 44.9794 62.2972 46.1558 68.0446L46.5701 70.7619Z" fill="#2B9CFF"/></g></g>
 </g>
 </g>
 </g>
 </g>
 </svg>
 <script>
-const $=id=>document.getElementById(id),isl=$('island');
-const G={idle:[139,11,124,36,18],comp:[114,11,174,36,18],exp:[11,9,380,84,34]};
-let cur=G.idle.slice(),tw=0,total=98,left=98,tm=[];
-const icr=$('iclipR');const setI=g=>{['x','y','width','height','rx'].forEach((k,i)=>{isl.setAttribute(k,g[i]);icr.setAttribute(k,g[i]);});};
-const tween=(to,ms=560,cb)=>{const from=cur.slice(),t0=performance.now();cancelAnimationFrame(tw);
- const sp=t=>{const c=1-Math.pow(1-t,3);return c+Math.sin(t*Math.PI)*.07;};
- const step=now=>{const t=Math.min(1,(now-t0)/ms),e=sp(t);cur=from.map((v,i)=>v+(to[i]-v)*e);setI(cur);if(t<1)tw=requestAnimationFrame(step);else{cur=to.slice();setI(cur);cb&&cb();}};tw=requestAnimationFrame(step);};
-const fmt=m=>{const d=new Date(Date.now()+m*60000);let h=d.getHours(),mm=String(d.getMinutes()).padStart(2,'0');const a=h<12?'오전':'오후';h=h%12||12;return a+' '+h+':'+mm+' 완료';};
-const stage=()=>left<=0?'완료':left<25?'탈수 중':left<55?'헹굼 중':'세탁 중';
-const paint=()=>{$('laT').textContent='세탁기 · '+stage();$('laM').textContent=left>0?left+'분':'완료';$('laCm').textContent=left>0?left+'분':'완료';
- $('laE').textContent=left>0?fmt(left):'지금 꺼내도 돼요';$('laS').textContent=left>0?'태양광 전력으로 작동 중':'태양광으로 1,240원 아꼈어요';$('laP').setAttribute('width',352*(1-left/total));};
-const exp=()=>{$('laC').setAttribute('opacity',0);setTimeout(()=>tween(G.exp,600,()=>$('laX').setAttribute('opacity',1)),140);};
-const comp=()=>{$('laX').setAttribute('opacity',0);setTimeout(()=>tween(G.comp,520,()=>$('laC').setAttribute('opacity',1)),260);};
-const idle=()=>{$('laX').setAttribute('opacity',0);$('laC').setAttribute('opacity',0);setTimeout(()=>tween(G.idle,480),260);};
-let tick=0,cyc=0;
-const run=()=>{left=98;paint();setI(G.idle);cur=G.idle.slice();
- setTimeout(exp,900);
- clearInterval(tick);tick=setInterval(()=>{left=Math.max(0,left-1);paint();
-  if(left===80||left===40)comp();
-  if(left===62||left===22)exp();
-  if(left===0){clearInterval(tick);exp();setTimeout(idle,4200);setTimeout(run,6400);}},260);
- setTimeout(()=>{},0);};
-$('la').addEventListener('click',()=>exp());
-paint();run();
+const $=id=>document.getElementById(id),isl=$('island'),icr=$('iclipR');
+const G={idle:[139,11,124,36,18],big:[10,8,382,104,44]};
+let cur=G.idle.slice(),raf=0;
+const setI=g=>['x','y','width','height','rx'].forEach((k,i)=>{isl.setAttribute(k,g[i]);icr.setAttribute(k,g[i]);});
+const spring=t=>{const z=.68,w=14;const wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t));};
+const morph=(to,ms=900)=>{const from=cur.slice(),t0=performance.now();cancelAnimationFrame(raf);
+ const st=now=>{const t=Math.min(1,(now-t0)/ms),e=spring(t*ms/1000);cur=from.map((v,i)=>v+(to[i]-v)*e);setI(cur);if(t<1)raf=requestAnimationFrame(st);else{cur=to.slice();setI(cur);}};raf=requestAnimationFrame(st);};
+const on=(id,v)=>$(id).classList.toggle('on',v);
+const sw=n=>['t1','t2','t3'].forEach((id,i)=>$(id).setAttribute('opacity',i===n?1:0));
+const ring=p=>$('ring').setAttribute('stroke-dashoffset',144.5*(1-p));
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+// clock hands
+const tickClock=()=>{const d=new Date(),s=d.getSeconds(),m=d.getMinutes()+s/60,h=(d.getHours()%12)+m/60;
+ $('sh').setAttribute('transform','rotate('+s*6+' 30 30)');$('mh').setAttribute('transform','rotate('+m*6+' 30 30)');$('hh').setAttribute('transform','rotate('+h*30+' 30 30)');};
+setInterval(tickClock,1000);tickClock();
+const loop=async()=>{
+ for(;;){
+  sw(0);ring(0);await wait(1200);
+  morph(G.big);await wait(260);on('cA',1);await wait(90);on('cB',1);await wait(90);on('cC',1);
+  await wait(1700);
+  sw(1);let left=32;
+  for(let i=0;i<=40;i++){const p=i/40;ring(p);left=Math.max(0,Math.round(32*(1-p)));$('t2a').textContent=p<.45?'세탁 중':p<.8?'헹굼 중':'탈수 중';$('t2b').textContent='태양광 92% · '+left+'분 남음';await wait(95);}
+  sw(2);await wait(2300);
+  on('cC',0);await wait(70);on('cB',0);await wait(70);on('cA',0);await wait(160);
+  morph(G.idle,800);await wait(1300);
+ }
+};
+$('island').addEventListener('click',()=>{});
+loop();
 </script>
 </body></html>
