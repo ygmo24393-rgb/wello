@@ -81,9 +81,6 @@
   .pts circle{transition:opacity .3s,r .3s}
   .series{transition:opacity .2s}
   .series.hide{opacity:0}
-  #bars rect{transform-box:fill-box;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.22,.8,.2,1)}
-  #bars rect.z{transform:scaleY(0)}
-  #bars .fut{fill:#ECEDF0}
   .hover line{stroke:#C9CDD3;stroke-dasharray:3 3}
   .tipc{position:absolute;padding:8px 10px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);font-size:13px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;transform:translate(-50%,-100%)}
   .tipc.on{opacity:1}
@@ -175,7 +172,6 @@
       <g class="series" id="series">
         <path class="ln c" id="lnC"/><path class="ln g" id="lnG"/>
         <g class="pts" id="ptsC" fill="#C9CDD3"></g><g class="pts" id="ptsG" fill="#2B9CFF"></g>
-        <g id="bars"></g>
       </g>
       <rect id="hit" x="0" y="100" width="100" height="230" fill="transparent"/>
     </svg></div>
@@ -313,25 +309,6 @@
     for (let i = 0; i < D.n; i++){ const s = D.labels(i); if (!s) continue;
       xl.appendChild(mk('line', { x1:xAt(i), x2:xAt(i), y1:294, y2:299 }));
       const t = mk('text', { x:xAt(i), y:317 }); t.textContent = s; xl.appendChild(t); }
-    const bars = $('#bars'); bars.innerHTML = '';
-    const isW = mode === 'week';
-    ['#lnG','#lnC','#ptsG','#ptsC'].forEach(q => $(q).style.display = isW ? 'none' : '');
-    if (isW){
-      const bw = 15, gap = 5;
-      for (let i = 0; i < D.n; i++){
-        const cx = xAt(i);
-        if (i >= D.upto){ bars.appendChild(mk('rect', { class:'fut', x:cx - bw - gap/2, y:Y0 - 6, width:bw*2 + gap, height:6, rx:3 })); continue; }
-        const today = i === D.upto - 1;
-        [[D.gen[i], -1, today ? '#2B9CFF' : '#8FC6FF'], [D.use[i], 1, today ? '#AEB3BB' : '#D3D6DB']].forEach(([v, sgn, col], k) => {
-          const h = Math.max(3, Y0 - yAt(v)), x = sgn < 0 ? cx - bw - gap/2 : cx + gap/2;
-          const r = mk('rect', { x, y:Y0 - h, width:bw, height:h, rx:5, fill:col });
-          if (anim){ r.classList.add('z'); r.style.transitionDelay = (i * 0.06 + k * 0.03) + 's'; }
-          bars.appendChild(r);
-        });
-      }
-      if (anim) requestAnimationFrame(() => requestAnimationFrame(() => bars.querySelectorAll('rect.z').forEach(r => r.classList.remove('z'))));
-      return;
-    }
     const small = SP < 50;
     for (const [id, arr] of [['G', D.gen], ['C', D.use]]){
       const ln = $('#ln' + id); ln.setAttribute('d', path(arr));
