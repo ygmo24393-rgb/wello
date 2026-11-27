@@ -208,8 +208,13 @@ const DUR=100;
 const startFor=(dl,f)=>{let b=null;for(let st=9*60;st+DUR<=dl;st+=10){if(b===null||kw(st+DUR/2,f)>kw(b+DUR/2,f))b=st;}return b===null?Math.max(dl-DUR,7*60):b;};
 const dIdx=()=>DLS.findIndex(d=>d.m===18*60);
 const tLabels=()=>DLS.map(d=>d.l+'|까지');
+const roll=(v)=>{const el=$('rcS');if(el.textContent===v)return;if(!el.textContent){el.textContent=v;return;}
+ const y0=+el.getAttribute('y'),up=v>el.textContent?1:-1;const old=el.cloneNode(true);old.removeAttribute('id');el.parentNode.appendChild(old);
+ el.textContent=v;const t0=performance.now();const D=380;
+ const st=n=>{const k=Math.min(1,(n-t0)/D),e=1-Math.pow(1-k,3);old.setAttribute('y',y0-14*e*up);old.setAttribute('opacity',1-e);el.setAttribute('y',y0+14*(1-e)*up);el.setAttribute('opacity',e);
+  if(k<1)requestAnimationFrame(st);else{old.remove();el.setAttribute('y',y0);el.setAttribute('opacity',1);}};requestAnimationFrame(st);};
 const upd=()=>{try{fv();}catch(e){}const f=DAYS[day][2],st=startFor(DLS[tsel].m,f);const h=Math.floor(st/60),mm=String(st%60).padStart(2,'0');
- $('rcS').textContent=((h%12)||12)+':'+mm;$('rcE').textContent=fmt(st+DUR)+' 완료';$('rcS').setAttribute('data-l',fmt(st));};
+ roll(((h%12)||12)+':'+mm);$('rcE').textContent=fmt(st+DUR)+' 완료';$('rcS').setAttribute('data-l',fmt(st));};
 const WT=Wheel('wt',tLabels(),i=>{tsel=i;upd();});
 const WD=Wheel('wd',DAYS.map(d=>d[1]+(d[0]==='오늘'||d[0]==='내일'?'|'+d[0]:'')),i=>{day=i;upd();});
 const render=()=>{WD.set(day);tsel=dIdx();WT.set(tsel);upd();};
