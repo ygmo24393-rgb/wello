@@ -173,6 +173,7 @@ text{font-family:"Asta Sans",sans-serif}
 </defs>
 </svg>
 <script>
+const RAF=cb=>setTimeout(()=>cb(performance.now()),16),CAF=clearTimeout;
 const $=id=>document.getElementById(id), root=document.documentElement;
 let sel=1;
 const pick=n=>{sel=n;$('r1').setAttribute('stroke',n==1?'#2B9CFF':'#E6E7EA');$('r2').setAttribute('stroke',n==2?'#2B9CFF':'#E6E7EA');};
@@ -195,13 +196,13 @@ function Wheel(id,labels,onSel){const g=document.querySelector('#'+id+' .wl'),cy
  const els=labels.map((l,i)=>{const t=document.createElementNS(NS,'text');t.setAttribute('x',359);t.setAttribute('text-anchor','middle');t.setAttribute('font-size','16');t.style.letterSpacing='-.3px';setL(t,l);g.appendChild(t);return t;});
  const draw=()=>{els.forEach((t,i)=>{const d=i-pos,ad=Math.abs(d);t.setAttribute('y',cy+6+d*40);t.setAttribute('opacity',Math.max(0,Math.min(1,1-(ad-.15)*.7)));t.setAttribute('visibility',ad>1.55?'hidden':'visible');t.setAttribute('fill',ad<.5?'#1E1F22':'#B5B8BE');t.setAttribute('font-weight',ad<.5?600:400);t.setAttribute('font-size',ad<.5?17:16);});};
  const sc=()=>{const sv=$('sv'),vb=sv.viewBox.baseVal;return vb.height/sv.getBoundingClientRect().height;};
- const snapTo=(to,cb)=>{to=Math.max(0,Math.min(labels.length-1,Math.round(to)));const from=pos,t0=performance.now();cancelAnimationFrame(raf);
-  const st=n=>{const k=Math.min(1,(n-t0)/320),e=1-Math.pow(1-k,3);pos=from+(to-from)*e;draw();if(k<1)raf=requestAnimationFrame(st);else{pos=to;draw();onSel&&onSel(to);cb&&cb();}};raf=requestAnimationFrame(st);};
- box.addEventListener('pointerdown',e=>{drag=e.clientY;last=performance.now();vel=0;moved=0;cancelAnimationFrame(raf);box.setPointerCapture&&box.setPointerCapture(e.pointerId);e.stopPropagation();});
+ const snapTo=(to,cb)=>{to=Math.max(0,Math.min(labels.length-1,Math.round(to)));const from=pos,t0=performance.now();CAF(raf);
+  const st=n=>{const k=Math.min(1,(n-t0)/320),e=1-Math.pow(1-k,3);pos=from+(to-from)*e;draw();if(k<1)raf=RAF(st);else{pos=to;draw();onSel&&onSel(to);cb&&cb();}};raf=RAF(st);};
+ box.addEventListener('pointerdown',e=>{drag=e.clientY;last=performance.now();vel=0;moved=0;CAF(raf);box.setPointerCapture&&box.setPointerCapture(e.pointerId);e.stopPropagation();});
  box.addEventListener('pointermove',e=>{if(drag==null)return;const dy=(e.clientY-drag)*sc();drag=e.clientY;moved+=Math.abs(dy);const now=performance.now();vel=dy/Math.max(1,now-last);last=now;pos=Math.max(-.4,Math.min(labels.length-.6,pos-dy/40));draw();});
  const end=e=>{if(drag==null)return;drag=null;if(moved<4&&e&&e.clientY!=null){const r=box.getBoundingClientRect(),y=(e.clientY-r.top)*sc()-62;snapTo(pos+Math.round(y/40));return;}snapTo(pos-vel*6);};
  box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
- let wt=0;box.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(raf);const dy=e.deltaMode===1?e.deltaY*16:e.deltaY;pos=Math.max(-.3,Math.min(labels.length-.7,pos+dy/90));draw();clearTimeout(wt);wt=setTimeout(()=>snapTo(pos),110);},{passive:false});
+ let wt=0;box.addEventListener('wheel',e=>{e.preventDefault();CAF(raf);const dy=e.deltaMode===1?e.deltaY*16:e.deltaY;pos=Math.max(-.3,Math.min(labels.length-.7,pos+dy/90));draw();clearTimeout(wt);wt=setTimeout(()=>snapTo(pos),110);},{passive:false});
  draw();return{set:(i,anim)=>anim?snapTo(i):(pos=i,draw()),get:()=>Math.round(pos),relabel:ls=>{ls.forEach((l,i)=>setL(els[i],l));}};}
 let day=1,tsel=0,tm=0;
 const DLS=[];for(let m=11*60;m<=21*60;m+=30)DLS.push({m,l:fmt(m)});
@@ -213,7 +214,7 @@ const roll=(v)=>{const el=$('rcS');if(el.textContent===v)return;if(!el.textConte
  const y0=+el.getAttribute('y'),up=v>el.textContent?1:-1;const old=el.cloneNode(true);old.removeAttribute('id');el.parentNode.appendChild(old);
  el.textContent=v;const t0=performance.now();const D=380;
  const st=n=>{const k=Math.min(1,(n-t0)/D),e=1-Math.pow(1-k,3);old.setAttribute('y',y0-14*e*up);old.setAttribute('opacity',1-e);el.setAttribute('y',y0+14*(1-e)*up);el.setAttribute('opacity',e);
-  if(k<1)requestAnimationFrame(st);else{old.remove();el.setAttribute('y',y0);el.setAttribute('opacity',1);}};requestAnimationFrame(st);};
+  if(k<1)RAF(st);else{old.remove();el.setAttribute('y',y0);el.setAttribute('opacity',1);}};RAF(st);};
 const upd=()=>{try{fv();}catch(e){}_pk=PK[day]||750;const f=DAYS[day][2],st=startFor(DLS[tsel].m,f);const h=Math.floor(st/60),mm=String(st%60).padStart(2,'0');
  roll(((h%12)||12)+':'+mm);$('rcE').textContent=fmt(st+DUR)+' 완료';$('rcS').setAttribute('data-l',fmt(st));};
 const WT=Wheel('wt',tLabels(),i=>{tsel=i;upd();});
@@ -240,9 +241,9 @@ render();
 const isl=$('island'),G={idle:[297,29521,124,36,18],comp:[272,29521,174,36,18],exp:[169,29519,380,84,34]};
 let cur=G.idle.slice(),tw=0,laOn=false,laTm=0,laTick=0,total=98,left=98,laName='세탁기',laVerb='세탁';
 const setI=g=>{isl.setAttribute('x',g[0]);isl.setAttribute('y',g[1]);isl.setAttribute('width',g[2]);isl.setAttribute('height',g[3]);isl.setAttribute('rx',g[4]);};
-const tween=(to,ms=520)=>{const from=cur.slice(),t0=performance.now();cancelAnimationFrame(tw);
+const tween=(to,ms=520)=>{const from=cur.slice(),t0=performance.now();CAF(tw);
  const sp=t=>{const c=1-Math.pow(1-t,3);return c+Math.sin(t*Math.PI)*.06;};
- const step=now=>{const t=Math.min(1,(now-t0)/ms),e=sp(t);cur=from.map((v,i)=>v+(to[i]-v)*e);setI(cur);if(t<1)tw=requestAnimationFrame(step);else{cur=to.slice();setI(cur);}};tw=requestAnimationFrame(step);};
+ const step=now=>{const t=Math.min(1,(now-t0)/ms),e=sp(t);cur=from.map((v,i)=>v+(to[i]-v)*e);setI(cur);if(t<1)tw=RAF(step);else{cur=to.slice();setI(cur);}};tw=RAF(step);};
 const fmtEnd=m=>{const d=new Date(Date.now()+m*60000);let h=d.getHours(),mm=String(d.getMinutes()).padStart(2,'0');const ap=h<12?'오전':'오후';h=h%12||12;return ap+' '+h+':'+mm+' 완료';};
 const stage=()=>left<=0?'완료':left<25?'탈수 중':left<55?'헹굼 중':laVerb+' 중';
 const paint=()=>{$('laT').textContent=laName+' · '+stage();$('laM').textContent=left>0?left+'분':'완료';$('laCm').textContent=left>0?left+'분':'완료';
@@ -262,7 +263,7 @@ if(/auto/.test(location.search)){
  const sv=$('sv');const W=ms=>new Promise(r=>setTimeout(r,ms));
  const dot=el=>{try{const r=el.getBoundingClientRect(),m=sv.getScreenCTM().inverse(),p=sv.createSVGPoint();p.x=r.left+r.width/2;p.y=r.top+r.height/2;const q=p.matrixTransform(m);
   const c=document.createElementNS(NS,'circle');c.setAttribute('cx',q.x);c.setAttribute('cy',q.y);c.setAttribute('r',22);c.setAttribute('fill','rgba(30,31,34,.16)');c.style.transition='opacity .5s ease,r .5s ease';sv.appendChild(c);
-  requestAnimationFrame(()=>{c.style.opacity=0;c.setAttribute('r',30);});setTimeout(()=>c.remove(),600);}catch(e){}};
+  RAF(()=>{c.style.opacity=0;c.setAttribute('r',30);});setTimeout(()=>c.remove(),600);}catch(e){}};
  const tap=async id=>{const el=$(id);dot(el);await W(140);el.dispatchEvent(new MouseEvent('click',{bubbles:true}));};
  const reset=()=>{closeAll();[1,2].forEach(i=>{const n=$('c'+i+'new'),o=$('c'+i+'sub');n.style.transition=o.style.transition='opacity .3s ease';n.style.opacity=0;o.style.opacity=1;});};
  (async()=>{await W(1400);for(;;){
