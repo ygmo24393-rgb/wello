@@ -1995,14 +1995,6 @@
 <line class="lgv" style="--d:0.28s" x1="728.6" y1="300" x2="728.6" y2="1350" stroke="#C4C5CA" stroke-width="1" vector-effect="non-scaling-stroke"/>
 <line class="lgv" style="--d:0.33999999999999997s" x1="1472.9" y1="300" x2="1472.9" y2="1350" stroke="#C4C5CA" stroke-width="1" vector-effect="non-scaling-stroke"/>
 <line class="lgv" style="--d:0.4s" x1="1516.9" y1="300" x2="1516.9" y2="1350" stroke="#C4C5CA" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.4s" x1="1203.8" y1="661" x2="1203.8" y2="705" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.4s" x1="1203.8" y1="950" x2="1203.8" y2="994" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.44s" x1="1232.4" y1="661" x2="1232.4" y2="705" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.44s" x1="1232.4" y1="950" x2="1232.4" y2="994" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.48000000000000004s" x1="1256.3" y1="661" x2="1256.3" y2="705" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.48000000000000004s" x1="1256.3" y1="950" x2="1256.3" y2="994" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.52s" x1="1284.9" y1="661" x2="1284.9" y2="705" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
-<line class="lgv" style="--d:0.52s" x1="1284.9" y1="950" x2="1284.9" y2="994" stroke="#D2D3D7" stroke-width="1" vector-effect="non-scaling-stroke"/>
 <text class="lgt" style="--d:0.3s" x="559.4" y="643" text-anchor="middle" font-size="16" font-style="italic" fill="#A3A5AB" font-family="Creato Display,sans-serif">7.9x</text>
 <text class="lgt" style="--d:0.4s" x="700.2" y="643" text-anchor="middle" font-size="16" font-style="italic" fill="#A3A5AB" font-family="Creato Display,sans-serif">2.0x</text>
 <text class="lgt" style="--d:0.5s" x="1100.8" y="643" text-anchor="middle" font-size="16" font-style="italic" fill="#A3A5AB" font-family="Creato Display,sans-serif">26x</text>
@@ -2315,14 +2307,14 @@ new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!started){started=tru
 #seclogo.g1 #lggrid .lgv,#seclogo.g1 #lggrid .lgh{transform:none}
 #seclogo.g2 #lggrid .lgb{opacity:1}
 #seclogo.g2 #lggrid .lgt{opacity:1;transform:none}
-#seclogo.g0 #lggrid *{transition-delay:0s!important;transition-duration:.6s}
+#lggrid{opacity:0;transition:opacity .5s ease}#seclogo.g1 #lggrid{opacity:1;transition:opacity .2s ease}#seclogo.gx #lggrid{opacity:0;transition:opacity .7s ease}
 #lgmark{transition:opacity .6s ease,filter .6s ease}
 #seclogo.m0 #lgmark{opacity:0;filter:blur(6px)}
 #lgmark path{transition:fill .6s ease}#seclogo.m1 #lgmark path{fill:#C6C7CC}
 </style>
 <script>
 (()=>{const S=document.getElementById('seclogo');if(!S)return;const T=ms=>new Promise(r=>setTimeout(r,ms));const set=c=>S.setAttribute('class','pgb '+c);let run=false;
-const loop=async()=>{for(;;){set('');await T(1600);set('m0');await T(500);set('m0 g1');await T(1000);set('m0 g1 g2');await T(700);set('m1 g1 g2');await T(1800);set('g0');await T(900);}};
+const loop=async()=>{for(;;){set('');await T(1600);set('m0');await T(500);set('m0 g1');await T(1000);set('m0 g1 g2');await T(700);set('m1 g1 g2');await T(1900);set('g1 g2 gx');await T(900);}};
 new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!run){run=true;o.disconnect();loop();}},{threshold:.3}).observe(S);})();
 </script>
 </body></html>
