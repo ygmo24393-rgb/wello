@@ -10,7 +10,7 @@
 #lcard.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){#lcard{opacity:1;transform:none}}
 .heroov{position:absolute;left:0;top:0;width:100%;z-index:2}
-.heroov svg{display:block;width:100%;height:auto}#page,#sec04,#secov,#secprob,#secdev,.pgb{display:block;width:100%;height:auto}#secov .q{transition:transform .9s cubic-bezier(.65,0,.25,1),fill .6s ease,fill-opacity .9s cubic-bezier(.65,0,.25,1);cursor:pointer;fill:#111}
+.heroov svg{display:block;width:100%;height:auto}#page,#sec04,#secov,#secprob,#secdev,.pgb{display:block;width:100%;height:auto}#secov .q{transition:transform .9s cubic-bezier(.65,0,.25,1),fill .6s ease,fill-opacity .9s cubic-bezier(.65,0,.25,1);cursor:pointer;fill:#4A5263}
 #secov .q text{font-family:"Creato Display","Asta Sans",sans-serif;font-style:italic;letter-spacing:-.6px}
 #secov .qt{font-size:30px}
 #secov .tg{opacity:0;transform:translateX(-10px);transition:opacity .5s ease,transform .7s cubic-bezier(.22,.8,.2,1)}
@@ -2267,7 +2267,7 @@ fit();addEventListener('resize',fit);})();
 (()=>{const qs=[...document.querySelectorAll('#ovq .q')],n=qs.length,m=document.getElementById('ovm');if(!n)return;
 let cur=6,prev=null,tm=0,hover=false;
 const slot=i=>{let k=(i-cur)%n;if(k<0)k+=n;if(k>n/2)k-=n;return k;};
-const col=k=>k===0?'#2B9CFF':'#111111';const op=k=>[1,.88,.55,.3,.14,0,0][Math.min(6,Math.abs(k))];let rot=0;
+const col=k=>k===0?'#2B9CFF':'#4A5263';const op=k=>[1,.88,.55,.3,.14,0,0][Math.min(6,Math.abs(k))];let rot=0;
 const draw=(first)=>{qs.forEach((q,i)=>{const k=slot(i),pk=prev?prev[i]:k;
  if(first||Math.abs(k-pk)>1){q.style.transition='none';}
  q.style.transform='translate(0px,'+(991+k*62)+'px)';q.classList.toggle('on',k===0);q.style.fill=col(k);q.style.fillOpacity=op(k);
