@@ -2379,7 +2379,7 @@ const size=()=>{const w=box.clientWidth,hh=box.clientHeight,d=Math.min(devicePix
 let vis=false;new IntersectionObserver(es=>{vis=es[0].isIntersecting},{rootMargin:'200px'}).observe(box);
 const t0=performance.now();const draw=()=>{if(vis){if(cv.width<8)size();gl.uniform2f(ur,cv.width,cv.height);gl.uniform1f(ut,(performance.now()-t0)/1000+seed);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}setTimeout(draw,33)};draw();}};GLF(cv,box,0);GLF(document.getElementById('ovcv'),document.getElementById('ovbx'),37);
 const P=[[['Choose when you want'],['your appliance to finish.'],'가전 작동을 마치고 싶은 시간을 정합니다.'],
- [['WELLO checks run time'],['against the solar forecast.'],'WELLO는 가전 작동 시간과 태양광 발전 예측을 함께 살핍니다.'],
+ [['Wello checks run time'],['against the solar forecast.'],'WELLO는 가전 작동 시간과 태양광 발전 예측을 함께 살핍니다.'],
  [['See when to start so you can'],['use more solar power.'],'태양광 전기를 더 많이 쓸 수 있는 시작 시간을 안내합니다.'],
  [['Review the suggested time'],['and confirm your schedule.'],'추천 시간을 확인하고 예약을 확정합니다.'],
  [['Get notified when weather'],['changes affect your schedule.'],'날씨 변화가 예약에 영향을 주면 알림을 받습니다.']];
