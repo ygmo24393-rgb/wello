@@ -2355,4 +2355,26 @@ for(const el of root.children){const t=el.tagName.toLowerCase();if(t==='defs')co
 const chk=()=>{const r=S.getBoundingClientRect(),k=r.width/1920,lim=innerHeight*.9;for(let i=items.length-1;i>=0;i--){if(r.top+items[i][1]*k<lim){items[i][0].classList.add('in');items.splice(i,1)}}};
 let raf=0;addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(chk)},{passive:true});addEventListener('resize',chk);chk();})();
 </script>
+<script>
+(()=>{const S=document.getElementById('secbg');if(!S)return;const NS='http://www.w3.org/2000/svg';
+[...S.querySelectorAll('path')].filter(p=>/paint[01]_linear_3123_8105/.test(p.getAttribute('fill')||'')).forEach(p=>p.remove());
+const P=[[['Stay in ',['control,']],['when plans ',['change.']]],
+ [['Run it when the ',['sun'],' is out,'],['not when you ',['remember.']]],
+ [['Your schedule,'],['the sun’s ',['timing.']]],
+ [['Less ',['waiting,']],['more ',['sunlight'],' used.']],
+ [['Plans change.'],['Your home ',['adapts.']]],
+ [['Every watt,'],['right ',['on time.']]]];
+const g=document.createElementNS(NS,'g');S.querySelector('g').appendChild(g);
+const defs=S.querySelector('defs');const lg=document.createElementNS(NS,'linearGradient');lg.id='twg';lg.setAttribute('x1','0');lg.setAttribute('x2','1');lg.setAttribute('y1','0');lg.setAttribute('y2','0');
+lg.innerHTML='<stop stop-color="#007EFF"/><stop offset="1" stop-color="#4DBCFF"/>';defs.appendChild(lg);
+const Y=[4478,4566],CX=954.5;let chars=[];
+const build=ph=>{g.innerHTML='';chars=[];ph.forEach((line,li)=>{const t=document.createElementNS(NS,'text');t.setAttribute('x',CX);t.setAttribute('y',Y[li]);t.setAttribute('text-anchor','middle');t.setAttribute('font-family','Creato Display,Asta Sans,sans-serif');t.setAttribute('font-size','78');t.setAttribute('font-weight','500');t.setAttribute('letter-spacing','-2.4');
+ line.forEach(part=>{const em=Array.isArray(part),txt=em?part[0]:part;for(const ch of txt){const sp=document.createElementNS(NS,'tspan');sp.textContent=ch;if(em){sp.setAttribute('font-style','italic');sp.setAttribute('fill','url(#twg)')}else sp.setAttribute('fill','#1E1F22');sp.style.opacity=0;sp.style.transition='opacity .45s ease';t.appendChild(sp);chars.push(sp)}});g.appendChild(t)})};
+const T=ms=>new Promise(r=>setTimeout(r,ms));let run=false;
+g.style.transition='opacity .6s ease,filter .6s ease';
+const loop=async()=>{for(let k=0;;k=(k+1)%P.length){build(P[k]);g.style.opacity=1;g.style.filter='none';await T(60);
+ for(const c of chars){c.style.opacity=1;await T(c.textContent===' '?20:42)}
+ await T(2200);g.style.opacity=0;g.style.filter='blur(8px)';await T(700);}};
+new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!run){run=true;o.disconnect();loop()}},{rootMargin:'-20% 0px'}).observe(S);})();
+</script>
 </body></html>
