@@ -2284,11 +2284,11 @@ draw(true);imgs();tick();})();
 const la=st.querySelector('.la'),lb=st.querySelector('.lb'),box=document.getElementById('devbox'),sh=document.getElementById('devsh'),sc=document.getElementById('devsc'),stand=document.getElementById('devst'),wp=sc.querySelector('.wp'),mb=sc.querySelector('.mb');
 const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, cl=v=>Math.max(0,Math.min(1,v)), seg=(p,a,b)=>cl((p-a)/(b-a)), L=(a,b,t)=>a+(b-a)*t;
 let raf=0;
-const SD=document.getElementById('secdev');const up=()=>{raf=0;const kk=SD.getBoundingClientRect().width/1920;SD.style.transform='none';const r0=SD.getBoundingClientRect().top;const RW=900*kk,top0=(innerHeight-960*kk)/2-140*kk;const off=Math.max(0,Math.min(RW,top0-r0));SD.style.transform=st.style.transform='translate3d(0,'+off+'px,0)';const p=cl(off/RW);const k=box.clientWidth/1214;
-const m=p<.5?0:1;const bh=box.clientHeight/k;const t1=io(seg(p,.08,.5)),t2=io(seg(p,.5,.92));const ty=p<.5?-t1*(bh*1.05):(1-t2)*(bh*1.05);const rz=p<.5?-6*t1:5*(1-t2);
+const SD=document.getElementById('secdev');let PT=0,PS=0,lp=0;const step=()=>{lp=0;PS+=(PT-PS)*.18;if(Math.abs(PT-PS)<.0005)PS=PT;up()};const up=()=>{raf=0;const kk=SD.getBoundingClientRect().width/1920;SD.style.transform='none';const r0=SD.getBoundingClientRect().top;const RW=900*kk,top0=(innerHeight-960*kk)/2-140*kk;const off=Math.max(0,Math.min(RW,top0-r0));SD.style.transform=st.style.transform='translate3d(0,'+off+'px,0)';PT=cl(off/RW);if(Math.abs(PT-PS)>.0005&&!lp)lp=setTimeout(step,16);const p=PS;const k=box.clientWidth/1214;
+const m=p<.5?0:1;const bh=box.clientHeight/k;const eo=t=>1-Math.pow(1-t,3),ei=t=>t*t*t;const t1=ei(seg(p,.1,.5)),t2=eo(seg(p,.5,.9));const ty=p<.5?-t1*bh*.55:(1-t2)*bh*.55;const fo=p<.5?1-t1:t2;
 // shell geometry (box units): tablet 844x487 r24 bezel14 -> phone 290x598 r54 bezel 9
 const W=L(844,290,m),H=L(487,598,m),R=L(24,54,m),B=L(14,9,m),cy=L(-28,0,m);
-sh.style.transform='translate(-50%,-50%) translateY('+ty*k+'px) rotate('+rz+'deg)';sh.style.width=W*k+'px';sh.style.height=H*k+'px';sh.style.borderRadius=R*k+'px';sh.style.marginTop=cy*k+'px';
+sh.style.transform='translate(-50%,-50%) translateY('+ty*k+'px)';sh.style.opacity=fo;sh.style.width=W*k+'px';sh.style.height=H*k+'px';sh.style.borderRadius=R*k+'px';sh.style.marginTop=cy*k+'px';
 sh.style.boxShadow='0 0 0 '+(4*m*k)+'px #D3D5D8,0 0 0 '+(5*m*k)+'px #B9BCC1,0 '+30*k+'px '+60*k+'px '+(-20*k)+'px rgba(20,24,32,.28)';
 const sw=W-2*B,shh=H-2*B;sc.style.left=sc.style.top=B*k+'px';sc.style.width=sw*k+'px';sc.style.height=shh*k+'px';sc.style.borderRadius=Math.max(2,R-B)*k+'px';
 const s1=Math.max(sw/1280,shh/720);wp.style.transform='translate('+((sw-1280*s1)/2*k)+'px,'+((shh-720*s1)/2*k)+'px) scale('+s1*k+')';
