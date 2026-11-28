@@ -24,7 +24,7 @@
 .devstick svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .devstick .la,.devstick .lb{will-change:transform,opacity}
 .devstick .lb{opacity:0}
-.devbox{position:absolute;z-index:2;left:34.6875%;top:2.7778%;width:63.2292%;height:94.3056%;background:#F6F6F7;border-radius:16px}
+.devbox{position:absolute;z-index:2;left:34.6875%;top:2.7778%;width:63.2292%;height:94.3056%;background:#F6F6F7;border-radius:16px;overflow:hidden}
 .devsh{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#111214;box-shadow:0 0 0 0 #D5D7DA,0 30px 60px -20px rgba(20,24,32,.28);overflow:hidden}
 .devsc{position:absolute;overflow:hidden;background:#F2F3F5}
 .devsc iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff}
@@ -2285,17 +2285,17 @@ const la=st.querySelector('.la'),lb=st.querySelector('.lb'),box=document.getElem
 const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, cl=v=>Math.max(0,Math.min(1,v)), seg=(p,a,b)=>cl((p-a)/(b-a)), L=(a,b,t)=>a+(b-a)*t;
 let raf=0;
 const SD=document.getElementById('secdev');const up=()=>{raf=0;const kk=SD.getBoundingClientRect().width/1920;SD.style.transform='none';const r0=SD.getBoundingClientRect().top;const RW=900*kk,top0=(innerHeight-960*kk)/2-140*kk;const off=Math.max(0,Math.min(RW,top0-r0));SD.style.transform=st.style.transform='translate3d(0,'+off+'px,0)';const p=cl(off/RW);const k=box.clientWidth/1214;
-const m=io(seg(p,.25,.75));
+const m=p<.5?0:1;const bh=box.clientHeight/k;const t1=io(seg(p,.08,.5)),t2=io(seg(p,.5,.92));const ty=p<.5?-t1*(bh*1.05):(1-t2)*(bh*1.05);const rz=p<.5?-6*t1:5*(1-t2);
 // shell geometry (box units): tablet 844x487 r24 bezel14 -> phone 290x598 r54 bezel 9
 const W=L(844,290,m),H=L(487,598,m),R=L(24,54,m),B=L(14,9,m),cy=L(-28,0,m);
-sh.style.width=W*k+'px';sh.style.height=H*k+'px';sh.style.borderRadius=R*k+'px';sh.style.marginTop=cy*k+'px';
+sh.style.transform='translate(-50%,-50%) translateY('+ty*k+'px) rotate('+rz+'deg)';sh.style.width=W*k+'px';sh.style.height=H*k+'px';sh.style.borderRadius=R*k+'px';sh.style.marginTop=cy*k+'px';
 sh.style.boxShadow='0 0 0 '+(4*m*k)+'px #D3D5D8,0 0 0 '+(5*m*k)+'px #B9BCC1,0 '+30*k+'px '+60*k+'px '+(-20*k)+'px rgba(20,24,32,.28)';
 const sw=W-2*B,shh=H-2*B;sc.style.left=sc.style.top=B*k+'px';sc.style.width=sw*k+'px';sc.style.height=shh*k+'px';sc.style.borderRadius=Math.max(2,R-B)*k+'px';
 const s1=Math.max(sw/1280,shh/720);wp.style.transform='translate('+((sw-1280*s1)/2*k)+'px,'+((shh-720*s1)/2*k)+'px) scale('+s1*k+')';
 const s2=Math.max(sw/402,shh/874);mb.style.transform='translate('+((sw-402*s2)/2*k)+'px,'+((shh-874*s2)/2*k)+'px) scale('+s2*k+')';
-wp.style.opacity=1-seg(p,.12,.3);mb.style.opacity=seg(p,.7,.88);wp.style.pointerEvents=p<.15?'auto':'none';mb.style.pointerEvents=p>.75?'auto':'none';
+wp.style.opacity=m?0:1;mb.style.opacity=m?1:0;wp.style.pointerEvents=p<.1?'auto':'none';mb.style.pointerEvents=p>.9?'auto':'none';
 const so=1-seg(p,.15,.35);stand.style.opacity=so;stand.style.width=180*k+'px';stand.style.height=46*k*so+'px';stand.style.top=(679/2+cy+H/2)*k+'px';
-la.style.opacity=1-seg(p,.3,.45);lb.style.opacity=seg(p,.55,.7);};
+la.style.opacity=1-seg(p,.35,.5);lb.style.opacity=seg(p,.5,.65);};
 addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(up)},{passive:true});addEventListener('resize',up);up();})();
 </script>
 <script>
