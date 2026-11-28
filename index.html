@@ -2384,7 +2384,7 @@ const build=ph=>{tx.innerHTML='';words=[];const fs=parseFloat(getComputedStyle(t
  txt.split(/(\s+)/).forEach(tok=>{if(!tok)return;if(/^\s+$/.test(tok)){d.appendChild(document.createTextNode(tok));return}
   const w=document.createElement('span');w.style.cssText=`display:inline-block;opacity:0;filter:blur(${(fs*.2).toFixed(1)}px);transform:translateY(.33em)`;let prev='';
   for(const ch of tok){const c=document.createElement('span');c.textContent=ch;const k=KP[prev+ch];if(k)c.style.marginLeft=k+'em';w.appendChild(c);prev=ch}
-  d.appendChild(w);words.push(w)});wr.appendChild(d)});const L=wr.children;if(L.length>1){const w0=L[0].getBoundingClientRect().width;L[1].style.paddingLeft=(w0*({'Your finish time':.5,'When plans change,':.2,'Wello suggests a start time':.39}[ph[0][0]]??.28)/fs).toFixed(3)+'em'}return fs};
+  d.appendChild(w);words.push(w)});wr.appendChild(d)});const L=wr.children;if(L.length>1){const w0=L[0].getBoundingClientRect().width;L[1].style.paddingLeft=(w0*({'Your finish time':.5,'When plans change,':.23,'Wello suggests a start time':.39}[ph[0][0]]??.28)/fs).toFixed(3)+'em'}return fs};
 const T=ms=>new Promise(r=>setTimeout(r,ms));let run=false;
 const loop=async()=>{for(let k=0;;k=(k+1)%P.length){const fs=build(P[k]);tx.style.opacity=1;tx.style.filter='none';await T(300);
  for(const w of words){w.style.transition=`opacity 1s ${EO},filter 1s ${EO},transform 1s ${EO}`;w.style.opacity=1;w.style.filter='blur(0px)';w.style.transform='none';await T(170)}
