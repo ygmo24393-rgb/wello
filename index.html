@@ -2380,8 +2380,8 @@ const size=()=>{const w=box.clientWidth,hh=box.clientHeight,d=Math.min(devicePix
 let vis=false;new IntersectionObserver(es=>{vis=es[0].isIntersecting},{rootMargin:'200px'}).observe(box);
 const t0=performance.now();const draw=()=>{if(vis){if(cv.width<8)size();gl.uniform2f(ur,cv.width,cv.height);gl.uniform1f(ut,(performance.now()-t0)/1000+seed);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}setTimeout(draw,33)};draw();}};GLF(cv,box,0);GLF(document.getElementById('ovcv'),document.getElementById('ovbx'),37);
 const P=[[['Your finish time'],['comes first.']],
- [['Wello finds a start time'],['based on the solar forecast.']],
- [['When plans change,'],['you decide what happens next.']]];
+ [['Wello suggests a start time'],['using solar forecasts.']],
+ [['When plans change,'],['you decide what’s next.']]];
 const KP={ff:.02,fi:.045,fo:.03,fe:.03,ti:.03,tf:.02,pl:.025,li:.02,rt:.02,ft:.02,ll:.015,'rn':.015,'ck':.015};let words=[];const EO='cubic-bezier(.25,1,.5,1)';
 const build=ph=>{tx.innerHTML='';words=[];const fs=parseFloat(getComputedStyle(tx).fontSize);const wr=document.createElement('div');wr.style.cssText='display:inline-flex;flex-direction:column;gap:0;text-align:left;line-height:.96';tx.appendChild(wr);
  ph.slice(0,2).forEach((line,li)=>{const d=document.createElement('div');const txt=line.map(p=>Array.isArray(p)?p[0]:p).join('');
