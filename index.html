@@ -2355,4 +2355,16 @@ new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!started){started=tru
 const loop=async()=>{for(;;){set('');await T(1600);set('m0');await T(500);set('m0 g1');await T(1000);set('m0 g1 g2');await T(700);set('m1 g1 g2');await T(1900);set('g1 g2 gx');await T(900);}};
 new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!run){run=true;o.disconnect();loop();}},{threshold:.3}).observe(S);})();
 </script>
+<script>
+(()=>{const S=document.getElementById('secbg');if(!S||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+const root=S.querySelector('g');const items=[];
+for(const el of root.children){const t=el.tagName.toLowerCase();if(t==='defs')continue;let b;try{b=el.getBBox()}catch(e){continue}
+ if(b.width>=1700&&b.height>=1500)continue;let c='rv',d=Math.min(.3,b.x/1920*.3);
+ if(b.height<4&&b.width>1500){c='wipe';d=.1}
+ else if(b.height>90&&b.y>2150&&b.y<2550){c='rvb';d=.1+b.x/1920*.4}
+ else if(t==='g'){c='rv';d=.1}
+ el.classList.add(c);el.style.transitionDelay=d.toFixed(2)+'s';items.push([el,b.y+Math.min(b.height,160)*.3]);}
+const chk=()=>{const r=S.getBoundingClientRect(),k=r.width/1920,lim=innerHeight*.9;for(let i=items.length-1;i>=0;i--){if(r.top+items[i][1]*k<lim){items[i][0].classList.add('in');items.splice(i,1)}}};
+let raf=0;addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(chk)},{passive:true});addEventListener('resize',chk);chk();})();
+</script>
 </body></html>
