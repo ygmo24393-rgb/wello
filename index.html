@@ -19,7 +19,7 @@
 #secov .ovimg{opacity:0;transition:opacity .8s cubic-bezier(.65,0,.25,1)}
 #secov .ovimg.on{opacity:1}
 
-.devpin{position:absolute;left:0;width:100%}
+.devpin{position:absolute;left:0;width:100%;z-index:3}
 .devstick{position:absolute;left:0;top:0;width:100%;aspect-ratio:1920/720;overflow:hidden;will-change:transform}
 .devstick svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .devstick .la,.devstick .lb{will-change:transform,opacity}
@@ -1913,7 +1913,7 @@
 </svg>
 
 
-<svg id="secdev" viewBox="0 0 1920 1786" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="secdev" style="margin-bottom:calc(100% * 900/1920);position:relative;z-index:1;will-change:transform" viewBox="0 0 1920 1786" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clipD_3088_7058)">
 <rect width="1920" height="3460" fill="white"/>
 <g transform="translate(0 -70)"><path d="M524.252 1583L527.788 1563.01L514.12 1534.58H522.416L532.344 1556L549.82 1534.58H559L535.336 1563.01L531.8 1583H524.252ZM571.118 1583.68C557.994 1583.68 550.718 1575.79 550.718 1564.23C550.718 1546.89 560.714 1533.9 578.054 1533.9C591.042 1533.9 598.454 1541.79 598.454 1553.42C598.454 1570.69 588.798 1583.68 571.118 1583.68ZM571.594 1577.49C584.31 1577.49 590.906 1566.61 590.906 1553.96C590.906 1545.4 585.942 1540.09 577.578 1540.09C564.862 1540.09 558.266 1550.97 558.266 1563.69C558.266 1572.26 563.23 1577.49 571.594 1577.49ZM618.035 1583.68C606.271 1583.68 599.811 1578.78 599.811 1569.26C599.811 1567.84 599.947 1566.34 600.287 1564.71L605.591 1534.58H613.139L607.971 1564.03C607.699 1565.46 607.563 1566.75 607.563 1567.97C607.563 1574.7 611.575 1577.49 618.511 1577.49C627.011 1577.49 631.499 1573.96 633.267 1564.03L638.435 1534.58H645.983L640.679 1564.71C638.299 1578.24 631.975 1583.68 618.035 1583.68ZM686.136 1545.8C686.136 1553.96 682.736 1558.25 675.528 1560.22C679.676 1561.24 681.784 1563.96 681.784 1567.97C681.784 1568.72 681.716 1569.54 681.58 1570.35L680.22 1578.1C680.016 1579.26 679.948 1580.42 679.948 1581.3C679.948 1581.98 679.948 1582.52 680.084 1583H672.944C672.672 1582.18 672.468 1581.23 672.468 1580.14C672.468 1579.53 672.536 1578.85 672.672 1578.1L673.964 1570.62C674.1 1569.81 674.236 1568.99 674.236 1568.31C674.236 1564.23 671.38 1562.8 666.688 1562.8H653.564L650.096 1583H642.548L651.048 1534.58H671.516C680.696 1534.58 686.136 1538.6 686.136 1545.8ZM678.52 1546.89C678.52 1542 675.392 1540.3 669.136 1540.3H657.576L654.584 1557.09H667.572C675.052 1557.09 678.52 1553.83 678.52 1546.89ZM740.02 1583H732.472L736.212 1561.58H710.916L707.176 1583H699.628L708.128 1534.58H715.676L712.072 1555.12H737.368L740.972 1534.58H748.52L740.02 1583ZM768.172 1583.68C755.048 1583.68 747.772 1575.79 747.772 1564.23C747.772 1546.89 757.768 1533.9 775.108 1533.9C788.096 1533.9 795.508 1541.79 795.508 1553.42C795.508 1570.69 785.852 1583.68 768.172 1583.68ZM768.648 1577.49C781.364 1577.49 787.96 1566.61 787.96 1553.96C787.96 1545.4 782.996 1540.09 774.632 1540.09C761.916 1540.09 755.32 1550.97 755.32 1563.69C755.32 1572.26 760.284 1577.49 768.648 1577.49ZM847.321 1583H840.113L847.389 1541.52L824.269 1583H817.809L809.309 1541.52L802.033 1583H794.825L803.325 1534.58H814.885L822.705 1571.78L843.717 1534.58H855.821L847.321 1583ZM887.288 1583H853.016L861.516 1534.58H895.788L894.7 1540.77H867.976L865.392 1555.39H889.94L888.852 1561.24H864.304L861.584 1576.81H888.308L887.288 1583ZM927.938 1583.68C915.154 1583.68 908.218 1575.79 908.218 1564.23C908.218 1546.89 918.214 1533.9 935.554 1533.9C948.066 1533.9 955.002 1540.98 955.002 1548.93C955.002 1549.54 954.934 1550.16 954.866 1550.77H948.134C947.794 1544.78 943.374 1540.09 935.078 1540.09C922.362 1540.09 915.766 1550.97 915.766 1563.69C915.766 1572.26 920.73 1577.49 929.094 1577.49C939.09 1577.49 943.646 1571.64 945.686 1562.46H932.766L933.65 1557.23H954.118L949.63 1583H943.986L944.938 1574.16C941.674 1580.21 937.118 1583.68 927.938 1583.68ZM988.945 1583H954.673L963.173 1534.58H997.445L996.357 1540.77H969.633L967.049 1555.39H991.597L990.509 1561.24H965.961L963.241 1576.81H989.965L988.945 1583ZM1033.27 1583H1025.04L1006.82 1544.65L1000.08 1583H992.875L1001.38 1534.58H1009.6L1027.76 1572.94L1034.56 1534.58H1041.77L1033.27 1583ZM1073.25 1583H1038.98L1047.48 1534.58H1081.75L1080.66 1540.77H1053.94L1051.36 1555.39H1075.9L1074.82 1561.24H1050.27L1047.55 1576.81H1074.27L1073.25 1583ZM1120.77 1545.8C1120.77 1553.96 1117.37 1558.25 1110.16 1560.22C1114.31 1561.24 1116.42 1563.96 1116.42 1567.97C1116.42 1568.72 1116.35 1569.54 1116.21 1570.35L1114.85 1578.1C1114.65 1579.26 1114.58 1580.42 1114.58 1581.3C1114.58 1581.98 1114.58 1582.52 1114.72 1583H1107.58C1107.31 1582.18 1107.1 1581.23 1107.1 1580.14C1107.1 1579.53 1107.17 1578.85 1107.31 1578.1L1108.6 1570.62C1108.73 1569.81 1108.87 1568.99 1108.87 1568.31C1108.87 1564.23 1106.01 1562.8 1101.32 1562.8H1088.2L1084.73 1583H1077.18L1085.68 1534.58H1106.15C1115.33 1534.58 1120.77 1538.6 1120.77 1545.8ZM1113.15 1546.89C1113.15 1542 1110.03 1540.3 1103.77 1540.3H1092.21L1089.22 1557.09H1102.21C1109.69 1557.09 1113.15 1553.83 1113.15 1546.89ZM1162.35 1583H1154.93L1152.62 1571.85H1130.45L1124.27 1583H1116.11L1143.1 1534.58H1152.35L1162.35 1583ZM1151.74 1566L1146.91 1541.59L1133.38 1566H1151.74ZM1177.56 1583H1170.01L1177.42 1540.77H1162.4L1163.48 1534.58H1201.16L1200.07 1540.77H1184.97L1177.56 1583ZM1229.91 1583H1195.64L1204.14 1534.58H1238.41L1237.32 1540.77H1210.6L1208.02 1555.39H1232.56L1231.48 1561.24H1206.93L1204.21 1576.81H1230.93L1229.91 1583ZM1252.13 1583.68C1240.57 1583.68 1234.52 1578.99 1234.52 1569.94C1234.52 1569.2 1234.59 1568.45 1234.66 1567.63H1241.8C1241.8 1574.64 1245.27 1577.97 1252.88 1577.97C1260.57 1577.97 1265.8 1574.64 1265.8 1568.31C1265.8 1564.64 1263.76 1562.87 1257.23 1561.92L1250.64 1560.9C1242.82 1559.74 1239.21 1556.34 1239.21 1549.82C1239.21 1539.75 1246.9 1533.9 1259.07 1533.9C1269.81 1533.9 1275.53 1539.07 1275.53 1547.5C1275.53 1548.05 1275.53 1548.66 1275.46 1549.27H1268.52C1268.52 1543.08 1265.33 1539.62 1258.25 1539.62C1251.73 1539.62 1246.76 1542.68 1246.76 1548.8C1246.76 1552.54 1248.6 1554.03 1254.17 1554.85L1260.77 1555.87C1268.73 1557.02 1273.35 1560.49 1273.35 1567.43C1273.35 1577.63 1265.87 1583.68 1252.13 1583.68Z" fill="#D8D8D9"/></g>
@@ -2169,8 +2169,8 @@
 
 
 
-<div id="twov" style="position:absolute;left:1.875%;width:95.6771%;top:33.3431%;aspect-ratio:1837/1110;border-radius:1.742%/2.883%;overflow:hidden;container-type:inline-size;background:linear-gradient(120deg,#EEF6FB,#7CC4FF 35%,#4DB3FF 55%,#BFE2FF 80%,#DDEEFC)"><canvas id="twcv" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas><div id="twtx" style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:#fff;font-family:'Creato Display','Asta Sans',sans-serif;font-style:normal;font-weight:400;font-size:4.246cqw;line-height:1.13;letter-spacing:-.031em;text-shadow:0 2px 28px rgba(0,90,200,.22);transition:opacity .6s ease,filter .6s ease"></div></div>
-<div class="devpin" id="devpin" style="top:39.6365%;height:calc(100% * 720/27520)"><div class="devstick" id="devstick"><div class="devbox" id="devbox"><div class="devst" id="devst"></div><div class="devsh" id="devsh"><div class="devsc" id="devsc"><iframe class="wp" src="wallpad/?v=4" title="월패드" loading="lazy" tabindex="-1"></iframe><iframe class="mb" src="adjust/?bare&amp;v=791200" title="모바일" loading="lazy" tabindex="-1"></iframe></div></div></div>
+<div id="twov" style="position:absolute;left:1.875%;width:95.6771%;top:32.2872%;aspect-ratio:1837/1110;border-radius:1.742%/2.883%;overflow:hidden;container-type:inline-size;background:linear-gradient(120deg,#EEF6FB,#7CC4FF 35%,#4DB3FF 55%,#BFE2FF 80%,#DDEEFC)"><canvas id="twcv" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas><div id="twtx" style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:#fff;font-family:'Creato Display','Asta Sans',sans-serif;font-style:normal;font-weight:400;font-size:4.246cqw;line-height:1.13;letter-spacing:-.031em;text-shadow:0 2px 28px rgba(0,90,200,.22);transition:opacity .6s ease,filter .6s ease"></div></div>
+<div class="devpin" id="devpin" style="top:38.3813%;height:calc(100% * 720/28420)"><div class="devstick" id="devstick"><div class="devbox" id="devbox"><div class="devst" id="devst"></div><div class="devsh" id="devsh"><div class="devsc" id="devsc"><iframe class="wp" src="wallpad/?v=4" title="월패드" loading="lazy" tabindex="-1"></iframe><iframe class="mb" src="adjust/?bare&amp;v=791200" title="모바일" loading="lazy" tabindex="-1"></iframe></div></div></div>
 <svg class="la" viewBox="0 380 1920 720" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="#wprow"/></svg>
 <svg class="lb" viewBox="0 380 1920 720" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="phtx" style="font-family:'Asta Sans','Creato Display',sans-serif">
 <text x="195" y="441" font-size="36" font-weight="400" letter-spacing="-.4" fill="#0D0D0D">(2)</text><text x="250" y="441" font-size="39" font-weight="600" letter-spacing="-1.6" fill="#0D0D0D">Smartphone</text>
@@ -2184,15 +2184,15 @@
 <text x="197" y="1072" fill="#B9B9B9">Form Factor</text><text x="350" y="1072" fill="#4D4D4D">Handheld</text>
 </g></g></svg>
 </div></div>
-<div class="embed" style="left:16.6667%;top:66.0718%"><iframe src="wallpad/?v=4" title="Wello 월패드 홈 화면 — 인터랙티브" loading="lazy"></iframe></div>
-<div class="embed" style="left:15.8333%;top:71.5294%"><iframe src="schedule/?v=2" title="Wello 일정 화면 — 인터랙티브" loading="lazy"></iframe></div>
-<div class="embed" style="left:15.8333%;top:76.5079%"><iframe src="schedule/?v=2#new-booking" title="Wello 새 예약 — 인터랙티브" loading="lazy"></iframe></div>
-<div class="embed" style="left:15.8333%;top:81.2247%"><iframe src="report/?v=2" title="Wello 에너지 리포트 — 인터랙티브" loading="lazy"></iframe></div>
-<div class="embed" style="left:50.4167%;top:87.7981%;width:47.5%;aspect-ratio:912/542;border-radius:2.6316%/4.4280%;background:transparent;pointer-events:none"><iframe src="alerts/?h=542&amp;y=197&amp;r=2" title="Wello 알림" loading="lazy"></iframe></div>
-<div class="embed mockph" style="left:12.2917%;top:94.6283%;width:27.0833%;aspect-ratio:760/1480;border-radius:0;background:transparent;pointer-events:none;overflow:visible"><iframe src="mock/?src=..%2Fadjust%2F%3Fbare%26auto%26v%3D791200" title="Wello 가전 일정 조정 자동 시연" loading="lazy" tabindex="-1"></iframe></div>
+<div class="embed" style="left:16.6667%;top:67.1462%"><iframe src="wallpad/?v=4" title="Wello 월패드 홈 화면 — 인터랙티브" loading="lazy"></iframe></div>
+<div class="embed" style="left:15.8333%;top:72.4310%"><iframe src="schedule/?v=2" title="Wello 일정 화면 — 인터랙티브" loading="lazy"></iframe></div>
+<div class="embed" style="left:15.8333%;top:77.2518%"><iframe src="schedule/?v=2#new-booking" title="Wello 새 예약 — 인터랙티브" loading="lazy"></iframe></div>
+<div class="embed" style="left:15.8333%;top:81.8193%"><iframe src="report/?v=2" title="Wello 에너지 리포트 — 인터랙티브" loading="lazy"></iframe></div>
+<div class="embed" style="left:50.4167%;top:88.1845%;width:47.5%;aspect-ratio:912/542;border-radius:2.6316%/4.4280%;background:transparent;pointer-events:none"><iframe src="alerts/?h=542&amp;y=197&amp;r=2" title="Wello 알림" loading="lazy"></iframe></div>
+<div class="embed mockph" style="left:12.2917%;top:94.7984%;width:27.0833%;aspect-ratio:760/1480;border-radius:0;background:transparent;pointer-events:none;overflow:visible"><iframe src="mock/?src=..%2Fadjust%2F%3Fbare%26auto%26v%3D791200" title="Wello 가전 일정 조정 자동 시연" loading="lazy" tabindex="-1"></iframe></div>
 <div class="adjph" id="adjph"><iframe src="adjust/?bare&amp;v=791200" title="Wello 가전 일정 조정" loading="lazy"></iframe></div>
 <script>
-(()=>{const wrap=document.getElementById('adjph').parentNode;document.getElementById('adjph').dataset.q='[[1201.83,26107.83],[1535.06,26126.82],[1253.2,26870.5],[1582.8,26869.0]]';const W=402,H=874;const els=[...document.querySelectorAll('.adjph')];
+(()=>{const wrap=document.getElementById('adjph').parentNode;document.getElementById('adjph').dataset.q='[[1201.83,27007.83],[1535.06,27026.82],[1253.2,27770.5],[1582.8,27769.0]]';const W=402,H=874;const els=[...document.querySelectorAll('.adjph')];
 function solve(src,dst){const A=[],b=[];for(let i=0;i<4;i++){const[x,y]=src[i],[u,v]=dst[i];A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v);}
 for(let c=0;c<8;c++){let p=c;for(let r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;[A[c],A[p]]=[A[p],A[c]];[b[c],b[p]]=[b[p],b[c]];for(let r=0;r<8;r++){if(r===c)continue;const f=A[r][c]/A[c][c];for(let k=c;k<8;k++)A[r][k]-=f*A[c][k];b[r]-=f*b[c];}}return b.map((v,i)=>v/A[i][i]);}
 function fit(){const k=wrap.getBoundingClientRect().width/1920;els.forEach(el=>{const Q=JSON.parse(el.dataset.q);const ox=Q[0][0]*k,oy=Q[0][1]*k;el.style.left=ox+'px';el.style.top=oy+'px';const d=Q.map(([x,y])=>[x*k-ox,y*k-oy]);const h=solve([[0,0],[W,0],[0,H],[W,H]],d);
@@ -2235,7 +2235,7 @@ fit();addEventListener('resize',fit);})();
     const r = svg.getBoundingClientRect(), k = r.width / 1920, lim = innerHeight * 0.9;
     for (let i = pending.length - 1; i >= 0; i--) {
       const [el, y] = pending[i];
-      if (r.top + ((y >= 20305 ? y + -3908 : y >= 16817 ? y + -4278 : y >= 12400 ? y + -4474 : y >= 9224 ? y + -736 : y >= 3832 ? y + -430 : y) - 111) * k < lim) { el.classList.add('in'); pending.splice(i, 1); }
+      if (r.top + ((y >= 20305 ? y + -3008 : y >= 16817 ? y + -3378 : y >= 12400 ? y + -3574 : y >= 9224 ? y + -736 : y >= 3832 ? y + -430 : y) - 111) * k < lim) { el.classList.add('in'); pending.splice(i, 1); }
     }
   };
   let raf = 0; addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(check); }, { passive: true });
@@ -2250,7 +2250,7 @@ fit();addEventListener('resize',fit);})();
     el.classList.add(cls); el.style.transitionDelay = delay.toFixed(2) + 's';
     pending.push([el, bb.y + Math.min(bb.height, 160) * 0.3]);
   }
-  document.querySelectorAll('.embed').forEach((el) => { el.classList.add('rvh'); pending.push([el, parseFloat(el.style.top) / 100 * 27520 + 80]); });
+  document.querySelectorAll('.embed').forEach((el) => { el.classList.add('rvh'); pending.push([el, parseFloat(el.style.top) / 100 * 28420 + 80]); });
   requestAnimationFrame(() => requestAnimationFrame(check));
 })();
 </script>
@@ -2284,7 +2284,7 @@ draw(true);imgs();tick();})();
 const la=st.querySelector('.la'),lb=st.querySelector('.lb'),box=document.getElementById('devbox'),sh=document.getElementById('devsh'),sc=document.getElementById('devsc'),stand=document.getElementById('devst'),wp=sc.querySelector('.wp'),mb=sc.querySelector('.mb');
 const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, cl=v=>Math.max(0,Math.min(1,v)), seg=(p,a,b)=>cl((p-a)/(b-a)), L=(a,b,t)=>a+(b-a)*t;
 let raf=0;
-const up=()=>{raf=0;st.style.transform='none';const rr=box.getBoundingClientRect(),vc=(rr.top+rr.bottom)/2/innerHeight;const p=cl((.72-vc)/(.72-.38));const k=box.clientWidth/1214;
+const SD=document.getElementById('secdev');const up=()=>{raf=0;const kk=SD.getBoundingClientRect().width/1920;SD.style.transform='none';const r0=SD.getBoundingClientRect().top;const RW=900*kk,top0=(innerHeight-960*kk)/2-140*kk;const off=Math.max(0,Math.min(RW,top0-r0));SD.style.transform=st.style.transform='translate3d(0,'+off+'px,0)';const p=cl(off/RW);const k=box.clientWidth/1214;
 const m=io(seg(p,.25,.75));
 // shell geometry (box units): tablet 844x487 r24 bezel14 -> phone 290x598 r54 bezel 9
 const W=L(844,290,m),H=L(487,598,m),R=L(24,54,m),B=L(14,9,m),cy=L(-28,0,m);
@@ -2384,7 +2384,7 @@ const build=ph=>{tx.innerHTML='';words=[];const fs=parseFloat(getComputedStyle(t
  txt.split(/(\s+)/).forEach(tok=>{if(!tok)return;if(/^\s+$/.test(tok)){d.appendChild(document.createTextNode(tok));return}
   const w=document.createElement('span');w.style.cssText=`display:inline-block;opacity:0;filter:blur(${(fs*.2).toFixed(1)}px);transform:translateY(.33em)`;let prev='';
   for(const ch of tok){const c=document.createElement('span');c.textContent=ch;const k=KP[prev+ch];if(k)c.style.marginLeft=k+'em';w.appendChild(c);prev=ch}
-  d.appendChild(w);words.push(w)});wr.appendChild(d)});const L=wr.children;if(L.length>1){const w0=L[0].getBoundingClientRect().width;L[1].style.paddingLeft=(w0*({'Your finish time':.5,'When plans change,':.17,'Wello suggests a start time':.39}[ph[0][0]]??.28)/fs).toFixed(3)+'em'}return fs};
+  d.appendChild(w);words.push(w)});wr.appendChild(d)});const L=wr.children;if(L.length>1){const w0=L[0].getBoundingClientRect().width;L[1].style.paddingLeft=(w0*({'Your finish time':.5,'When plans change,':.14,'Wello suggests a start time':.39}[ph[0][0]]??.28)/fs).toFixed(3)+'em'}return fs};
 const T=ms=>new Promise(r=>setTimeout(r,ms));let run=false;
 const loop=async()=>{for(let k=0;;k=(k+1)%P.length){const fs=build(P[k]);tx.style.opacity=1;tx.style.filter='none';await T(300);
  for(const w of words){w.style.transition=`opacity 1s ${EO},filter 1s ${EO},transform 1s ${EO}`;w.style.opacity=1;w.style.filter='blur(0px)';w.style.transform='none';await T(170)}
