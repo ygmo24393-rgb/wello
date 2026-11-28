@@ -2284,7 +2284,7 @@ draw(true);imgs();tick();})();
 const la=st.querySelector('.la'),lb=st.querySelector('.lb'),box=document.getElementById('devbox'),sh=document.getElementById('devsh'),sc=document.getElementById('devsc'),stand=document.getElementById('devst'),wp=sc.querySelector('.wp'),mb=sc.querySelector('.mb');
 const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, cl=v=>Math.max(0,Math.min(1,v)), seg=(p,a,b)=>cl((p-a)/(b-a)), L=(a,b,t)=>a+(b-a)*t;
 let raf=0;
-let P=0;const up=()=>{raf=0;st.style.transform='none';const p=P;const k=box.clientWidth/1214;
+const up=()=>{raf=0;st.style.transform='none';const rr=box.getBoundingClientRect(),vc=(rr.top+rr.bottom)/2/innerHeight;const p=cl((.72-vc)/(.72-.38));const k=box.clientWidth/1214;
 const m=io(seg(p,.25,.75));
 // shell geometry (box units): tablet 844x487 r24 bezel14 -> phone 290x598 r54 bezel 9
 const W=L(844,290,m),H=L(487,598,m),R=L(24,54,m),B=L(14,9,m),cy=L(-28,0,m);
@@ -2296,10 +2296,7 @@ const s2=Math.max(sw/402,shh/874);mb.style.transform='translate('+((sw-402*s2)/2
 wp.style.opacity=1-seg(p,.12,.3);mb.style.opacity=seg(p,.7,.88);wp.style.pointerEvents=p<.15?'auto':'none';mb.style.pointerEvents=p>.75?'auto':'none';
 const so=1-seg(p,.15,.35);stand.style.opacity=so;stand.style.width=180*k+'px';stand.style.height=46*k*so+'px';stand.style.top=(679/2+cy+H/2)*k+'px';
 la.style.opacity=1-seg(p,.3,.45);lb.style.opacity=seg(p,.55,.7);};
-addEventListener('resize',up);up();
-const T=ms=>new Promise(r=>setTimeout(r,ms));const tw=(a,b,d)=>new Promise(res=>{const t0=performance.now();const f=()=>{const k=Math.min(1,(performance.now()-t0)/d);P=a+(b-a)*k;up();k<1?setTimeout(f,16):res()};f()});
-let run=false;const loop=async()=>{for(;;){await T(1800);await tw(0,1,1600);await T(3200);await tw(1,0,1600);}};
-new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!run){run=true;o.disconnect();loop()}},{threshold:.4}).observe(st);})();
+addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(up)},{passive:true});addEventListener('resize',up);up();})();
 </script>
 <script>
 (()=>{const w=[...document.querySelectorAll('.sw')].sort((a,b)=>a.style.getPropertyValue('--i')-b.style.getPropertyValue('--i'));if(!w.length)return;
