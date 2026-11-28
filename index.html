@@ -2397,7 +2397,7 @@ const P=[[['Run it when the ',['sun'],' is out,'],['not when you ',['remember.']
  [['Plans change.'],['Your home ',['adapts.']]],
  [['Turn sunshine'],['into ',['savings.']]],
  [['Set it ',['once,']],['let the ',['sun'],' do the rest.']]];
-let chars=[];const build=ph=>{tx.innerHTML='';chars=[];ph.forEach(line=>{const d=document.createElement('div');line.forEach(part=>{const em=Array.isArray(part),t=em?part[0]:part;for(const ch of t){const s=document.createElement('span');s.textContent=ch;s.style.opacity=0;s.style.transition='opacity .45s ease';s.style.whiteSpace='pre';d.appendChild(s);chars.push(s)}});tx.appendChild(d)})};
+let chars=[];const build=ph=>{tx.innerHTML='';chars=[];const wr=document.createElement('div');wr.style.cssText='display:inline-block;text-align:left';tx.appendChild(wr);ph.forEach((line,li)=>{const d=document.createElement('div');if(li)d.style.paddingLeft='1.53em';line.forEach(part=>{const em=Array.isArray(part),t=em?part[0]:part;for(const ch of t){const s=document.createElement('span');s.textContent=ch;s.style.opacity=0;s.style.transition='opacity .45s ease';s.style.whiteSpace='pre';d.appendChild(s);chars.push(s)}});wr.appendChild(d)})};
 const T=ms=>new Promise(r=>setTimeout(r,ms));let run=false;
 const loop=async()=>{for(let k=0;;k=(k+1)%P.length){build(P[k]);tx.style.opacity=1;tx.style.filter='none';await T(60);
  for(const c of chars){c.style.opacity=1;await T(c.textContent===' '?20:42)}
