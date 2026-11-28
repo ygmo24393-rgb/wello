@@ -2273,7 +2273,7 @@ const draw=(first)=>{qs.forEach((q,i)=>{const k=slot(i),pk=prev?prev[i]:k;
  if(first||Math.abs(k-pk)>1){q.getBoundingClientRect();q.style.transition='';}});
  prev=qs.map((_,i)=>slot(i));};
 const go=(to)=>{cur=((to%n)+n)%n;draw(false);imgs();rot+=360;document.getElementById('ovsym').style.transform='rotate('+rot+'deg)';};
-const tick=()=>{clearTimeout(tm);tm=setTimeout(()=>{if(!hover)go(cur+1);tick();},2200);};
+const tick=()=>{clearTimeout(tm);tm=setTimeout(()=>{if(!hover)go(cur+1);tick();},1700);};
 qs.forEach((q,i)=>q.addEventListener('click',()=>{go(i);tick();}));
 const box=document.getElementById('ovq');box.addEventListener('mouseenter',()=>hover=true);box.addEventListener('mouseleave',()=>hover=false);
 const imgs=()=>document.querySelectorAll('#secov .ovimg').forEach(e=>e.classList.toggle('on',+e.dataset.i===cur));
