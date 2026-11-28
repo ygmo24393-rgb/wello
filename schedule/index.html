@@ -15,7 +15,7 @@
   :root{--bg:#EEEEEF;--panel:#F7F7F8;--card:#FFFFFF;--muted:#8A8F98;--blue:#2B9CFF;--blue2:#2B9CFF;--ease:cubic-bezier(.22,.8,.2,1)}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:#EEEEEF;overflow:hidden}
-  body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:#1E1F22;-webkit-font-smoothing:antialiased}
+  body{font-family:"Creato Display","Asta Sans",system-ui,sans-serif;color:#1E1F22}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;border-radius:24px;overflow:hidden;background:var(--bg);transform-origin:center}
   .stage::before{content:"";position:absolute;inset:0 0 auto 0;height:391px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0));pointer-events:none}
@@ -130,7 +130,7 @@
   .x{position:absolute;right:18px;top:20px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%}
   .x:hover{background:#E4E6E9}
   .x svg{width:20px;height:20px;stroke:#1E1F22;stroke-width:1.8}
-  .q{position:absolute;left:24px;display:flex;align-items:center;gap:10px;font-size:16px;letter-spacing:-.4px}
+  .q{position:absolute;left:24px;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:500;letter-spacing:-.4px}
   .q i{width:22px;height:22px;border-radius:50%;background:#E3F1FF;color:var(--blue2);font-style:normal;font-size:12px;display:grid;place-items:center}
   .pick{position:absolute;left:24px;width:348px;height:56px;border-radius:12px;background:#fff;border:1px solid #E4E6E9;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:15px;font-weight:500;text-align:left;transition:border-color .25s}
   .pick:hover,.pick.open{border-color:#CDD1D7}
