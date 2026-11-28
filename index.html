@@ -2383,11 +2383,17 @@ const P=[[['Choose when you want'],['your appliance to finish.'],'가전 작동�
  [['See when to start so you can'],['use more solar power.'],'태양광 전기를 더 많이 쓸 수 있는 시작 시간을 안내합니다.'],
  [['Review the suggested time'],['and confirm your schedule.'],'추천 시간을 확인하고 예약을 확정합니다.'],
  [['Get notified when weather'],['changes affect your schedule.'],'날씨 변화가 예약에 영향을 주면 알림을 받습니다.']];
-const KP={ff:.02,fi:.045,fo:.03,fe:.03,ti:.03,tf:.02,pl:.025,li:.02,rt:.02,ft:.02,ll:.015,'rn':.015,'ck':.015};let chars=[];const build=ph=>{tx.innerHTML='';chars=[];const wr=document.createElement('div');wr.style.cssText='display:inline-flex;flex-direction:column;gap:0;text-align:left;line-height:.96';tx.appendChild(wr);const ko=ph[2];ph.slice(0,2).forEach((line,li)=>{const d=document.createElement('div');if(li)d.style.paddingLeft='1.33em';line.forEach(part=>{const em=Array.isArray(part),t=em?part[0]:part;for(const ch of t){const s=document.createElement('span');s.textContent=ch;s.style.opacity=0;s.style.transition='opacity .45s ease';s.style.whiteSpace='pre';const pr=(d.lastChild&&d.lastChild.textContent||'')+ch;if(KP[pr])s.style.marginLeft=KP[pr]+'em';d.appendChild(s);chars.push(s)}});wr.appendChild(d)});};
+const KP={ff:.02,fi:.045,fo:.03,fe:.03,ti:.03,tf:.02,pl:.025,li:.02,rt:.02,ft:.02,ll:.015,'rn':.015,'ck':.015};let words=[];const EO='cubic-bezier(.25,1,.5,1)';
+const build=ph=>{tx.innerHTML='';words=[];const fs=parseFloat(getComputedStyle(tx).fontSize);const wr=document.createElement('div');wr.style.cssText='display:inline-flex;flex-direction:column;gap:0;text-align:left;line-height:.96';tx.appendChild(wr);
+ ph.slice(0,2).forEach((line,li)=>{const d=document.createElement('div');if(li)d.style.paddingLeft='1.33em';const txt=line.map(p=>Array.isArray(p)?p[0]:p).join('');
+ txt.split(/(\s+)/).forEach(tok=>{if(!tok)return;if(/^\s+$/.test(tok)){d.appendChild(document.createTextNode(tok));return}
+  const w=document.createElement('span');w.style.cssText=`display:inline-block;opacity:0;filter:blur(${(fs*.2).toFixed(1)}px);transform:translateY(.33em)`;let prev='';
+  for(const ch of tok){const c=document.createElement('span');c.textContent=ch;const k=KP[prev+ch];if(k)c.style.marginLeft=k+'em';w.appendChild(c);prev=ch}
+  d.appendChild(w);words.push(w)});wr.appendChild(d)});return fs};
 const T=ms=>new Promise(r=>setTimeout(r,ms));let run=false;
-const loop=async()=>{for(let k=0;;k=(k+1)%P.length){build(P[k]);tx.style.opacity=1;tx.style.filter='none';await T(60);
- for(const c of chars){c.style.opacity=1;await T(c.textContent===' '?20:42)}
- await T(2200);tx.style.opacity=0;tx.style.filter='blur(8px)';await T(700);}};
+const loop=async()=>{for(let k=0;;k=(k+1)%P.length){const fs=build(P[k]);tx.style.opacity=1;tx.style.filter='none';await T(300);
+ for(const w of words){w.style.transition=`opacity 1s ${EO},filter 1s ${EO},transform 1s ${EO}`;w.style.opacity=1;w.style.filter='blur(0px)';w.style.transform='none';await T(170)}
+ await T(2600);words.forEach(w=>{w.style.transition=`opacity .7s ${EO},filter .7s ${EO}`;w.style.opacity=0;w.style.filter=`blur(${(fs*.115).toFixed(1)}px)`});await T(900);}};
 new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!run){run=true;o.disconnect();loop()}},{rootMargin:'-20% 0px'}).observe(box);})();
 </script>
 </body></html>
